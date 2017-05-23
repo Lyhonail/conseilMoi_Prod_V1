@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace conseilMoi.Resources.Classes
 {
-    class Allergene
+    class Allergene 
     {
         String ID_alergene;
         String ID_typeProfil;
