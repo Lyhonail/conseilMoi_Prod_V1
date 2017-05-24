@@ -164,6 +164,7 @@ namespace conseilMoi.Resources.MaBase
                 }
                 result_nutriment.Close();
 
+                /* MATCH ALLERGENE */
                 //Recherche d'allergène qui matchent avec les critères du profil
                 string sql_recherche_allergene =
                     " select PU.ID_typeProfil, PU.ID_profil, PU.ID_critere " +
@@ -180,6 +181,50 @@ namespace conseilMoi.Resources.MaBase
                 }
                 //Fin recherche d'allergene
                 result_recherche_allergene.Close();
+                /* FIN MATCH ALLERGENE */
+
+                /* MATCH NUTRIMENT */
+                //Recherche de NUTRIMENTS qui matchent avec les critères du profil
+                string sql_recherche_nutriment =
+                    " select id_typeProfil, id_profil, id_nutriment, PU.valeur, CN.valeur, seuil_vert, seuil_orange, seuil_rouge " +
+                    "   from profil_utilisateur PU, compo_nutriment CN " +
+                    "  where id_produit = '" + p + "' " +
+                    " AND ID_critere = id_nutriment; ";
+                SqliteCommand command_recherche_nutriment = new SqliteCommand(sql_recherche_nutriment, connexion);
+                SqliteDataReader result_recherche_nutriment = command_recherche_nutriment.ExecuteReader();
+                while (result_recherche_nutriment.Read())
+                {
+                    String id_typeProfil = result_recherche_nutriment.GetString(0);
+                    String id_profil = result_recherche_nutriment.GetString(1);
+                    String id_nutriment = result_recherche_nutriment.GetString(2);
+                    //decimal valeur_profil = 10;
+                    decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
+                    decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
+                    //decimal valeur_produit = 10;
+                    // decimal vert = result_recherche_nutriment.GetDecimal(5);
+                    decimal vert = 10;
+
+                    //  decimal vert = result_recherche_nutriment.GetDecimal(5);
+                    decimal orange = result_recherche_nutriment.GetDecimal(6);
+                    //decimal orange = 10;
+                    decimal rouge = 10;
+
+                    /*
+                    decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
+                    decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
+                    decimal vert = result_recherche_nutriment.GetDecimal(5);
+                    decimal orange = result_recherche_nutriment.GetDecimal(6);
+                    decimal rouge = result_recherche_nutriment.GetDecimal(7);
+                    */
+
+                    produits.AddCheckNutriment(id_typeProfil, id_profil, id_nutriment, valeur_profil, valeur_produit, vert, orange, rouge);
+                }
+                //Fin recherche d'allergene
+                result_recherche_nutriment.Close();
+                /* FIN MATCH NUTRIMENT */
+
+
+
                 //on retourne le produit en entier
                 return produits;
             }
@@ -219,7 +264,7 @@ namespace conseilMoi.Resources.MaBase
                 {
                     this.ConnexionOpen();
                     SqliteCommand command = connexion.CreateCommand();
-                    command.CommandText = "update historique set  date = datetime() where id_typeProfil='" + id_typeProfil + "' and id_produit='" + id_produit + "' "; 
+                    command.CommandText = "update historique set  date = datetime() where id_typeProfil='" + id_typeProfil + "' and id_produit='" + id_produit + "' ";
 
                     command.ExecuteNonQuery();
                     connexion.Close();
@@ -256,7 +301,7 @@ namespace conseilMoi.Resources.MaBase
                 SqliteCommand commanda = new SqliteCommand(sql, connexion);
                 SqliteDataReader result = commanda.ExecuteReader();
                 List<Historiques> Hist = new List<Historiques>();
-               
+
                 while (result.Read())
                 {
                     //Historiques historiques = new Historiques();
@@ -268,21 +313,21 @@ namespace conseilMoi.Resources.MaBase
                     SqliteCommand commandaNomProduit = new SqliteCommand(sqlNomProduit, connexion);
                     SqliteDataReader resultNomProduit = commandaNomProduit.ExecuteReader();
                     resultNomProduit.Read();
-                                 
+
 
                     long num = long.Parse(chaine);
-                   
-                   /* 
-                  */
 
-                    historiques.CreeHistorique(chaine,resultNomProduit.GetString(0), result.GetString(1));
+                    /* 
+                   */
+
+                    historiques.CreeHistorique(chaine, resultNomProduit.GetString(0), result.GetString(1));
                     //historiques.CreeHistorique(1, "test");
                     resultNomProduit.Close();
                     Hist.Add(historiques);
                 }
 
-                
-               // historiques.id_produit(result.GetString(0).ToString(), result.GetString(1).ToString(), result.GetString(2).ToString());
+
+                // historiques.id_produit(result.GetString(0).ToString(), result.GetString(1).ToString(), result.GetString(2).ToString());
                 result.Close();
                 return Hist;
             }
