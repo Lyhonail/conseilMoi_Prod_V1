@@ -26,7 +26,7 @@ namespace conseilMoi
 
             base.OnCreate(savedInstanceState);
             MaBase db = new MaBase();
-            db.ExistBase();
+            db.ExistBase(this);
             SetContentView(Resource.Layout.Avertissement);
             MobileBarcodeScanner.Initialize(Application);
 
@@ -44,17 +44,21 @@ namespace conseilMoi
 
             btnMajBase.Click += delegate
             {
-
+                String path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); //chemin d'enregistrement de la base
+                String maBase = Path.Combine(path, "maBase.sqlite");
+                db.ReCreerBase(Resources.OpenRawResource(Resource.Raw.data), maBase);
+                /*
                 var docFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
                 //Console.WriteLine("Data path:" + Database.DatabaseFilePath);
                 var dbFile = Path.Combine(docFolder, "data4.sqlite"); // FILE NAME TO USE WHEN COPIED
                 System.IO.File.Delete(dbFile);
-                SqliteConnection.CreateFile(dbFile);
+                File.Delete(dbFile);
+                // SqliteConnection.CreateFile(dbFile);
 
                 var s = Resources.OpenRawResource(Resource.Raw.data);  // DATA FILE RESOURCE ID
                 FileStream writeStream = new FileStream(dbFile, FileMode.OpenOrCreate, FileAccess.Write);
                 ReadWriteStream(s, writeStream);
-
+                */
             };
 
             Produits produits = new Produits();

@@ -26,20 +26,68 @@ namespace conseilMoi.Resources.MaBase
                                     //Fin de déclarartion des variables
 
 
-        public string ExistBase() //On vérifie si la base existe ( cette fonction est optionnelle car ne sert à rien d'autre)
+        public string ExistBase(Activity activity) //On vérifie si la base existe ( cette fonction est optionnelle car ne sert à rien d'autre)
         {
             try //si pas d'erreur
             {
-                maBase = Path.Combine(path, "data4.sqlite"); ;
+                maBase = path + "/maBase.sqlite";
                 //on regarde si le fichier existe déjà
                 if (File.Exists(maBase)) { return maBase + " Existe déjà"; }
-                else { return maBase + " - à été créé"; }
+                else
+                {
+                    CreerBase(activity.Resources.OpenRawResource(Resource.Raw.data), maBase);
+                    return maBase + " - à été créé";
+                }
             }
             catch
             { //si erreur
                 return " ERREUR";
             }
         }//fin creerBase
+
+        public void CreerBase(Stream resStream, string basePath)
+        {
+            using (resStream)
+            {
+                using (FileStream f = new FileStream(basePath, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    int bytesCount = 1024;
+                    byte[] bytes = new byte[bytesCount];
+                    int bytesReaded = resStream.Read(bytes, 0, bytesCount);
+                    while (bytesReaded > 0)
+                    {
+                        f.Write(bytes, 0, bytesReaded);
+                        bytesReaded = resStream.Read(bytes, 0, bytesCount);
+                    }
+                }
+            }
+        }
+
+        public void ReCreerBase(Stream resStream, string basePath)
+        {
+
+            using (resStream)
+            {
+                using (FileStream f = new FileStream(basePath, FileMode.Create, FileAccess.Write))
+                {
+                    int bytesCount = 1024;
+                    byte[] bytes = new byte[bytesCount];
+                    int bytesReaded = resStream.Read(bytes, 0, bytesCount);
+                    while (bytesReaded > 0)
+                    {
+                        f.Write(bytes, 0, bytesReaded);
+                        bytesReaded = resStream.Read(bytes, 0, bytesCount);
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
 
         public void ConnexionOpen() // Ouverture de la connexion (si la base n'existe pas elle est automatiquement créée)
         {

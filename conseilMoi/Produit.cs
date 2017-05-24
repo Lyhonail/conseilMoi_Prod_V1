@@ -26,7 +26,7 @@ namespace conseilMoi
 
             //initialise la classe MaBase et connecte la base de donnnées
             MaBase db = new MaBase();
-            db.ExistBase();
+            db.ExistBase(this);
 
             //initialise le scanner de code barre
             MobileBarcodeScanner.Initialize(Application);
