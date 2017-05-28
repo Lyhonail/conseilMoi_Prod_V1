@@ -29,9 +29,6 @@ namespace conseilMoi
             db.ExistBase(this);
             SetContentView(Resource.Layout.Historique);
 
-            /*var lv = FindViewById<TextView>(Resource.Id.textViewTest);
-            lv.Text = db.SelectIdProduittest();*/
-
             lstData = FindViewById<ListView>(Resource.Id.listView);
             LoadData();
 

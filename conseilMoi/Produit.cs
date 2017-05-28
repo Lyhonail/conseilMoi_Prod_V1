@@ -19,6 +19,10 @@ namespace conseilMoi
     [Activity(Label = "Produit")]
     public class Produit : Activity
     {
+        ListView lstData;
+        List<Produits> lstSource = new List<Produits>();
+        MaBase db1 = new MaBase();
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -27,6 +31,8 @@ namespace conseilMoi
             //initialise la classe MaBase et connecte la base de donnnées
             MaBase db = new MaBase();
             db.ExistBase(this);
+            db1.ExistBase(this);
+
 
             //initialise le scanner de code barre
             MobileBarcodeScanner.Initialize(Application);
@@ -258,6 +264,12 @@ namespace conseilMoi
             };
         }
 
+        private void LoadData()
+        {
+            lstSource = db1.SelectProduitRecommande();
+            var adapter = new ListViewAdapterProduitRecommandation(this, lstSource);
+            lstData.Adapter = adapter;
+        }
         public void Afficher()
         {
 

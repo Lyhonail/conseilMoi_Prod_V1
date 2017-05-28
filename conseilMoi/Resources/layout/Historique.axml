@@ -16,14 +16,6 @@
             android:layout_height="463.0dp"
             android:id="@+id/listView" />
     </LinearLayout>
-    <TextView
-        android:text="HISTORIQUE"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewHistoriqueTitre"
-        android:gravity="center"
-        android:textColor="#AAAAAA" />
     <LinearLayout
         android:id="@+id/menuHistorique"
         android:orientation="horizontal"
