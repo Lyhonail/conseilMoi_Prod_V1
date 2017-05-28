@@ -25,17 +25,17 @@
             android:text="Personnel"
             android:layout_width="123.5dp"
             android:layout_height="wrap_content"
-            android:id="@+id/button1" />
+            android:id="@+id/buttonProduitPERS" />
         <Button
             android:text="Famille"
             android:layout_width="98.5dp"
             android:layout_height="wrap_content"
-            android:id="@+id/button2" />
+            android:id="@+id/buttonProduitFAM" />
         <Button
             android:text="Mes Invités"
             android:layout_width="124.0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/button3" />
+            android:id="@+id/buttonProduitINV" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/menuProduitInfos"

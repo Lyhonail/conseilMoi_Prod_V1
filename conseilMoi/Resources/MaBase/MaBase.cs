@@ -229,7 +229,7 @@ namespace conseilMoi.Resources.MaBase
                 string sql_recherche_nutriment =
                     " select id_typeProfil, id_profil, id_nutriment, PU.valeur, CN.valeur, seuil_vert, seuil_orange, seuil_rouge " +
                     "   from profil_utilisateur PU, compo_nutriment CN " +
-                    "  where id_produit = '" + p + "' " +
+                    "  where id_produit = '" + p + "' AND PU.ID_typeProfil='" + IdTp + "' " +
                     " AND ID_critere = id_nutriment; ";
                 SqliteCommand command_recherche_nutriment = new SqliteCommand(sql_recherche_nutriment, connexion);
                 SqliteDataReader result_recherche_nutriment = command_recherche_nutriment.ExecuteReader();
