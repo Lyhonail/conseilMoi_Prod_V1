@@ -81,20 +81,29 @@ namespace conseilMoi
 			// aapt resource value: 0x7f060013
 			public const int LinearList = 2131099667;
 			
-			// aapt resource value: 0x7f060021
-			public const int button1 = 2131099681;
+			// aapt resource value: 0x7f06002e
+			public const int button1 = 2131099694;
 			
-			// aapt resource value: 0x7f060022
-			public const int button2 = 2131099682;
+			// aapt resource value: 0x7f06002f
+			public const int button2 = 2131099695;
 			
-			// aapt resource value: 0x7f060023
-			public const int button3 = 2131099683;
+			// aapt resource value: 0x7f060030
+			public const int button3 = 2131099696;
 			
 			// aapt resource value: 0x7f060004
 			public const int buttonMajBase = 2131099652;
 			
-			// aapt resource value: 0x7f060036
-			public const int contentFrame = 2131099702;
+			// aapt resource value: 0x7f060022
+			public const int buttonProduitFAM = 2131099682;
+			
+			// aapt resource value: 0x7f060023
+			public const int buttonProduitINV = 2131099683;
+			
+			// aapt resource value: 0x7f060021
+			public const int buttonProduitPERS = 2131099681;
+			
+			// aapt resource value: 0x7f060039
+			public const int contentFrame = 2131099705;
 			
 			// aapt resource value: 0x7f06000a
 			public const int imageViewAvertissementAvertissement = 2131099658;
@@ -156,29 +165,29 @@ namespace conseilMoi
 			// aapt resource value: 0x7f06002b
 			public const int imageViewProduitScann = 2131099691;
 			
+			// aapt resource value: 0x7f060038
+			public const int imageViewProfilAvertissement = 2131099704;
+			
+			// aapt resource value: 0x7f060037
+			public const int imageViewProfilConseil = 2131099703;
+			
 			// aapt resource value: 0x7f060035
-			public const int imageViewProfilAvertissement = 2131099701;
+			public const int imageViewProfilHistorique = 2131099701;
 			
 			// aapt resource value: 0x7f060034
-			public const int imageViewProfilConseil = 2131099700;
+			public const int imageViewProfilProfil = 2131099700;
 			
-			// aapt resource value: 0x7f060032
-			public const int imageViewProfilHistorique = 2131099698;
-			
-			// aapt resource value: 0x7f060031
-			public const int imageViewProfilProfil = 2131099697;
-			
-			// aapt resource value: 0x7f060033
-			public const int imageViewProfilScann = 2131099699;
+			// aapt resource value: 0x7f060036
+			public const int imageViewProfilScann = 2131099702;
 			
 			// aapt resource value: 0x7f06001c
 			public const int linearLayout1 = 2131099676;
 			
-			// aapt resource value: 0x7f06002f
-			public const int linearLayoutBilanDesCirters = 2131099695;
+			// aapt resource value: 0x7f060032
+			public const int linearLayoutBilanDesCirters = 2131099698;
 			
-			// aapt resource value: 0x7f06002e
-			public const int linearLayoutProfile = 2131099694;
+			// aapt resource value: 0x7f060031
+			public const int linearLayoutProfile = 2131099697;
 			
 			// aapt resource value: 0x7f060014
 			public const int listView = 2131099668;
@@ -198,8 +207,8 @@ namespace conseilMoi
 			// aapt resource value: 0x7f060024
 			public const int menuProduitInfos = 2131099684;
 			
-			// aapt resource value: 0x7f060030
-			public const int menuProfil = 2131099696;
+			// aapt resource value: 0x7f060033
+			public const int menuProfil = 2131099699;
 			
 			// aapt resource value: 0x7f06001d
 			public const int space1 = 2131099677;

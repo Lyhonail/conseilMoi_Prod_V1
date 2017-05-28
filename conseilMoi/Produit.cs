@@ -48,6 +48,9 @@ namespace conseilMoi
             var txtInfoScan = FindViewById<TextView>(Resource.Id.textViewInfoScan);
             var txtInfoAllergene = FindViewById<TextView>(Resource.Id.textViewInfoAlergene);
             var txtInfoNutriment = FindViewById<TextView>(Resource.Id.textViewInfoNutriment);
+            var btnProduitPERS = FindViewById<Button>(Resource.Id.buttonProduitPERS);
+            var btnProduitFAM = FindViewById<Button>(Resource.Id.buttonProduitFAM);
+            var btnProduitINV = FindViewById<Button>(Resource.Id.buttonProduitINV);
 
 
             //Fait un enregistrement dans historique
@@ -56,7 +59,7 @@ namespace conseilMoi
             //On charge le produit Le IdProduit va dans le texteView IdProduit 
             //On créer d'abbord un objet produit qui contiendra tout le contenu du produit
             Produits produits = new Produits();
-            produits = db.SelectIdProduit(IDproduit);
+            produits = db.SelectIdProduit(IDproduit, IDTypeProfil);
 
             txtIdProduit.Text = "Id : " + produits.GetId_Produit() + ", Nom : " + produits.GetProduct_name();
             txtInfoScan.Text += "Code scanné : " + IDproduit;
@@ -96,11 +99,120 @@ namespace conseilMoi
 
             catch
             {
-                txtInfoNutriment.Text = "pas de nutriment avec erreur";
+                txtInfoNutriment.Text = "pas de nutriment trouvé";
             }
             /* FIN VERIFIE LES NUTRIMENTS   */
 
 
+            btnProduitPERS.Click += delegate
+            {
+                 IDTypeProfil = "PERS";
+                 Produits produi = new Produits();
+                //txtInfoScan.Text = db.InsertIntoHistorique(IDTypeProfil, IDproduit);
+                List<Allergene> ListAb = new List<Allergene>();
+                ListAb = produi.GetCheckAllergene();
+
+                try {
+                    if (ListAb[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "pas d'allergene"; }
+                    else { txtInfoAllergene.Text = "contient allergene correspondant a votre profil !"; }
+                }
+                catch   {txtInfoAllergene.Text = "pas d'allergene"; }
+                /* FIN VERIFIE LES ALLERGENES */
+
+                /* VERIFIE LES NUTRIMENTS  */
+                List<Nutriment> ListNutb = new List<Nutriment>();
+                ListNut = produits.GetCheckNutriment();
+
+                try {
+                    if (ListNutb[0].GetIdNutriment() == "") { txtInfoNutriment.Text = "pas d'allergene"; }
+                    else
+                    { txtInfoNutriment.Text = ListNutb[0].GetIdTypeProfil() + " " + ListNutb[0].GetIdProfil() + " " + ListNutb[0].GetIdNutriment() + " " +
+                                                 ListNutb[0].GetValeurProfil() + " " + ListNutb[0].GetValeurProduit() + " " +
+                                                 ListNutb[0].GetVert() + " " + ListNutb[0].GetOrange() + " " + ListNutb[0].GetRouge();
+                    }
+                }
+
+                catch {  txtInfoNutriment.Text = "pas de nutriment trouvé";  }
+                /* FIN VERIFIE LES NUTRIMENTS   */
+            };
+
+            btnProduitFAM.Click += delegate
+            {
+                 IDTypeProfil = "FAML";
+                Produits produi = new Produits();
+                //txtInfoScan.Text = db.InsertIntoHistorique(IDTypeProfil, IDproduit);
+                List<Allergene> ListAb = new List<Allergene>();
+                ListAb = produi.GetCheckAllergene();
+
+                try
+                {
+                    if (ListAb[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "pas d'allergene"; }
+                    else { txtInfoAllergene.Text = "contient allergene correspondant a votre profil !"; }
+                }
+                catch { txtInfoAllergene.Text = "pas d'allergene"; }
+                /* FIN VERIFIE LES ALLERGENES */
+
+                /* VERIFIE LES NUTRIMENTS  */
+                List<Nutriment> ListNutb = new List<Nutriment>();
+                ListNut = produits.GetCheckNutriment();
+
+                try
+                {
+                    if (ListNutb[0].GetIdNutriment() == "") { txtInfoNutriment.Text = "pas d'allergene"; }
+                    else
+                    {
+                        txtInfoNutriment.Text = ListNutb[0].GetIdTypeProfil() + " " + ListNutb[0].GetIdProfil() + " " + ListNutb[0].GetIdNutriment() + " " +
+                                                   ListNutb[0].GetValeurProfil() + " " + ListNutb[0].GetValeurProduit() + " " +
+                                                   ListNutb[0].GetVert() + " " + ListNutb[0].GetOrange() + " " + ListNutb[0].GetRouge();
+                    }
+                }
+
+                catch { txtInfoNutriment.Text = "pas de nutriment trouvé"; }
+                /* FIN VERIFIE LES NUTRIMENTS   */
+
+            };
+
+            btnProduitINV.Click += delegate
+            {
+                 IDTypeProfil = "INVT";
+                produits = null;
+                txtInfoScan.Text = db.InsertIntoHistorique(IDTypeProfil, IDproduit);
+                ListAl = null;
+                ListAl = produits.GetCheckAllergene();
+
+                try
+                {
+                    if (ListAl[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "pas d'allergene"; }
+                    else { txtInfoAllergene.Text = "contient allergene correspondant a votre profil !"; }
+                }
+                catch { txtInfoAllergene.Text = "pas d'allergene"; }
+                /* FIN VERIFIE LES ALLERGENES */
+
+                /* VERIFIE LES NUTRIMENTS  */
+                List<Nutriment> ListNutb = new List<Nutriment>();
+                ListNut = produits.GetCheckNutriment();
+
+                try
+                {
+                    if (ListNutb[0].GetIdNutriment() == "") { txtInfoNutriment.Text = "pas d'allergene"; }
+                    else
+                    {
+                        txtInfoNutriment.Text = ListNutb[0].GetIdTypeProfil() + " " + ListNutb[0].GetIdProfil() + " " + ListNutb[0].GetIdNutriment() + " " +
+                                                   ListNutb[0].GetValeurProfil() + " " + ListNutb[0].GetValeurProduit() + " " +
+                                                   ListNutb[0].GetVert() + " " + ListNutb[0].GetOrange() + " " + ListNutb[0].GetRouge();
+                    }
+                }
+
+                catch { txtInfoNutriment.Text = "pas de nutriment trouvé"; }
+                /* FIN VERIFIE LES NUTRIMENTS   */
+
+
+            };
+
+
+
+
+            /*  MENU DU BAS  */
 
             //Lorsque l'on clique sur le bouton menuProfil
             menuProfil.Click += delegate
@@ -113,6 +225,7 @@ namespace conseilMoi
             {
                 StartActivity(typeof(Historique));
             };
+
 
             //Lorsque l'on clique sur le bouton menuConseilMoi
             menuConseil.Click += delegate
@@ -143,6 +256,12 @@ namespace conseilMoi
             {
                 StartActivity(typeof(Avertissement));
             };
+        }
+
+        public void Afficher()
+        {
+
+
         }
 
     }

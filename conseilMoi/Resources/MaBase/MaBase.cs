@@ -65,7 +65,6 @@ namespace conseilMoi.Resources.MaBase
 
         public void ReCreerBase(Stream resStream, string basePath)
         {
-
             using (resStream)
             {
                 using (FileStream f = new FileStream(basePath, FileMode.Create, FileAccess.Write))
@@ -81,12 +80,6 @@ namespace conseilMoi.Resources.MaBase
                 }
             }
         }
-
-
-
-
-
-
 
 
         public void ConnexionOpen() // Ouverture de la connexion (si la base n'existe pas elle est automatiquement créée)
@@ -177,7 +170,7 @@ namespace conseilMoi.Resources.MaBase
         }*/
 
         //chargement du produit
-        public Produits SelectIdProduit(String p)
+        public Produits SelectIdProduit(String p, string IdTp)
         {
             try
             {
@@ -218,7 +211,7 @@ namespace conseilMoi.Resources.MaBase
                     " select PU.ID_typeProfil, PU.ID_profil, PU.ID_critere " +
                     " from profil_utilisateur PU, compo_allergene CA " +
                     " where PU.ID_critere = CA.ID_allergene " +
-                    " AND CA.id_produit = '" + p + "'; ";
+                    " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil='"+IdTp+"' ; ";
                 SqliteCommand command_recherche_allergene = new SqliteCommand(sql_recherche_allergene, connexion);
                 SqliteDataReader result_recherche_allergene = command_recherche_allergene.ExecuteReader();
                 while (result_recherche_allergene.Read())
@@ -249,13 +242,13 @@ namespace conseilMoi.Resources.MaBase
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
                     decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
                     //decimal valeur_produit = 10;
-                    // decimal vert = result_recherche_nutriment.GetDecimal(5);
-                    decimal vert = 10;
+                     decimal vert = result_recherche_nutriment.GetDecimal(5);
+                    //decimal vert = 10;
 
                     //  decimal vert = result_recherche_nutriment.GetDecimal(5);
                     decimal orange = result_recherche_nutriment.GetDecimal(6);
                     //decimal orange = 10;
-                    decimal rouge = 10;
+                    decimal rouge = result_recherche_nutriment.GetDecimal(7);
 
                     /*
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
