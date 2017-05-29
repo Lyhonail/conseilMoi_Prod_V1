@@ -65,7 +65,6 @@ namespace conseilMoi.Resources.MaBase
 
         public void ReCreerBase(Stream resStream, string basePath)
         {
-
             using (resStream)
             {
                 using (FileStream f = new FileStream(basePath, FileMode.Create, FileAccess.Write))
@@ -81,12 +80,6 @@ namespace conseilMoi.Resources.MaBase
                 }
             }
         }
-
-
-
-
-
-
 
 
         public void ConnexionOpen() // Ouverture de la connexion (si la base n'existe pas elle est automatiquement créée)
@@ -177,7 +170,7 @@ namespace conseilMoi.Resources.MaBase
         }*/
 
         //chargement du produit
-        public Produits SelectIdProduit(String p)
+        public Produits SelectIdProduit(String p, string IdTp)
         {
             try
             {
@@ -218,7 +211,7 @@ namespace conseilMoi.Resources.MaBase
                     " select PU.ID_typeProfil, PU.ID_profil, PU.ID_critere " +
                     " from profil_utilisateur PU, compo_allergene CA " +
                     " where PU.ID_critere = CA.ID_allergene " +
-                    " AND CA.id_produit = '" + p + "'; ";
+                    " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil='"+IdTp+"' ; ";
                 SqliteCommand command_recherche_allergene = new SqliteCommand(sql_recherche_allergene, connexion);
                 SqliteDataReader result_recherche_allergene = command_recherche_allergene.ExecuteReader();
                 while (result_recherche_allergene.Read())
@@ -236,7 +229,7 @@ namespace conseilMoi.Resources.MaBase
                 string sql_recherche_nutriment =
                     " select id_typeProfil, id_profil, id_nutriment, PU.valeur, CN.valeur, seuil_vert, seuil_orange, seuil_rouge " +
                     "   from profil_utilisateur PU, compo_nutriment CN " +
-                    "  where id_produit = '" + p + "' " +
+                    "  where id_produit = '" + p + "' AND PU.ID_typeProfil='" + IdTp + "' " +
                     " AND ID_critere = id_nutriment; ";
                 SqliteCommand command_recherche_nutriment = new SqliteCommand(sql_recherche_nutriment, connexion);
                 SqliteDataReader result_recherche_nutriment = command_recherche_nutriment.ExecuteReader();
@@ -249,13 +242,13 @@ namespace conseilMoi.Resources.MaBase
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
                     decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
                     //decimal valeur_produit = 10;
-                    // decimal vert = result_recherche_nutriment.GetDecimal(5);
-                    decimal vert = 10;
+                     decimal vert = result_recherche_nutriment.GetDecimal(5);
+                    //decimal vert = 10;
 
                     //  decimal vert = result_recherche_nutriment.GetDecimal(5);
                     decimal orange = result_recherche_nutriment.GetDecimal(6);
                     //decimal orange = 10;
-                    decimal rouge = 10;
+                    decimal rouge = result_recherche_nutriment.GetDecimal(7);
 
                     /*
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
@@ -337,9 +330,6 @@ namespace conseilMoi.Resources.MaBase
         //chargement du produit
         public List<Historiques> SelectHistorique()
         {
-            /*MyClass1 conn = new MyClass1();
-            MyClass2 conn = null;
-            conn = new MyClass2();*/
             Historiques historiques = null;
             try
             {
@@ -361,13 +351,7 @@ namespace conseilMoi.Resources.MaBase
                     SqliteCommand commandaNomProduit = new SqliteCommand(sqlNomProduit, connexion);
                     SqliteDataReader resultNomProduit = commandaNomProduit.ExecuteReader();
                     resultNomProduit.Read();
-
-
                     long num = long.Parse(chaine);
-
-                    /* 
-                   */
-
                     historiques.CreeHistorique(chaine, resultNomProduit.GetString(0), result.GetString(1));
                     //historiques.CreeHistorique(1, "test");
                     resultNomProduit.Close();
@@ -391,7 +375,52 @@ namespace conseilMoi.Resources.MaBase
             {
                 this.ConnexionClose();
             }
-        }// fin CreerTableProfil
+        }
+
+        //Créer la requete pour les produits recommandé
+
+        //chargement du produit
+        public List<Produits> SelectProduitRecommande()
+        {
+            Produits produitRecommande = null;
+            try
+            {
+                this.ConnexionOpen();
+                //Selection de l'historique
+                string sqlRecommande = "select id_produit, product_name from produit where id_produit=10 or id_produit=1000008218 or id_produit=1000008706; ";
+                SqliteCommand commandaReco = new SqliteCommand(sqlRecommande, connexion);
+                SqliteDataReader result = commandaReco.ExecuteReader();
+                List<Produits> ProduitRec = new List<Produits>();
+
+                while (result.Read())
+                {
+                    //Historiques historiques = new Historiques();
+
+                    produitRecommande = new Produits();
+                    String chaine = result.GetString(0);
+                    long num = long.Parse(chaine);
+                    produitRecommande.SetProduits(chaine, result.GetString(1),"");
+                    ProduitRec.Add(produitRecommande);
+                }
+                result.Close();
+                return ProduitRec;
+            }
+            //Retourne le message d'erreur SQL
+            catch
+            {
+                List<Produits> ProduitRec = new List<Produits>();
+                return ProduitRec;
+
+            }
+            //Fermeture de la connexion
+            finally
+            {
+                this.ConnexionClose();
+            }
+        }
+
+
+
 
 
 

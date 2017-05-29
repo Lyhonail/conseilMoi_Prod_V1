@@ -13,31 +13,33 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/textView2"
             android:textColor="@android:color/holo_blue_light"
-            android:layout_width="74.5dp"
+            android:layout_width="106.0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="11.5dp" />
+        <TextView
+            android:text="NomProduit"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/textView4"
+            android:textColor="@android:color/holo_blue_light"
+            android:layout_width="161.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="9.5dp" />
+        <TextView
+            android:text="Date"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/textView3"
+            android:textColor="@android:color/background_dark"
+            android:layout_width="94.5dp"
             android:layout_height="match_parent" />
         <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/space1"
             android:layout_marginRight="36.0dp" />
-        <TextView
-            android:text="NomProduit"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/textView4"
-            android:textColor="@android:color/holo_blue_light"
-            android:layout_width="167.5dp"
-            android:layout_height="match_parent" />
         <Space
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/space2"
             android:layout_marginRight="36.0dp" />
-        <TextView
-            android:text="Date"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/textView3"
-            android:textColor="@android:color/background_dark"
-            android:layout_width="69.0dp"
-            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>

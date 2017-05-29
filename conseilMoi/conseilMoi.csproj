@@ -16,7 +16,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -86,6 +86,7 @@
     <Compile Include="Classes\Allergene.cs" />
     <Compile Include="Classes\Historiques.cs" />
     <Compile Include="Classes\ListViewAdapterHistorique.cs" />
+    <Compile Include="Classes\ListViewAdapterProduitRecommandation.cs" />
     <Compile Include="Classes\Nutriment.cs" />
     <Compile Include="Classes\Produits.cs" />
     <Compile Include="Conseil.cs" />
@@ -107,8 +108,13 @@
     <AndroidResource Include="Resources\layout\Historique.axml" />
     <AndroidResource Include="Resources\layout\ListViewDataHistorique.axml" />
     <AndroidResource Include="Resources\layout\Main.axml" />
-    <AndroidResource Include="Resources\layout\Produit.axml" />
+    <AndroidResource Include="Resources\layout\Produit.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\Profil.axml" />
+    <AndroidResource Include="Resources\layout\ListViewDataProduitRecommande.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
