@@ -111,14 +111,7 @@ namespace conseilMoi
                 Intent produit = new Intent(this, typeof(Produit));
                 produit.PutExtra("IDproduit", "2000000010281");
                 StartActivity(produit);
-
-
-
             };
-
-
-
-
 
         }
 
