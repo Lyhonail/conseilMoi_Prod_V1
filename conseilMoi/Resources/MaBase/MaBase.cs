@@ -419,6 +419,26 @@ namespace conseilMoi.Resources.MaBase
             }
         }
 
+        public String SelectLibNutriment(String id)
+        {
+            String lib="";
+
+            this.ConnexionOpen();
+            //Selection de l'historique
+            string sql = "select lib_nutriment from nutriment where id_nutriment = '"+id+"'; ";
+            SqliteCommand command = new SqliteCommand(sql, connexion);
+            SqliteDataReader result = command.ExecuteReader();
+
+            result.Read();
+
+            lib = result.GetString(0);
+
+            return lib;
+        }
+
+
+
+
 
 
 
