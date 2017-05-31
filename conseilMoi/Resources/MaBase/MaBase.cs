@@ -176,12 +176,13 @@ namespace conseilMoi.Resources.MaBase
             {
                 this.ConnexionOpen();
                 //Selection du produit
-                string sql = "select id_produit, product_name, generic_name from produit where id_produit = " + p + "; ";
+                string sql = "select id_produit, product_name, generic_name, image_small_url from produit where id_produit = " + p + "; ";
                 SqliteCommand commanda = new SqliteCommand(sql, connexion);
                 SqliteDataReader result = commanda.ExecuteReader();
                 result.Read();
                 Produits produits = new Produits();
-                produits.SetProduits(result.GetString(0).ToString(), result.GetString(1).ToString(), result.GetString(2).ToString());
+                produits.SetProduits(result.GetString(0), result.GetString(1), result.GetString(2));
+                produits.SetUrl(result.GetString(3));
                 result.Close();
 
                 //recherche de tous les allergenes qui composent le produit

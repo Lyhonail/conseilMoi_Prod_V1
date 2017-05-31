@@ -109,6 +109,7 @@ namespace conseilMoi
 
                 //Intent garde la variable ID Produit et la transmet à l'activité Produit
                 Intent produit = new Intent(this, typeof(Produit));
+                //produit.PutExtra("IDproduit", "2000000010281");
                 produit.PutExtra("IDproduit", "2000000010281");
                 StartActivity(produit);
             };

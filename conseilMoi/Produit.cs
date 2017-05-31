@@ -62,39 +62,66 @@ namespace conseilMoi
             var btnProduitPERS = FindViewById<Button>(Resource.Id.buttonProduitPERS);
             var btnProduitFAM = FindViewById<Button>(Resource.Id.buttonProduitFAM);
             var btnProduitINV = FindViewById<Button>(Resource.Id.buttonProduitINV);
-           ImageView imgProduit = FindViewById<ImageView>(Resource.Id.imageViewProduit);
+            ImageView imgProduit = FindViewById<ImageView>(Resource.Id.imageViewProduit);
             ImageView imgFeu = FindViewById<ImageView>(Resource.Id.imageViewFeu);
             TextView txtNutrimentList = FindViewById<TextView>(Resource.Id.textViewInfoNutrimentList);
             ListView listNutriment = FindViewById<ListView>(Resource.Id.listViewNutriment);
 
-           
+
 
             btnProduitPERS.SetBackgroundColor(Color.LightGray);
             btnProduitFAM.SetBackgroundColor(Color.Gray);
             btnProduitINV.SetBackgroundColor(Color.Gray);
-           
+
 
 
             txtNutrimentList.Text = "";
-            
+
 
             btnProduitPERS.SetTextColor(Color.Gray);
             btnProduitFAM.SetTextColor(Color.LightGray);
             btnProduitINV.SetTextColor(Color.LightGray);
 
-            //CHARGEMENT DE L'IMAGE
-            Koush.UrlImageViewHelper.SetUrlDrawable(imgProduit, "http://fr.openfoodfacts.org/images/products/200/000/001/0281/front.4.200.jpg");
 
-            //Fait un enregistrement dans historique
-            txtInfoScan.Text = db.InsertIntoHistorique(IDTypeProfil, IDproduit);
+
+           
 
             //On charge le produit Le IdProduit va dans le texteView IdProduit 
             //On créer d'abbord un objet produit qui contiendra tout le contenu du produit
             Produits produits = new Produits();
             produits = db.SelectIdProduit(IDproduit, IDTypeProfil);
 
-            txtIdProduit.Text = /* "Id : " + produits.GetId_Produit() + ", Nom : " + */ produits.GetProduct_name();
-            txtInfoScan.Text += "Code barre : " + IDproduit;
+        //SI PAS DE PRODUIT TROUVE
+        if (produits.GetId_Produit() == "000") {
+                imgProduit.SetImageResource(Resource.Drawable.produitnontrouve);
+                txtIdProduit.Text = "Produit non trouvé";
+                txtInfoScan.Text = "Code barre : " + IDproduit;
+                txtInfoAllergene.Text = "";
+                txtInfoNutriment.Text = "";
+                imgFeu.Visibility = ViewStates.Invisible;
+            }
+        //FIN SI PAS DE PRODUIT TROUVE
+
+        //DEBUTE ELSE POUR SI PRODUIT TROUVE
+        else { 
+
+                imgFeu.Visibility = ViewStates.Visible;
+
+                //Fait un enregistrement dans historique
+                txtInfoScan.Text = db.InsertIntoHistorique(IDTypeProfil, IDproduit);
+
+                imgProduit.SetImageResource(Resource.Drawable.pasimage);
+
+                // CHARGEMENT DE L'IMAGE
+                String ImageURL = produits.GetUrl();
+             if (ImageURL != "") { 
+                    Koush.UrlImageViewHelper.SetUrlDrawable(imgProduit, produits.GetUrl());
+                }
+
+             if (produits.GetProduct_name() == "") { txtIdProduit.Text = "Produit incomplet"; imgFeu.Visibility = ViewStates.Invisible; }
+             else { txtIdProduit.Text = /* "Id : " + produits.GetId_Produit() + ", Nom : " + */ produits.GetProduct_name(); }
+                
+                txtInfoScan.Text = "Code barre : " + IDproduit;
 
             /* VERIFICATION POUR LE CHARGEMENT PAR DEFAUT SUR LE PROFIL PERSO */
             /* VERIFIE LES ALLERGENES */
@@ -103,13 +130,13 @@ namespace conseilMoi
 
             try
             {
-                if (ListAl[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Pas d'allergene";  }
-                else { txtInfoAllergene.Text = "Allergene incompatible !"; feu = 2;  }
+                if (ListAl[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Pas d'allergene"; }
+                else { txtInfoAllergene.Text = "Allergene incompatible !"; feu = 2; }
             }
 
             catch
             {
-                txtInfoAllergene.Text = "Pas d'allergene"; 
+                txtInfoAllergene.Text = "Pas d'allergene";
             }
             /* FIN VERIFIE LES ALLERGENES */
 
@@ -131,11 +158,14 @@ namespace conseilMoi
                         decimal seuil_rouge = n.GetRouge();
 
                         decimal taux = valeur_profil / valeur_produit;
-                        txtNutrimentList.Text += n.GetIdNutriment()+" ";
+                        decimal maxVert = valeur_profil * seuil_vert;
+                        decimal maxOrange = valeur_profil * seuil_orange;
 
-                        if (taux <= seuil_vert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité "; }
-                        if (taux > seuil_vert && taux <= seuil_orange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
-                        if (taux > seuil_orange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; }
+                        txtNutrimentList.Text += n.GetIdNutriment() + " ";
+
+                        if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité "; }
+                        if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
+                        if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; }
                     }
                 }
 
@@ -147,11 +177,36 @@ namespace conseilMoi
 
             }
 
-          
+
 
             if (feu == 0) { imgFeu.SetImageResource(Resource.Drawable.feuVertSmall); }
             if (feu == 1) { imgFeu.SetImageResource(Resource.Drawable.feuOrangeSmall); }
             if (feu == 2) { imgFeu.SetImageResource(Resource.Drawable.feurougeSmall); }
+
+            //Verification si le produit est COMPLET
+            //le produit contient des allergenes, il a donc été complété par open fact food
+            try 
+                {
+                List<String> testComplet = produits.GetListAllergeneDuProduit();
+                    if (testComplet[0] == "") { }
+                }
+
+            //le produit ne contien pas d'allergen, cela peut être normal, mais il doit contenir obligatoirement des nutriements
+            catch
+                {
+                    try
+                    {
+                        var testComplet = produits.GetListNutrimentDuProduit();
+                        if (testComplet[0] == "") { }
+                    }
+                    catch {
+                        
+                        txtInfoScan.Text = "Code barre : " + IDproduit;
+                        txtInfoAllergene.Text = "Produit incomplet";
+                        txtInfoNutriment.Text = "Nous ne pouvons donner un avis";
+                        imgFeu.Visibility = ViewStates.Invisible;
+                    }
+                }
 
             /* FIN VERIFIE LES NUTRIMENTS */
             /* FIN DE LA VERIFICATION POUR LE CHARGEMENT PAR DEFAUT SUR LE PROFIL PERSO */
@@ -160,7 +215,7 @@ namespace conseilMoi
             //-----------------/* BOUTON CHOIX PROFIL PERSO */ //-----------------------------------//
             btnProduitPERS.Click += delegate
             {
-
+                txtNutrimentList.Text = "";
                 btnProduitPERS.SetBackgroundColor(Color.LightGray);
                 btnProduitFAM.SetBackgroundColor(Color.Gray);
                 btnProduitINV.SetBackgroundColor(Color.Gray);
@@ -205,11 +260,14 @@ namespace conseilMoi
                             decimal seuil_rouge = n.GetRouge();
 
                             decimal taux = valeur_profil / valeur_produit;
+                            decimal maxVert = valeur_profil * seuil_vert;
+                            decimal maxOrange = valeur_profil * seuil_orange;
+
                             txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                            if (taux <= seuil_vert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité " + taux; }
-                            if (taux > seuil_vert && taux <= seuil_orange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité " + taux; }
-                            if (taux > seuil_orange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité tx:" + taux + " Sv:" + seuil_vert + " So:" + seuil_orange; }
+                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité "; }
+                            if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
+                            if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; }
                         }
                     }
 
@@ -219,7 +277,7 @@ namespace conseilMoi
                     }
                 }
 
-                
+
                 /* FIN VERIFIE LES NUTRIMENTS   */
                 if (feu == 0) { imgFeu.SetImageResource(Resource.Drawable.feuVertSmall); }
                 if (feu == 1) { imgFeu.SetImageResource(Resource.Drawable.feuOrangeSmall); }
@@ -229,6 +287,7 @@ namespace conseilMoi
 
             btnProduitFAM.Click += delegate
             {
+                txtNutrimentList.Text = "";
                 btnProduitPERS.SetBackgroundColor(Color.Gray);
                 btnProduitFAM.SetBackgroundColor(Color.LightGray);
                 btnProduitINV.SetBackgroundColor(Color.Gray);
@@ -273,11 +332,14 @@ namespace conseilMoi
                             decimal seuil_rouge = n.GetRouge();
 
                             decimal taux = valeur_profil / valeur_produit;
+                            decimal maxVert = valeur_profil * seuil_vert;
+                            decimal maxOrange = valeur_profil * seuil_orange;
+
                             txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                            if (taux <= seuil_vert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité " + taux; }
-                            if (taux > seuil_vert && taux <= seuil_orange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité " + taux; }
-                            if (taux > seuil_orange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité tx:" + taux + " Sv:" + seuil_vert + " So:" + seuil_orange; }
+                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité "; }
+                            if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
+                            if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; }
                         }
                     }
 
@@ -293,8 +355,10 @@ namespace conseilMoi
 
             };
 
+            /* BOUTON CHOIX PROFIL INVITE  */
             btnProduitINV.Click += delegate
             {
+                txtNutrimentList.Text = "";
                 btnProduitPERS.SetBackgroundColor(Color.Gray);
                 btnProduitFAM.SetBackgroundColor(Color.Gray);
                 btnProduitINV.SetBackgroundColor(Color.LightGray);
@@ -339,11 +403,14 @@ namespace conseilMoi
                             decimal seuil_rouge = n.GetRouge();
 
                             decimal taux = valeur_profil / valeur_produit;
+                            decimal maxVert = valeur_profil * seuil_vert;
+                            decimal maxOrange = valeur_profil * seuil_orange;
+
                             txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                            if (taux <= seuil_vert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité " + taux; }
-                            if (taux > seuil_vert && taux <= seuil_orange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité " + taux; }
-                            if (taux > seuil_orange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité tx:" + taux + " Sv:" + seuil_vert + " So:" + seuil_orange; }
+                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité "; }
+                            if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
+                            if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; }
                         }
                     }
 
@@ -358,7 +425,7 @@ namespace conseilMoi
                 if (feu == 2) { imgFeu.SetImageResource(Resource.Drawable.feurougeSmall); }
             };
 
-
+        }//FIN DU ELSE PRODUIT NON TROUVE
 
 
             /*  MENU DU BAS  */

@@ -127,6 +127,15 @@ namespace conseilMoi.Resources.Classes
             return nutriment_list;
         }
 
+        public List<String> GetListAllergeneDuProduit()
+        {
+            return allergene;
+        }
+        public List<String> GetListNutrimentDuProduit()
+        {
+            return nutriment;
+        }
+
 
     }
 }
