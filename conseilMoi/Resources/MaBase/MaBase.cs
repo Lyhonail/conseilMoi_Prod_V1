@@ -66,7 +66,6 @@ namespace conseilMoi.Resources.MaBase
 
         public void ReCreerBase(Stream resStream, string basePath)
         {
-
             using (resStream)
             {
                 using (FileStream f = new FileStream(basePath, FileMode.Create, FileAccess.Write))
@@ -82,12 +81,6 @@ namespace conseilMoi.Resources.MaBase
                 }
             }
         }
-
-
-
-
-
-
 
 
         public void ConnexionOpen() // Ouverture de la connexion (si la base n'existe pas elle est automatiquement créée)
@@ -178,18 +171,19 @@ namespace conseilMoi.Resources.MaBase
         }*/
 
         //chargement du produit
-        public Produits SelectIdProduit(String p)
+        public Produits SelectIdProduit(String p, string IdTp)
         {
             try
             {
                 this.ConnexionOpen();
                 //Selection du produit
-                string sql = "select id_produit, product_name, generic_name from produit where id_produit = " + p + "; ";
+                string sql = "select id_produit, product_name, generic_name, image_small_url from produit where id_produit = " + p + "; ";
                 SqliteCommand commanda = new SqliteCommand(sql, connexion);
                 SqliteDataReader result = commanda.ExecuteReader();
                 result.Read();
                 Produits produits = new Produits();
-                produits.SetProduits(result.GetString(0).ToString(), result.GetString(1).ToString(), result.GetString(2).ToString());
+                produits.SetProduits(result.GetString(0), result.GetString(1), result.GetString(2));
+                produits.SetUrl(result.GetString(3));
                 result.Close();
 
                 //recherche de tous les allergenes qui composent le produit
@@ -219,7 +213,7 @@ namespace conseilMoi.Resources.MaBase
                     " select PU.ID_typeProfil, PU.ID_profil, PU.ID_critere " +
                     " from profil_utilisateur PU, compo_allergene CA " +
                     " where PU.ID_critere = CA.ID_allergene " +
-                    " AND CA.id_produit = '" + p + "'; ";
+                    " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil='"+IdTp+"' ; ";
                 SqliteCommand command_recherche_allergene = new SqliteCommand(sql_recherche_allergene, connexion);
                 SqliteDataReader result_recherche_allergene = command_recherche_allergene.ExecuteReader();
                 while (result_recherche_allergene.Read())
@@ -237,7 +231,7 @@ namespace conseilMoi.Resources.MaBase
                 string sql_recherche_nutriment =
                     " select id_typeProfil, id_profil, id_nutriment, PU.valeur, CN.valeur, seuil_vert, seuil_orange, seuil_rouge " +
                     "   from profil_utilisateur PU, compo_nutriment CN " +
-                    "  where id_produit = '" + p + "' " +
+                    "  where id_produit = '" + p + "' AND PU.ID_typeProfil='" + IdTp + "' " +
                     " AND ID_critere = id_nutriment; ";
                 SqliteCommand command_recherche_nutriment = new SqliteCommand(sql_recherche_nutriment, connexion);
                 SqliteDataReader result_recherche_nutriment = command_recherche_nutriment.ExecuteReader();
@@ -250,13 +244,13 @@ namespace conseilMoi.Resources.MaBase
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
                     decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
                     //decimal valeur_produit = 10;
-                    // decimal vert = result_recherche_nutriment.GetDecimal(5);
-                    decimal vert = 10;
+                     decimal vert = result_recherche_nutriment.GetDecimal(5);
+                    //decimal vert = 10;
 
                     //  decimal vert = result_recherche_nutriment.GetDecimal(5);
                     decimal orange = result_recherche_nutriment.GetDecimal(6);
                     //decimal orange = 10;
-                    decimal rouge = 10;
+                    decimal rouge = result_recherche_nutriment.GetDecimal(7);
 
                     /*
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
@@ -427,6 +421,23 @@ namespace conseilMoi.Resources.MaBase
             }
         }
 
+        public String SelectLibNutriment(String id)
+        {
+            String lib="";
+
+            this.ConnexionOpen();
+            //Selection de l'historique
+            string sql = "select lib_nutriment from nutriment where id_nutriment = '"+id+"'; ";
+            SqliteCommand command = new SqliteCommand(sql, connexion);
+            SqliteDataReader result = command.ExecuteReader();
+
+            result.Read();
+
+            lib = result.GetString(0);
+
+            return lib;
+        }
+
         public List<Profils> SelectNomProfil()
         {
             Profils profilName = null;
@@ -497,6 +508,9 @@ namespace conseilMoi.Resources.MaBase
 
 
     */
+
+
+
 
 
 

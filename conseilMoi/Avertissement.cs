@@ -62,7 +62,7 @@ namespace conseilMoi
             };
 
             Produits produits = new Produits();
-            produits = db.SelectIdProduit("3250390503101");
+            produits = db.SelectIdProduit("3250390503101", "PERS");
             txtIdProduit.Text = produits.GetId_Produit();
 
 
@@ -109,16 +109,10 @@ namespace conseilMoi
 
                 //Intent garde la variable ID Produit et la transmet à l'activité Produit
                 Intent produit = new Intent(this, typeof(Produit));
+                //produit.PutExtra("IDproduit", "2000000010281");
                 produit.PutExtra("IDproduit", "2000000010281");
                 StartActivity(produit);
-
-
-
             };
-
-
-
-
 
         }
 
