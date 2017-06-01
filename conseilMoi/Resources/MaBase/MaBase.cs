@@ -14,6 +14,7 @@ using System.IO;
 using Android.Database.Sqlite;
 using Android.Util;
 using conseilMoi.Resources.Classes;
+using conseilMoi.Classes;
 
 namespace conseilMoi.Resources.MaBase
 {
@@ -406,7 +407,7 @@ namespace conseilMoi.Resources.MaBase
                     produitRecommande = new Produits();
                     String chaine = result.GetString(0);
                     long num = long.Parse(chaine);
-                    produitRecommande.SetProduits(chaine, result.GetString(1),"");
+                    produitRecommande.SetProduits(chaine, result.GetString(1), "");
                     ProduitRec.Add(produitRecommande);
                 }
                 result.Close();
@@ -426,8 +427,76 @@ namespace conseilMoi.Resources.MaBase
             }
         }
 
+        public List<Profils> SelectNomProfil()
+        {
+            Profils profilName = null;
+            try
+            {
+                this.ConnexionOpen();
+                //Selection de l'historique
+                string sqlNomProfil = "select lib_profil, id_profil from profil; ";
+                SqliteCommand commandaNomProfil = new SqliteCommand(sqlNomProfil, connexion);
+                SqliteDataReader result = commandaNomProfil.ExecuteReader();
+                List<Profils> profilNames = new List<Profils>();
+                //List<string> profilListExpensible;
+                while (result.Read())
+                {
+                    
+                    //Historiques historiques = new Historiques();
+                    profilName = new Profils();
+                    String chaine = result.GetString(0);
+                    String chaine1 = result.GetString(1);
+                    profilName.CreeProfil(chaine, chaine1);
+                    profilNames.Add(profilName);
+                }
+                result.Close();
+                return profilNames;
+            }
+            //Retourne le message d'erreur SQL
+            catch
+            {
+                List<Profils> profilNames = new List<Profils>();
+                return profilNames;
+
+            }
+            //Fermeture de la connexion
+            finally
+            {
+                this.ConnexionClose();
+            }
+        }
 
 
+
+        /*public string InsertAllProfilUtilisateur(String id_Profil)
+        {
+            //On tente d'abbord de modifier un enregistrement qui existerai déjà : la date et les produit  de substitution
+            try
+            {
+                this.ConnexionOpen();
+                SqliteCommand command = connexion.CreateCommand();
+                command.CommandText = "insert into profil_utilisateur (ID_profil, ID_critere, valeur,SEUIL_VERT, SEUIL_ORANGE,SEUIL_ROUGE) values ( '" + id_typeProfil + "', '" + id_produit + "', datetime() );";
+                command.ExecuteNonQuery();
+                connexion.Close();
+                return "Ok insert ";
+            }
+            //Si le couple id_produit et id_typeProfil n'existe pas = on le créer
+            catch
+            {
+ 
+                    return "Erreur insert ";
+        
+
+            }
+            //Fermeture de la connexion
+            finally
+            {
+                this.ConnexionClose();
+            }
+        }// fin CreerTableProfil
+
+
+    */
 
 
 

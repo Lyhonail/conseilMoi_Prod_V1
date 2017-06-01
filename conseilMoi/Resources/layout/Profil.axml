@@ -34,6 +34,16 @@
             android:layout_height="match_parent"
             android:id="@+id/button3" />
     </LinearLayout>
+    <!--<android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp" />-->
+    <ExpandableListView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/expandableListView" />
     <LinearLayout
         android:orientation="horizontal"
         android:minWidth="25px"
