@@ -94,6 +94,7 @@
   <ItemGroup>
     <Compile Include="Avertissement.cs" />
     <Compile Include="Classes\Allergene.cs" />
+    <Compile Include="Classes\ExpandableListViewAdapter_DetailProduit.cs" />
     <Compile Include="Classes\ExpandableListViewAdapter.cs" />
     <Compile Include="Classes\Historiques.cs" />
     <Compile Include="Classes\IViewHolder.cs" />
@@ -137,6 +138,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\item_layout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\group_item_detail_produit.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\item_layout_detail_produit.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

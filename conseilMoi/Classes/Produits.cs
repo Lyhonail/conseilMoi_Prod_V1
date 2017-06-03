@@ -25,6 +25,8 @@ namespace conseilMoi.Resources.Classes
         List<Nutriment> nutriment_list = new List<Nutriment>();
 
 
+
+
         //implémenter les autres champs, on ne fait pas de calcul donc on passe tout en String
 
         //constructeur du produit
@@ -102,7 +104,7 @@ namespace conseilMoi.Resources.Classes
         public void AddCheckAllergene(String al, String idtp, String idp)
         {
             Allergene A = new Allergene();
-            A.CreeAllergene(al, idtp, idp);
+            A.CreeAllergene(idp, idtp, al);
             allergene_list.Add(A);
         }
 

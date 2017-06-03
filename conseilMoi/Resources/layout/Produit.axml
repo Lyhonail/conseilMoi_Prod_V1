@@ -6,183 +6,188 @@
     android:layout_height="match_parent"
     tools:gridSpec="1|8|#0093eeff|K:#ee8700ff:16,l:72,l:16,r|S:#83ee00ff:16,0,l:16,56,l:16,0,r"
     android:background="#FFFFFE">
-  <!--TITRE DE LA PAGE : Détail produit-->
-  <TextView
-      android:text="Detail Produit"
-      android:textAppearance="?android:attr/textAppearanceLarge"
-      android:layout_width="match_parent"
-      android:layout_height="26.5dp"
-      android:id="@+id/textViewAvertissementTitre"
-      android:gravity="center"
-      android:textColor="#AAAAAA" />
-  <!--ENTETE AVEC LES CHOIX DU PROFIL-->
-  <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="match_parent"
-      android:layout_height="48.5dp"
-      android:id="@+id/linearLayout1"
-      android:minWidth="25px"
-      android:minHeight="25px">
-    <Button
-        android:text="Personnel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".33"
-        android:id="@+id/buttonProduitPERS"
-        android:background="#bbbbbb"
-        android:textColor="#333333" />
-    <Button
-        android:text="Famille"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".33"
-        android:id="@+id/buttonProduitFAM"
-        android:background="#555555"
-        android:textColor="#EEEEEE" />
-    <Button
-        android:text="Mes Invités"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight=".33"
-        android:id="@+id/buttonProduitINV"
-        android:background="#555555"
-        android:textColor="#EEEEEE" />
-  </LinearLayout>
-  <!--FIN DE L'ENTETE AVEC LES CHOIX DU PROFIL-->
-  <!--   -->
-  <!--AFFICHAGE DES INFORMATIONS PRODUIT-->
-  <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+<!--TITRE DE LA PAGE : Détail produit-->
+    <TextView
+        android:text="Detail Produit"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="26.5dp"
+        android:id="@+id/textViewAvertissementTitre"
+        android:gravity="center"
+        android:textColor="#AAAAAA" />
+<!--ENTETE AVEC LES CHOIX DU PROFIL-->
     <LinearLayout
-        android:id="@+id/menuProduitInfos"
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_weight=".70"
-        android:layout_height="wrap_content">
-      <TextView
-          android:text="Large Text"
-          android:textAppearance="?android:attr/textAppearanceSmall"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:id="@+id/textViewIdProduit"
-          android:textColor="#000000"
-          android:gravity="center"
-          android:textStyle="bold"
-          android:textSize="14dp" />
-      <LinearLayout
-          android:orientation="horizontal"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
-        <LinearLayout
-            android:orientation="vertical"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48.5dp"
+        android:id="@+id/linearLayout1"
+        android:minWidth="25px"
+        android:minHeight="25px">
+        <Button
+            android:text="Personnel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".85">
-          <TextView
-              android:text="Code Barre : 20000000281003"
-              android:textAppearance="?android:attr/textAppearanceSmall"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/textViewInfoScan"
-              android:textColor="#000000"
-              android:textSize="10dp" />
-          <TextView
-              android:text="Allergene"
-              android:textAppearance="?android:attr/textAppearanceSmall"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/textViewInfoAlergene"
-              android:textColor="#000000"
-              android:paddingTop="10dp" />
-          <TextView
-              android:text="Nutriment"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/textViewInfoNutriment"
-              android:textColor="#111111" />
-          <TextView
-              android:text="Liste Nutriment"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/textViewInfoNutrimentList"
-              android:textColor="#111111" />
-          <ListView
-              android:minWidth="25px"
-              android:minHeight="25px"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/listViewNutriment" />
+            android:layout_weight=".33"
+            android:id="@+id/buttonProduitPERS"
+            android:background="#bbbbbb"
+            android:textColor="#333333" />
+        <Button
+            android:text="Famille"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".33"
+            android:id="@+id/buttonProduitFAM"
+            android:background="#555555"
+            android:textColor="#EEEEEE" />
+        <Button
+            android:text="Mes Invités"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".33"
+            android:id="@+id/buttonProduitINV"
+            android:background="#555555"
+            android:textColor="#EEEEEE" />
+    </LinearLayout>
+<!--FIN DE L'ENTETE AVEC LES CHOIX DU PROFIL-->
+<!--   -->
+<!--AFFICHAGE DES INFORMATIONS PRODUIT-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/menuProduitInfos"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight=".70"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewIdProduit"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="14dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".85">
+                <!--AFFICHAGE CODE BARRE SCANNE-->
+                    <TextView
+                        android:text="Code Barre : 20000000281003"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewInfoScan"
+                        android:textColor="#000000"
+                        android:textSize="10dp" />
+                <!--AFFICHAGE DU TEXTE "PAS D'ALERGENE" -->
+                    <TextView
+                        android:text="Allergene"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewInfoAlergene"
+                        android:textColor="#000000"
+                        android:paddingTop="10dp" />
+                <!--AFFICHAGE DU TEXTE "PAS DE NUTRIMENTS"-->
+                    <TextView
+                        android:text="Nutriment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewInfoNutriment"
+                        android:textColor="#111111" />
+                <!--AFFICHAGE LISTE DES NUTRIMENTS-->
+                    <TextView
+                        android:text="Liste Nutriment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewInfoNutrimentList"
+                        android:textColor="#111111" />
+                </LinearLayout>
+                <ImageView
+                    android:src="@drawable/feuvertsmall"
+                    android:layout_width="0dp"
+                    android:layout_weight=".15"
+                    android:layout_height="50dp"
+                    android:id="@+id/imageViewFeu" />
+            </LinearLayout>
         </LinearLayout>
         <ImageView
-            android:src="@drawable/feuvertsmall"
+            android:src="@drawable/pasimage"
             android:layout_width="0dp"
-            android:layout_weight=".15"
-            android:layout_height="50dp"
-            android:id="@+id/imageViewFeu" />
-      </LinearLayout>
+            android:layout_height="150dp"
+            android:layout_weight=".30"
+            android:id="@+id/imageViewProduit" />
     </LinearLayout>
-    <ImageView
-        android:src="@drawable/pasimage"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_weight=".30"
-        android:id="@+id/imageViewProduit" />
-  </LinearLayout>
-  <!--AFFICHAGE DES INFORMATIONS PRODUIT-->
-  <!--   -->
-  <!--AFFICHAGE DES PRODUITS ALTERNATIFS DANS UNE LISTE-->
-  <ListView
-      android:minWidth="25px"
-      android:minHeight="25px"
-      android:id="@+id/listView1"
-      android:layout_width="match_parent"
-      android:layout_height="168.0dp" />
-  <!--FIN AFFICHAGE DES PRODUITS ALTERNATIFS DANS UNE LISTE-->
-  <!--   -->
-  <!--AFFICHAGE DU MENU DE NAVIGATION DU BAS-->
-  <LinearLayout
-      android:id="@+id/menuAvertissement"
-      android:orientation="horizontal"
-      android:layout_width="match_parent"
-      android:layout_height="0dip"
-      android:layout_weight="1"
-      android:gravity="center|bottom">
-    <ImageView
-        android:src="@drawable/Profil"
-        android:layout_width="30dp"
-        android:id="@+id/imageViewProduitProfil"
-        android:layout_height="50dp"
-        android:clickable="true" />
-    <ImageView
-        android:src="@drawable/Historique"
-        android:layout_width="30dp"
-        android:id="@+id/imageViewProduitHistorique"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:layout_marginLeft="50.0dp" />
-    <ImageView
-        android:src="@drawable/scan"
-        android:layout_width="30dp"
-        android:id="@+id/imageViewProduitScann"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:layout_marginLeft="50.0dp"
-        android:layout_marginRight="65dp" />
-    <ImageView
-        android:src="@drawable/Synthese"
-        android:layout_width="30dp"
-        android:id="@+id/imageViewProduitConseil"
-        android:layout_height="50dp"
-        android:clickable="true"
-        android:layout_marginRight="65dp" />
-    <ImageView
-        android:src="@drawable/iconetest"
-        android:layout_width="30dp"
-        android:id="@+id/imageViewProduitAvertissement"
-        android:layout_height="50dp"
-        android:clickable="true" />
-  </LinearLayout>
-  <!--FIN AFFICHAGE DU MENU DE NAVIGATION DU BAS-->
+<!--FIN AFFICHAGE DES INFORMATIONS PRODUIT-->
+<!--AFFICHAGE DES ALLERGENE ET NUTRIMENT QUI CORRESPONDENT AU PROFIL-->
+    <ExpandableListView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/expandableListViewMatchAllNut" />
+<!--   -->
+<!--AFFICHAGE DES PRODUITS ALTERNATIFS DANS UNE LISTE-->
+    <ListView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="168.0dp" />
+<!--FIN AFFICHAGE DES PRODUITS ALTERNATIFS DANS UNE LISTE-->
+<!--   -->
+<!--AFFICHAGE DU MENU DE NAVIGATION DU BAS-->
+    <LinearLayout
+        android:id="@+id/menuAvertissement"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center|bottom">
+        <ImageView
+            android:src="@drawable/Profil"
+            android:layout_width="30dp"
+            android:id="@+id/imageViewProduitProfil"
+            android:layout_height="50dp"
+            android:clickable="true" />
+        <ImageView
+            android:src="@drawable/Historique"
+            android:layout_width="30dp"
+            android:id="@+id/imageViewProduitHistorique"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:layout_marginLeft="50.0dp" />
+        <ImageView
+            android:src="@drawable/scan"
+            android:layout_width="30dp"
+            android:id="@+id/imageViewProduitScann"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:layout_marginLeft="50.0dp"
+            android:layout_marginRight="65dp" />
+        <ImageView
+            android:src="@drawable/Synthese"
+            android:layout_width="30dp"
+            android:id="@+id/imageViewProduitConseil"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:layout_marginRight="65dp" />
+        <ImageView
+            android:src="@drawable/iconetest"
+            android:layout_width="30dp"
+            android:id="@+id/imageViewProduitAvertissement"
+            android:layout_height="50dp"
+            android:clickable="true" />
+    </LinearLayout>
+<!--FIN AFFICHAGE DU MENU DE NAVIGATION DU BAS-->
 </LinearLayout>

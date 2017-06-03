@@ -477,7 +477,36 @@ namespace conseilMoi.Resources.MaBase
             }
         }
 
+        public String GetLibNutriment(String ID_Nut)
+        {
+            this.ConnexionOpen();
+            //Selection du libellé
+            string sqlLibNut = "select lib_nutriment from nutriment where id_nutriment = '"+ID_Nut+"'; ";
+            SqliteCommand commandLibNut = new SqliteCommand(sqlLibNut, connexion);
+            SqliteDataReader result = commandLibNut.ExecuteReader();
+            result.Read();
+            string rez = result.GetString(0);
+            result.Close();
+            this.ConnexionClose();
 
+            return rez;
+        }
+
+        public String GetLibAllergene(String ID_All)
+        {
+            this.ConnexionOpen();
+            //Selection du libellé
+            string sqlLibAll = "select lib_allergene from allergene where ID_allergene = " + ID_All + "; ";
+            SqliteCommand commandLibAll = new SqliteCommand(sqlLibAll, connexion);
+            SqliteDataReader result = commandLibAll.ExecuteReader();
+            result.Read();
+
+            string rez = result.GetString(0);
+            result.Close();
+            this.ConnexionClose();
+
+            return rez;
+        }
 
         /*public string InsertAllProfilUtilisateur(String id_Profil)
         {
