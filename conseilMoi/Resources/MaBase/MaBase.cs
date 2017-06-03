@@ -14,6 +14,7 @@ using System.IO;
 using Android.Database.Sqlite;
 using Android.Util;
 using conseilMoi.Resources.Classes;
+using conseilMoi.Classes;
 
 namespace conseilMoi.Resources.MaBase
 {
@@ -176,12 +177,13 @@ namespace conseilMoi.Resources.MaBase
             {
                 this.ConnexionOpen();
                 //Selection du produit
-                string sql = "select id_produit, product_name, generic_name from produit where id_produit = " + p + "; ";
+                string sql = "select id_produit, product_name, generic_name, image_small_url from produit where id_produit = " + p + "; ";
                 SqliteCommand commanda = new SqliteCommand(sql, connexion);
                 SqliteDataReader result = commanda.ExecuteReader();
                 result.Read();
                 Produits produits = new Produits();
-                produits.SetProduits(result.GetString(0).ToString(), result.GetString(1).ToString(), result.GetString(2).ToString());
+                produits.SetProduits(result.GetString(0), result.GetString(1), result.GetString(2));
+                produits.SetUrl(result.GetString(3));
                 result.Close();
 
                 //recherche de tous les allergenes qui composent le produit
@@ -399,7 +401,7 @@ namespace conseilMoi.Resources.MaBase
                     produitRecommande = new Produits();
                     String chaine = result.GetString(0);
                     long num = long.Parse(chaine);
-                    produitRecommande.SetProduits(chaine, result.GetString(1),"");
+                    produitRecommande.SetProduits(chaine, result.GetString(1), "");
                     ProduitRec.Add(produitRecommande);
                 }
                 result.Close();
@@ -418,6 +420,94 @@ namespace conseilMoi.Resources.MaBase
                 this.ConnexionClose();
             }
         }
+
+        public String SelectLibNutriment(String id)
+        {
+            String lib="";
+
+            this.ConnexionOpen();
+            //Selection de l'historique
+            string sql = "select lib_nutriment from nutriment where id_nutriment = '"+id+"'; ";
+            SqliteCommand command = new SqliteCommand(sql, connexion);
+            SqliteDataReader result = command.ExecuteReader();
+
+            result.Read();
+
+            lib = result.GetString(0);
+
+            return lib;
+        }
+
+        public List<Profils> SelectNomProfil()
+        {
+            Profils profilName = null;
+            try
+            {
+                this.ConnexionOpen();
+                //Selection de l'historique
+                string sqlNomProfil = "select lib_profil, id_profil from profil; ";
+                SqliteCommand commandaNomProfil = new SqliteCommand(sqlNomProfil, connexion);
+                SqliteDataReader result = commandaNomProfil.ExecuteReader();
+                List<Profils> profilNames = new List<Profils>();
+                //List<string> profilListExpensible;
+                while (result.Read())
+                {
+                    
+                    //Historiques historiques = new Historiques();
+                    profilName = new Profils();
+                    String chaine = result.GetString(0);
+                    String chaine1 = result.GetString(1);
+                    profilName.CreeProfil(chaine, chaine1);
+                    profilNames.Add(profilName);
+                }
+                result.Close();
+                return profilNames;
+            }
+            //Retourne le message d'erreur SQL
+            catch
+            {
+                List<Profils> profilNames = new List<Profils>();
+                return profilNames;
+
+            }
+            //Fermeture de la connexion
+            finally
+            {
+                this.ConnexionClose();
+            }
+        }
+
+
+
+        /*public string InsertAllProfilUtilisateur(String id_Profil)
+        {
+            //On tente d'abbord de modifier un enregistrement qui existerai déjà : la date et les produit  de substitution
+            try
+            {
+                this.ConnexionOpen();
+                SqliteCommand command = connexion.CreateCommand();
+                command.CommandText = "insert into profil_utilisateur (ID_profil, ID_critere, valeur,SEUIL_VERT, SEUIL_ORANGE,SEUIL_ROUGE) values ( '" + id_typeProfil + "', '" + id_produit + "', datetime() );";
+                command.ExecuteNonQuery();
+                connexion.Close();
+                return "Ok insert ";
+            }
+            //Si le couple id_produit et id_typeProfil n'existe pas = on le créer
+            catch
+            {
+ 
+                    return "Erreur insert ";
+        
+
+            }
+            //Fermeture de la connexion
+            finally
+            {
+                this.ConnexionClose();
+            }
+        }// fin CreerTableProfil
+
+
+    */
 
 
 

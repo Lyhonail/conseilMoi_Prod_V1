@@ -21,7 +21,7 @@ namespace conseilMoi
         ListView lstData;
         List<Historiques> lstSource = new List<Historiques>();
         MaBase db = new MaBase();
-      
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -50,10 +50,21 @@ namespace conseilMoi
                     var txttypeid = e.View.FindViewById<TextView>(Resource.Id.textView2);
                     var txtnameproduit = e.View.FindViewById<TextView>(Resource.Id.textView4);
                     var txtdate = e.View.FindViewById<TextView>(Resource.Id.textView3);
-                    
+
                 }
 
             };
+
+            /*listView.setOnItemClickListener(new OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view,
+        int position, long id)
+        {
+            Toast.makeText(getApplicationContext(),
+                "Click ListItem Number " + position, Toast.LENGTH_LONG)
+                .show();
+        }
+    });*/
             //*****************************************************************************//
             MobileBarcodeScanner.Initialize(Application);
 

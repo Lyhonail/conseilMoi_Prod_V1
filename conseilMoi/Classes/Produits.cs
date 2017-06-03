@@ -18,6 +18,7 @@ namespace conseilMoi.Resources.Classes
         String id_produit;
         String product_name;
         String generic_name;
+        String url;
         List<String> allergene = new List<string>();
         List<String> nutriment = new List<string>();
         List<Allergene> allergene_list = new List<Allergene>();
@@ -32,6 +33,16 @@ namespace conseilMoi.Resources.Classes
             id_produit = iDp;
             product_name = pn;
             generic_name = GenName;
+        }
+
+        public void SetUrl(String u)
+        {
+            url = u;
+        }
+
+        public String GetUrl()
+        {
+            return url;
         }
 
         public String GetProduct_name()
@@ -114,6 +125,15 @@ namespace conseilMoi.Resources.Classes
         public List<Nutriment> GetCheckNutriment()
         {
             return nutriment_list;
+        }
+
+        public List<String> GetListAllergeneDuProduit()
+        {
+            return allergene;
+        }
+        public List<String> GetListNutrimentDuProduit()
+        {
+            return nutriment;
         }
 
 
