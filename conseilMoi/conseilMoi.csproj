@@ -105,6 +105,7 @@
     <Compile Include="Classes\Nutriment.cs" />
     <Compile Include="Classes\Produits.cs" />
     <Compile Include="Classes\Profils.cs" />
+    <Compile Include="Classes\ProfilsStandards.cs" />
     <Compile Include="Conseil.cs" />
     <Compile Include="Historique.cs" />
     <Compile Include="MainActivity.cs" />

@@ -23,7 +23,7 @@ namespace conseilMoi
     [Activity(Label = "Produit")]
     public class Produit : Activity
     {
-        ListView lstData;
+        //ListView lstData;
         List<Produits> lstSource = new List<Produits>();
         MaBase db1 = new MaBase();
         int feu = 0;

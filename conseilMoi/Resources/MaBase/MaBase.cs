@@ -508,6 +508,50 @@ namespace conseilMoi.Resources.MaBase
             return rez;
         }
 
+        public List<ProfilsStandards> SelectcritereProfilstandard(String idc)
+        {
+            ProfilsStandards profilcritere = null;
+            try
+            {
+                this.ConnexionOpen();
+                //Selection de l'historique
+                string sqlNomProfil = "select id_profil, id_critere, valeur, seuil_vert, seuil_orange, seuil_rouge from profil_standard where id_profil = '" + idc + "'; ";
+                SqliteCommand commandaNomProfilcritere = new SqliteCommand(sqlNomProfil, connexion);
+                SqliteDataReader result = commandaNomProfilcritere.ExecuteReader();
+                List<ProfilsStandards> profilcriteres = new List<ProfilsStandards>();
+                //List<string> profilListExpensible;
+                while (result.Read())
+                {
+
+                    //Historiques historiques = new Historiques();
+                    profilcritere = new ProfilsStandards();
+                    String chaine = result.GetString(0);
+                    String chaine1 = result.GetString(1);
+                    String chaine2 = result.GetString(0);
+                    String chaine3 = result.GetString(1);
+                    String chaine4 = result.GetString(0);
+                    String chaine5 = result.GetString(1);
+                    profilcritere.CreeProfilStandard(chaine, chaine1, chaine2, chaine3, chaine4, chaine5);
+                    profilcriteres.Add(profilcritere);
+                }
+                result.Close();
+                return profilcriteres;
+            }
+            //Retourne le message d'erreur SQL
+            catch
+            {
+                List<ProfilsStandards> profilcriteres = new List<ProfilsStandards>();
+                return profilcriteres;
+
+            }
+            //Fermeture de la connexion
+            finally
+            {
+                this.ConnexionClose();
+            }
+        }
+
+
         /*public string InsertAllProfilUtilisateur(String id_Profil)
         {
             //On tente d'abbord de modifier un enregistrement qui existerai déjà : la date et les produit  de substitution

@@ -20,7 +20,7 @@ namespace conseilMoi
     [Activity(Label = "Profil")]
     public class Profil : Activity
     {
-        ListView lstData;
+       // ListView lstData;
         List<Profils> lstSource = new List<Profils>();
         MaBase db = new MaBase();
 
@@ -37,10 +37,10 @@ namespace conseilMoi
 
             SetContentView(Resource.Layout.Profil);
 
-           // var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-          // SetSupportActionBar(toolbar);
-           //SupportActionBar(toolbar);
-          
+            // var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+            // SetSupportActionBar(toolbar);
+            //SupportActionBar(toolbar);
+
 
             expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListView);
             SetData(out mAdapter);
@@ -53,7 +53,7 @@ namespace conseilMoi
                 Toast.MakeText(this, "clicked: " + mAdapter.GetChild(e.GroupPosition, e.ChildPosition), ToastLength.Short).Show();
 
             };
-        
+
             //lstData = FindViewById<ListView>(Resource.Id.listViewNomProfil);
             //LoadData();
             /*lstData.ItemClick += (s, e) =>
@@ -135,19 +135,24 @@ namespace conseilMoi
             {
 
             } */
+            foreach (Profils p in groupProfils)
+            {
 
+                string pid = p.GetIdProfil();
+                group.Add(p.GetNomProfil());
+                List<ProfilsStandards> groupeCriteres = new List<ProfilsStandards>();
+                groupeCriteres = db.SelectcritereProfilstandard(pid);
 
-            group.Add("Sportif");
-            group.Add("Intolérent au Gluten");
-            group.Add("Femme enceinte");
-            group.Add("Critères supplémentaire");
-            group.Add("Allergie au Glutten");
+                List<string> groupC = new List<string>();
+                foreach (ProfilsStandards ps in groupeCriteres)
+                {
 
-            dicMyMap.Add(group[0], groupA);
-            dicMyMap.Add(group[1], groupB);
-            dicMyMap.Add(group[2], groupB);
-            dicMyMap.Add(group[3], groupB);
-            dicMyMap.Add(group[4], groupB);
+                    groupC.Add(ps.GetidCritere());
+
+                }
+                dicMyMap.Add(p.GetNomProfil(), groupC);
+
+            }
 
             mAdapter = new ExpandableListViewAdapter(this, group, dicMyMap);
         }
