@@ -25,7 +25,7 @@ namespace conseilMoi.Resources.MaBase
         String maBase; //contient 'path' + le nom de la base - utilisé pour la connexion -
         SqliteConnection connexion; //variable de connexion à la base
                                     //Fin de déclarartion des variables
-
+        Stream fichier;
 
         public string ExistBase(Activity activity) //On vérifie si la base existe ( cette fonction est optionnelle car ne sert à rien d'autre)
         {
@@ -44,7 +44,26 @@ namespace conseilMoi.Resources.MaBase
             { //si erreur
                 return " ERREUR";
             }
-        }//fin creerBase
+        }//fin existBase
+
+        //On initialise le chemin de la base( cette fonction est utilisée dans les profils)
+        public string ExistBase() 
+        {
+            try //si pas d'erreur
+            {
+                maBase = path+ "/maBase.sqlite"; ;
+                //on regarde si le fichier existe déjà
+                if (File.Exists(maBase)) { return maBase + " Existe déjà"; }
+                else { return maBase + " - à été créé"; }
+            }
+            catch
+            { //si erreur
+                return " ERREUR";
+            }
+        }//fin existBase
+
+
+
 
         public void CreerBase(Stream resStream, string basePath)
         {
@@ -434,7 +453,7 @@ namespace conseilMoi.Resources.MaBase
             result.Read();
 
             lib = result.GetString(0);
-
+            this.ConnexionClose();
             return lib;
         }
 
@@ -515,7 +534,7 @@ namespace conseilMoi.Resources.MaBase
             {
                 this.ConnexionOpen();
                 //Selection de l'historique
-                string sqlNomProfil = "select id_profil, id_critere, valeur, seuil_vert, seuil_orange, seuil_rouge from profil_standard where id_profil = '" + idc + "'; ";
+                string sqlNomProfil = "select id_profil, id_critere, valeur, seuil_vert, seuil_orange, seuil_rouge from profil_standard where id_profil = '" + idc + "' order by id_critere asc; ";
                 SqliteCommand commandaNomProfilcritere = new SqliteCommand(sqlNomProfil, connexion);
                 SqliteDataReader result = commandaNomProfilcritere.ExecuteReader();
                 List<ProfilsStandards> profilcriteres = new List<ProfilsStandards>();
@@ -527,10 +546,12 @@ namespace conseilMoi.Resources.MaBase
                     profilcritere = new ProfilsStandards();
                     String chaine = result.GetString(0);
                     String chaine1 = result.GetString(1);
-                    String chaine2 = result.GetString(0);
-                    String chaine3 = result.GetString(1);
-                    String chaine4 = result.GetString(0);
-                    String chaine5 = result.GetString(1);
+                    String chaine2;
+                    try {  chaine2 = result.GetDecimal(2).ToString(); } catch {  chaine2 = ""; }
+                    String chaine3 = result.GetDecimal(3).ToString();
+                    String chaine4 = result.GetDecimal(4).ToString();
+                    String chaine5;
+                    try { chaine5 = result.GetDecimal(5).ToString(); } catch { chaine5 = ""; }
                     profilcritere.CreeProfilStandard(chaine, chaine1, chaine2, chaine3, chaine4, chaine5);
                     profilcriteres.Add(profilcritere);
                 }
@@ -551,52 +572,98 @@ namespace conseilMoi.Resources.MaBase
             }
         }
 
-
-        /*public string InsertAllProfilUtilisateur(String id_Profil)
+        public string VerifProfilUtilisateur(String ID)
         {
-            //On tente d'abbord de modifier un enregistrement qui existerai déjà : la date et les produit  de substitution
             try
             {
                 this.ConnexionOpen();
-                SqliteCommand command = connexion.CreateCommand();
-                command.CommandText = "insert into profil_utilisateur (ID_profil, ID_critere, valeur,SEUIL_VERT, SEUIL_ORANGE,SEUIL_ROUGE) values ( '" + id_typeProfil + "', '" + id_produit + "', datetime() );";
-                command.ExecuteNonQuery();
-                connexion.Close();
-                return "Ok insert ";
+                //Selection de l'historique
+                string sqlNomProfil = "select count(ps.ID_critere), pu.ID_typeProfil, pu.ID_profil " +
+                                        " from profil_standard ps, profil_utilisateur pu " +
+                                        " where ps.ID_critere = pu.ID_critere " +
+                                        " and ps.id_critere = '" + ID + "' ";
+                SqliteCommand commandaNomProfilcritere = new SqliteCommand(sqlNomProfil, connexion);
+                SqliteDataReader result = commandaNomProfilcritere.ExecuteReader();
+                result.Read();
+                int n = result.GetInt16(0);
+                String check;
+                if (n > 0) { check = "check "+result.GetString(1)+" "+ result.GetString(2); }
+                else { check = "nocheck " + result.GetString(1) + " " + result.GetString(2); }
+                result.Close();
+                this.ConnexionClose();
+                return check;
             }
-            //Si le couple id_produit et id_typeProfil n'existe pas = on le créer
             catch
             {
- 
-                    return "Erreur insert ";
-        
+                this.ConnexionClose();
+                return "nocheck 0 0";
+            }
+           
+        }
+
+        public void InsertProfilUtilisateur(String ID, String ID_typeProfil )
+        {
+            this.ConnexionOpen();
+            //Selection de l'historique
+            string sql = "select * " +
+                                    " from profil_standard " +
+                                    " where ID_critere = '" + ID + "'; ";
+            SqliteCommand command = new SqliteCommand(sql, connexion);
+            SqliteDataReader result = command.ExecuteReader();
+            result.Read();
+
+            try
+            {
+
+                
+                String ID_profil = result.GetString(0);
+                String ID_critere = result.GetString(1);
+                String valeur;
+                try { valeur = result.GetDecimal(2).ToString(); } catch { valeur = "0"; }
+                String SEUIL_VERT = result.GetDecimal(3).ToString();
+                String SEUIL_ORANGE = result.GetDecimal(4).ToString();
+                String SEUIL_ROUGE;
+                try { SEUIL_ROUGE = result.GetDecimal(5).ToString(); } catch { SEUIL_ROUGE = "0"; }
+
+                SqliteCommand commandInsert = connexion.CreateCommand();
+                commandInsert.CommandText = "Insert into profil_utilisateur (ID_typeProfil, ID_profil, ID_critere, valeur, SEUIL_VERT, SEUIL_ORANGE, SEUIL_ROUGE) " +
+                                   "values ('"+ ID_typeProfil + "', '"+ ID_profil + "', '"+ ID_critere + "', "+ valeur + ", "+ SEUIL_VERT + ", "+ SEUIL_ORANGE + ", " + SEUIL_ROUGE + ");";
+                commandInsert.ExecuteNonQuery();
 
             }
+            catch (SqliteException ex)
+            {
+                
+            }
             //Fermeture de la connexion
+           finally {
+
+                result.Close();
+                this.ConnexionClose();
+            }
+
+        }
+
+        public void DeleteProfilUtilisateur(String ID_critere , String ID_typeProfil, String ID_profil)
+        {
+            try
+            {
+                this.ConnexionOpen();
+                SqliteCommand commandInsert = connexion.CreateCommand();
+                commandInsert.CommandText = "Delete from profil_utilisateur " +
+                                            " where ID_typeProfil = '" + ID_typeProfil + "' " +
+                                            " AND ID_profil ='" + ID_profil + "' AND ID_critere = '" + ID_critere + "'  ";
+                commandInsert.ExecuteNonQuery();
+            }
+            catch { }
             finally
             {
                 this.ConnexionClose();
+
             }
-        }// fin CreerTableProfil
-
-
-    */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            
+           
+        }
 
 
 

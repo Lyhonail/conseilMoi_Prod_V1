@@ -10,11 +10,17 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
+using conseilMoi.Resources.MaBase;
+
+using System.IO;
+using Mono.Data.Sqlite;
+using conseilMoi.Resources.Classes;
 
 namespace conseilMoi.Classes
 {
     public class ExpandableListViewAdapter : BaseExpandableListAdapter
     {
+       private  MaBase db = new MaBase();
         private Context context;
 
         private List<string> listGroup;
@@ -70,10 +76,43 @@ namespace conseilMoi.Classes
                 LayoutInflater inflater = (LayoutInflater)context.GetSystemService(Context.LayoutInflaterService);
                 convertView = inflater.Inflate(Resource.Layout.item_layout, null);
             }
+           
+            db.ExistBase();
 
-            TextView textViewItem = convertView.FindViewById<TextView>(Resource.Id.item);
-            string content = (string)GetChild(groupPosition, childPosition);
-            textViewItem.Text = content;
+            CheckBox textViewItem = convertView.FindViewById<CheckBox>(Resource.Id.item);
+            string result = (string)GetChild(groupPosition, childPosition);
+
+            string content ="";
+            string check;
+
+            string[] words = result.Split(' ');
+            try
+            {
+                content = words[0] + " " + words[2] + " " + words[3];
+                textViewItem.Text = content;
+                check = words[1];
+            }
+
+            catch
+            {
+                content = words[0];
+                check = "nocheck";
+                textViewItem.Text = content;
+            }
+
+            if(words[0] == "0") { textViewItem.Clickable = false; /*textViewItem.SetCursorVisible(false); textViewItem.SetWidth(1); textViewItem.SetHeight(1);*/ }
+
+            if (check == "check") { textViewItem.Checked = true; }
+            else { textViewItem.Checked = false; }
+
+            textViewItem.Click += delegate {
+                textViewItem.Text += "T";
+
+             //  if (textViewItem.Checked == true) { db.InsertProfilUtilisateur(words[0]); }
+              // if(textViewItem.Checked == false && words[2] != "0") { db.DeleteProfilUtilisateur(words[0], words[2], words[3]); }
+
+            };
+
             return convertView;
         }
 

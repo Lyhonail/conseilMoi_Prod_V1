@@ -5,10 +5,12 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px">
-    <TextView
+    <CheckBox
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/item"
-        android:textColor="@android:color/background_dark" />
+        android:textColor="@android:color/background_dark"
+        android:background="@android:color/holo_green_dark"
+        android:cursorVisible="true" />
 </LinearLayout>
