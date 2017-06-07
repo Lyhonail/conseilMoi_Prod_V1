@@ -572,7 +572,7 @@ namespace conseilMoi.Resources.MaBase
             }
         }
 
-        public string VerifProfilUtilisateur(String ID)
+        public string VerifProfilUtilisateur(String ID, String ID_typeProfil)
         {
             try
             {
@@ -581,7 +581,7 @@ namespace conseilMoi.Resources.MaBase
                 string sqlNomProfil = "select count(ps.ID_critere), pu.ID_typeProfil, pu.ID_profil " +
                                         " from profil_standard ps, profil_utilisateur pu " +
                                         " where ps.ID_critere = pu.ID_critere " +
-                                        " and ps.id_critere = '" + ID + "' ";
+                                        " and ps.id_critere = '" + ID + "' AND pu.ID_typeProfil ='" + ID_typeProfil + "' ";
                 SqliteCommand commandaNomProfilcritere = new SqliteCommand(sqlNomProfil, connexion);
                 SqliteDataReader result = commandaNomProfilcritere.ExecuteReader();
                 result.Read();
@@ -644,7 +644,7 @@ namespace conseilMoi.Resources.MaBase
 
         }
 
-        public void DeleteProfilUtilisateur(String ID_critere , String ID_typeProfil, String ID_profil)
+        public void DeleteProfilUtilisateur(String ID_typeProfil, String ID_profil, String ID_critere)
         {
             try
             {
@@ -663,6 +663,35 @@ namespace conseilMoi.Resources.MaBase
             }
             
            
+        }
+
+
+        public String GetNomCritereFromIdCritere(String ID_critere)
+        {
+            this.ConnexionOpen();
+            String requeteAllergene = "SELECT a.lib_allergene " +
+                            "FROM  allergene a  "+
+                            "WHERE a.id_allergene = '"+ ID_critere + "'; ";
+            String requeteNutriment = "SELECT n.lib_nutriment " +
+                            " FROM  nutriment n  " +
+                            " WHERE LOWER(n.id_nutriment) = LOWER('" + ID_critere + "'); ";
+
+            SqliteCommand command = new SqliteCommand(requeteAllergene, connexion);
+            SqliteDataReader result = command.ExecuteReader();
+            result.Read();
+            try { return result.GetString(0); }
+            catch {
+                SqliteCommand commandNut = new SqliteCommand(requeteNutriment, connexion);
+                SqliteDataReader resultNut = commandNut.ExecuteReader();
+                resultNut.Read();
+                return resultNut.GetString(0);
+
+            }
+            finally
+            {
+                this.ConnexionClose();
+            }
+
         }
 
 

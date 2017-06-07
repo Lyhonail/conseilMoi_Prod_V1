@@ -18,6 +18,7 @@ namespace conseilMoi
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            RequestWindowFeature(WindowFeatures.NoTitle);
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.Conseil);

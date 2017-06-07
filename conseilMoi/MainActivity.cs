@@ -4,7 +4,7 @@ using Android.OS;
 using conseilMoi.Resources.MaBase;
 using System.IO;
 using System;
-
+using Android.Views;
 
 namespace conseilMoi
 {
@@ -13,6 +13,7 @@ namespace conseilMoi
     {
         protected override void OnCreate(Bundle bundle)
         {
+            RequestWindowFeature(WindowFeatures.NoTitle);
             base.OnCreate(bundle);
 
             /*

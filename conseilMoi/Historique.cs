@@ -25,6 +25,7 @@ namespace conseilMoi
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            RequestWindowFeature(WindowFeatures.NoTitle);
             base.OnCreate(savedInstanceState);
             db.ExistBase(this);
             SetContentView(Resource.Layout.Historique);

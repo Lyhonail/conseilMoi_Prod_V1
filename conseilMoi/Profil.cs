@@ -15,15 +15,17 @@ using conseilMoi.Classes;
 //using Android.Support.V7.Widget;
 using Android.Support.V7.App;
 using Android.Graphics;
+using Android.Util;
 
 namespace conseilMoi
 {
-    [Activity(Label = "Profil")]
+    [Activity(Label = "Profil" /*Icon = "@drawable/logo"*/)]
     public class Profil : Activity
     {
        ListView lstData;
         List<Profils> lstSource = new List<Profils>();
         MaBase db = new MaBase();
+        LinearLayout linearLayout;
 
         ExpandableListViewAdapter mAdapter;
         ExpandableListView expandableListView;
@@ -33,47 +35,13 @@ namespace conseilMoi
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            RequestWindowFeature(WindowFeatures.NoTitle);
             base.OnCreate(savedInstanceState);
+           
             db.ExistBase(this);
 
             SetContentView(Resource.Layout.Profil);
 
-            // var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
-            // SetSupportActionBar(toolbar);
-            //SupportActionBar(toolbar);
-
-            /* ANCIEN VERSION VINCENT
-            expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListView);
-            SetData(out mAdapter);
-            expandableListView.SetAdapter(mAdapter);
-
-            expandableListView.ChildClick += (s, e) =>
-            {
-                Toast.MakeText(this, "clicked: " + mAdapter.GetChild(e.GroupPosition, e.ChildPosition), ToastLength.Short).Show();
-
-            };
-           ANCIEN VERSION VINCENT  */
-
-
-            //lstData = FindViewById<ListView>(Resource.Id.listViewNomProfil);
-            //LoadData();
-            /*lstData.ItemClick += (s, e) =>
-            {
-                for (int i = 0; i < lstData.Count; i++)
-                {
-                    if (e.Position == i)
-                    {
-                        lstData.GetChildAt(i).SetBackgroundColor(Android.Graphics.Color.DarkGray);
-                    }
-                    else
-                    {
-                        lstData.GetChildAt(i).SetBackgroundColor(Android.Graphics.Color.Transparent);
-                    }
-
-                }
-
-            };
-            */
             MobileBarcodeScanner.Initialize(Application);
 
             var txtViewTitre = FindViewById<TextView>(Resource.Id.textView1);
@@ -82,11 +50,11 @@ namespace conseilMoi
             var menuScanner = FindViewById<ImageView>(Resource.Id.imageViewProfilScann);
             var menuConseil = FindViewById<ImageView>(Resource.Id.imageViewProfilConseil);
             var menuAvertissement = FindViewById<ImageView>(Resource.Id.imageViewProfilAvertissement);
+            linearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayoutProfile);
 
             Button btnProfilPERS = FindViewById<Button>(Resource.Id.buttonProfilPERS);
             Button btnProfilFAML = FindViewById<Button>(Resource.Id.buttonProfilFAML);
             Button btnProfilINVT = FindViewById<Button>(Resource.Id.buttonProfilINVT);
-
 
             menuProfil.Click += delegate
             {
@@ -122,112 +90,152 @@ namespace conseilMoi
                 StartActivity(typeof(Avertissement));
             };
 
-            /* NOUVELLE VERSION LIONEL -- NOUVELLE VERSION LIONEL -- NOUVELLE VERSION LIONEL --   */
+
+            /* NOUVELLE VERSION LIONEL - AFFICHAGE DES GROUPES DE PROFIL - NOUVELLE VERSION LIONEL -- NOUVELLE VERSION LIONEL --   */
+            txtViewTitre.SetTextSize(ComplexUnitType.Px, 24);
+            txtViewTitre.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+
+
+            btnProfilPERS.SetTextSize(ComplexUnitType.Px, 22);
+            btnProfilPERS.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+
+            btnProfilFAML.SetTextSize(ComplexUnitType.Px, 22);
+            btnProfilFAML.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+
+            btnProfilINVT.SetTextSize(ComplexUnitType.Px, 22);
+            btnProfilINVT.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+
+            btnProfilPERS.SetBackgroundColor(Color.LightGray);
+            btnProfilFAML.SetBackgroundColor(Color.DarkGray);
+            btnProfilINVT.SetBackgroundColor(Color.DarkGray);
+
+            btnProfilPERS.SetTextColor(Color.DarkGray);
+            btnProfilFAML.SetTextColor(Color.LightGray);
+            btnProfilINVT.SetTextColor(Color.LightGray);
+
+            MakeData("PERS");
+
             btnProfilPERS.Click += delegate
             {
+
+                btnProfilPERS.SetBackgroundColor(Color.LightGray);
+                btnProfilFAML.SetBackgroundColor(Color.DarkGray);
+                btnProfilINVT.SetBackgroundColor(Color.DarkGray);
+
+                btnProfilPERS.SetTextColor(Color.DarkGray);
+                btnProfilFAML.SetTextColor(Color.LightGray);
+                btnProfilINVT.SetTextColor(Color.LightGray);
+
+                linearLayout.RemoveAllViews();
                 MakeData("PERS");
+
+
             };
-            
+
+            btnProfilFAML.Click += delegate
+            {
+                btnProfilPERS.SetBackgroundColor(Color.DarkGray);
+                btnProfilFAML.SetBackgroundColor(Color.LightGray);
+                btnProfilINVT.SetBackgroundColor(Color.DarkGray);
+
+                btnProfilPERS.SetTextColor(Color.LightGray);
+                btnProfilFAML.SetTextColor(Color.DarkGray);
+                btnProfilINVT.SetTextColor(Color.LightGray);
+
+                linearLayout.RemoveAllViews();
+                MakeData("FAML");
+            };
+
+            btnProfilINVT.Click += delegate
+            {
+                btnProfilPERS.SetBackgroundColor(Color.DarkGray);
+                btnProfilFAML.SetBackgroundColor(Color.DarkGray);
+                btnProfilINVT.SetBackgroundColor(Color.LightGray);
+
+                btnProfilPERS.SetTextColor(Color.LightGray);
+                btnProfilFAML.SetTextColor(Color.LightGray);
+                btnProfilINVT.SetTextColor(Color.DarkGray);
+
+                linearLayout.RemoveAllViews();
+                MakeData("INVT");
+            };
+
 
 
 
             /*FIN NOUVELLE VERSION LIONEL -- FIN NOUVELLE VERSION LIONEL -- FIN NOUVELLE VERSION LIONEL --   */
         }
 
-        //ANCIENNE VERSION VINCENT
-        private void SetData(out ExpandableListViewAdapter mAdapter)
-        {
-          
 
-            List<Profils> groupProfils = new List<Profils>();
-            groupProfils = db.SelectNomProfil();
-
-
-            foreach (Profils p in groupProfils)
-            {
-                string pid = p.GetIdProfil();
-                group.Add(p.GetNomProfil());
-                List<ProfilsStandards> groupeCriteres = new List<ProfilsStandards>();
-                groupeCriteres = db.SelectcritereProfilstandard(pid);
-
-                List<string> groupC = new List<string>();
-                foreach (ProfilsStandards ps in groupeCriteres)
-                {
-                    string valeur = ps.GetidCritere();
-
-                    valeur += " "+db.VerifProfilUtilisateur(valeur);
-
-                    groupC.Add(valeur);
-                }
-                dicMyMap.Add(p.GetNomProfil(), groupC);
-            }
-
-            mAdapter = new ExpandableListViewAdapter(this, group, dicMyMap);
-        }
-        // FIN ANCIENNE VERSION VINCENT--------------------------------------------------------------
-
-
-       //NOUVELLE VERSION LIONEL-------------------------------------------------------------
-       public void MakeData(String ID_typeProfil)
+        //GENERER LES GROUPES ET SOUS GROUPES DE PROFILS -------------------------------------------------------------
+        public void MakeData(String ID_typeProfil)
         {
             //Chargement du linearLayout à remplir
-            LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayoutProfile);
+            
 
             //je déclare la liste des groupes de profil
             List<Profils> groupProfils = new List<Profils>();
             groupProfils = db.SelectNomProfil();
 
-            //pour caque groupe de prifil, on l'afficher et chercher ses sous-groupes
+            //pour caque groupe de profil(Sportif, Allergique ...etc), on l'afficher et on  recherche ses sous-groupes
             foreach (Profils p in groupProfils)
             {
-                //JE créer le TextView
+                //JE créer le TextView du Groupe
                 TextView textView1 = new TextView(this) { Id = 1 };
-                //Je rempli le texte
+                //Je rempli le texte (Exemple (Sportif)
                 textView1.Text = p.GetNomProfil();
                 //Je définis la couleur à "Black" car c'est blanc par défaut
                 textView1.SetTextColor(Color.Black);
-                //Je définis les paramètres du textView
-                var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                textView1.SetTextSize(ComplexUnitType.Px, 18);
+                textView1.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+                textView1.SetBackgroundColor(Color.LightCyan);
+              //textView1.SetWidth(0);
+              //Je définis les paramètres du textView
+              var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent, 1f);
                 //J'ajoute le TextView tout bien rempli à mon LinearLayout
                 linearLayout.AddView(textView1, param);
 
                 //Je déclare la liste des sous-groupes
                 List<ProfilsStandards> groupeCriteres = new List<ProfilsStandards>();
-                //Je rempli la liste des sous-groupes avec la BDD
+                //Je rempli la liste de tous les sous-groupes avec la BDD qu'il est possible de choisir
                 groupeCriteres = db.SelectcritereProfilstandard(p.GetIdProfil());
-
+                //Je créer le LinearLayout qui contiendra cette liste de sous-groupes, avec ses paramètres
                 LinearLayout LN = new LinearLayout(this) { Id = 5 };
                 var paramL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                 LN.Orientation = Orientation.Vertical;
+                //J'ajoute le LinearLayout
                 linearLayout.AddView(LN);
+
                 //variable pour vérifier si le groupe est ouvert ou fermé
                 bool ouvert = false;
 
+                //Si l'on clique sur le Groupe, on ouvre les sous groupes
                 textView1.Click += delegate
                 {
-                    //Si le groupe est fermé, on va l'ouvrir
+                    //Si le groupe est à l'état de "fermé", on va l'ouvrir
                     if (ouvert == false)
                     {
                         ouvert = true;
-                        //Pour chaque sous-goupe trouvé, on va l'afficher !
+                        //Pour chaque sous-goupe dans la liste, on va l'afficher !
                         foreach (ProfilsStandards ps in groupeCriteres)
                         {
                            
                             //Je créer la CheckBox
                             CheckBox checkBox = new CheckBox(this) { Id = 10 };
-                            checkBox.Text = ps.GetidCritere();
+                            checkBox.Text = db.GetNomCritereFromIdCritere(ps.GetidCritere());
                             checkBox.SetTextColor(Color.Black);
                             var param2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                             LN.AddView(checkBox, param);
+
                             //Je check la checkBox, ou pas
-                            String res = db.VerifProfilUtilisateur(ps.GetidCritere());
+                            String res = db.VerifProfilUtilisateur(ps.GetidCritere(), ID_typeProfil);
                             string[] words = res.Split(' ');
                             if (words[0] == "check") { checkBox.Checked = true; }
 
                             checkBox.Click += delegate
                             {
                                 if (checkBox.Checked == true) { db.InsertProfilUtilisateur(ps.GetidCritere(), ID_typeProfil); }
-                                if (checkBox.Checked == false) { db.DeleteProfilUtilisateur(ID_typeProfil, p.GetNomProfil(), ps.GetidCritere()); }
+                                if (checkBox.Checked == false) { db.DeleteProfilUtilisateur(ID_typeProfil, p.GetIdProfil(), ps.GetidCritere()); }
                             };
 
                         }
@@ -237,62 +245,13 @@ namespace conseilMoi
                     {
                         ouvert = false;
                         LN.RemoveAllViews();
-                    } //FIN SINON
+                    } //FIN else
                 }; //FIN textView1.Click
-            }
+            } //Fin For Each
 
+        }// Fin MakeData
 
-            /*
-                for (int a = 0; a < 5; a++)
-            {
-                TextView textView1 = new TextView(this) { Id = 1 };
-                textView1.Text = "GROUPE";
-                textView1.SetTextColor(Color.Black);
-                var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-
-                // param.AddRule(LayoutRules.AlignParentTop);
-                linearLayout.AddView(textView1, param);
-
-                LinearLayout LN = new LinearLayout(this) { Id = 5 };
-                var paramL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                LN.Orientation = Orientation.Vertical;
-
-                linearLayout.AddView(LN);
-
-
-                textView1.Click += delegate
-                {
-
-                    if (textView1.Text == "GROUPE")
-                    {
-
-                        textView1.Text += " ouvert";
-                        for (int b = 0; b < 3; b++)
-                        {
-                            TextView textView2 = new TextView(this) { Id = 10 };
-                            textView2.SetTextColor(Color.Black);
-                            textView2.Text = "ITEM ";
-                            var param2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                            LN.AddView(textView2, param);
-                        }
-
-                    }
-                    else
-                    {
-                        LN.RemoveAllViews();
-                        textView1.Text = "GROUPE";
-
-                    }
-
-
-                };
-                
-
-            }
-        */
-        }
-
-       //FIN NOUVELLE VERSION LIONEL--------------------------------------------------------------
+        //FIN GENERER LES GROUPES ET SOUS GROUPES DE PROFILS--------------------------------------------------------------
 
         private void LoadData()
         {
