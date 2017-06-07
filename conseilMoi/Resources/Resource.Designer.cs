@@ -1489,8 +1489,8 @@ namespace conseilMoi
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0c009b
-			public const int ScrollViewListeGroupe = 2131493019;
+			// aapt resource value: 0x7f0c009a
+			public const int ScrollViewListeGroupe = 2131493018;
 			
 			// aapt resource value: 0x7f0c0078
 			public const int action0 = 2131492984;
@@ -1588,8 +1588,8 @@ namespace conseilMoi
 			// aapt resource value: 0x7f0c001d
 			public const int collapseActionView = 2131492893;
 			
-			// aapt resource value: 0x7f0c00a3
-			public const int contentFrame = 2131493027;
+			// aapt resource value: 0x7f0c00a2
+			public const int contentFrame = 2131493026;
 			
 			// aapt resource value: 0x7f0c0031
 			public const int contentPanel = 2131492913;
@@ -1711,20 +1711,20 @@ namespace conseilMoi
 			// aapt resource value: 0x7f0c0094
 			public const int imageViewProduitScann = 2131493012;
 			
-			// aapt resource value: 0x7f0c00a2
-			public const int imageViewProfilAvertissement = 2131493026;
-			
 			// aapt resource value: 0x7f0c00a1
-			public const int imageViewProfilConseil = 2131493025;
-			
-			// aapt resource value: 0x7f0c009f
-			public const int imageViewProfilHistorique = 2131493023;
-			
-			// aapt resource value: 0x7f0c009e
-			public const int imageViewProfilProfil = 2131493022;
+			public const int imageViewProfilAvertissement = 2131493025;
 			
 			// aapt resource value: 0x7f0c00a0
-			public const int imageViewProfilScann = 2131493024;
+			public const int imageViewProfilConseil = 2131493024;
+			
+			// aapt resource value: 0x7f0c009e
+			public const int imageViewProfilHistorique = 2131493022;
+			
+			// aapt resource value: 0x7f0c009d
+			public const int imageViewProfilProfil = 2131493021;
+			
+			// aapt resource value: 0x7f0c009f
+			public const int imageViewProfilScann = 2131493023;
 			
 			// aapt resource value: 0x7f0c0083
 			public const int info = 2131492995;
@@ -1747,8 +1747,8 @@ namespace conseilMoi
 			// aapt resource value: 0x7f0c0075
 			public const int linearLayoutProfil = 2131492981;
 			
-			// aapt resource value: 0x7f0c009c
-			public const int linearLayoutProfile = 2131493020;
+			// aapt resource value: 0x7f0c009b
+			public const int linearLayoutProfile = 2131493019;
 			
 			// aapt resource value: 0x7f0c0009
 			public const int listMode = 2131492873;
@@ -1780,8 +1780,8 @@ namespace conseilMoi
 			// aapt resource value: 0x7f0c0088
 			public const int menuProduitInfos = 2131493000;
 			
-			// aapt resource value: 0x7f0c009d
-			public const int menuProfil = 2131493021;
+			// aapt resource value: 0x7f0c009c
+			public const int menuProfil = 2131493020;
 			
 			// aapt resource value: 0x7f0c001b
 			public const int middle = 2131492891;
@@ -1953,9 +1953,6 @@ namespace conseilMoi
 			
 			// aapt resource value: 0x7f0c0074
 			public const int textViewNomRecommande = 2131492980;
-			
-			// aapt resource value: 0x7f0c009a
-			public const int textViewTest = 2131493018;
 			
 			// aapt resource value: 0x7f0c007e
 			public const int time = 2131492990;

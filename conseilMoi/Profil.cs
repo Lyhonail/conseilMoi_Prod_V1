@@ -30,7 +30,6 @@ namespace conseilMoi
         ExpandableListViewAdapter mAdapter;
         ExpandableListView expandableListView;
         List<string> group = new List<string>();
-        TextView txtTest;
 
         Dictionary<string, List<string>> dicMyMap = new Dictionary<string, List<string>>();
 
@@ -52,7 +51,7 @@ namespace conseilMoi
             var menuConseil = FindViewById<ImageView>(Resource.Id.imageViewProfilConseil);
             var menuAvertissement = FindViewById<ImageView>(Resource.Id.imageViewProfilAvertissement);
             linearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayoutProfile);
-            txtTest = FindViewById<TextView>(Resource.Id.textViewTest);
+           
             Button btnProfilPERS = FindViewById<Button>(Resource.Id.buttonProfilPERS);
             Button btnProfilFAML = FindViewById<Button>(Resource.Id.buttonProfilFAML);
             Button btnProfilINVT = FindViewById<Button>(Resource.Id.buttonProfilINVT);
@@ -186,12 +185,13 @@ namespace conseilMoi
                 TextView textView1 = new TextView(this) { Id = a };
                 a++;
                 //Je rempli le texte (Exemple (Sportif)
-                textView1.Text = p.GetNomProfil()+a;
+                textView1.Text = p.GetNomProfil();
                 //Je définis la couleur à "Black" car c'est blanc par défaut
                 textView1.SetTextColor(Color.Black);
-                textView1.SetTextSize(ComplexUnitType.Px, 18);
+                textView1.SetTextSize(ComplexUnitType.Px, 22);
                 textView1.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
                 textView1.SetBackgroundColor(Color.LightCyan);
+                textView1.SetHeight(30);
               //textView1.SetWidth(0);
               //Je définis les paramètres du textView
               var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent, 1f);
@@ -226,7 +226,7 @@ namespace conseilMoi
                             //Je créer la CheckBox
                             CheckBox checkBox = new CheckBox(this) { Id = a*100+b };
                             b++;
-                            checkBox.Text = db.GetNomCritereFromIdCritere(ps.GetidCritere())+b;
+                            checkBox.Text = db.GetNomCritereFromIdCritere(ps.GetidCritere());
                             checkBox.SetTextColor(Color.Black);
                             var param2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                             LN.AddView(checkBox, param);
@@ -238,7 +238,7 @@ namespace conseilMoi
 
                             checkBox.Click += delegate
                             {
-                                if (checkBox.Checked == true) { txtTest.Text = db.InsertProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil()); }
+                                if (checkBox.Checked == true) { db.InsertProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil()); }
                                 if (checkBox.Checked == false) { db.DeleteProfilUtilisateur(ID_typeProfil, p.GetIdProfil(), ps.GetidCritere()); }
                             };
 

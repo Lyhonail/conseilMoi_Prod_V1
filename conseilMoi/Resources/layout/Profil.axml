@@ -41,13 +41,6 @@
             android:id="@+id/buttonProfilINVT" />
     </LinearLayout>
 <!--FIN MENU DU HAUT FIN-->
-  <TextView
-        android:text="PROFIL"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:id="@+id/textViewTest"
-        android:gravity="center"
-        android:textColor="#000000" />
 <!--AFFICHAGE DE LA LISTE DES GROUPES ET SOU-GROUPES GENERES DYNAMIQUEMENT-->
     <ScrollView
         android:id="@+id/ScrollViewListeGroupe"
