@@ -309,7 +309,7 @@ namespace conseilMoi.Resources.MaBase
         //Scann d'un produit --> Ajout dans l'historique
         public string InsertIntoHistorique(String id_typeProfil, String id_produit)
         {
-            //On tente d'abbord de modifier un enregistrement qui existerai déjà : la date et les produit  de substitution
+            //On tente d'abbord d'insérer un enregistrement
             try
             {
                 this.ConnexionOpen();
@@ -319,7 +319,7 @@ namespace conseilMoi.Resources.MaBase
                 connexion.Close();
                 return "Ok insert ";
             }
-            //Si le couple id_produit et id_typeProfil n'existe pas = on le créer
+            //Si le couple id_produit et id_typeProfil existe  = on le modifie
             catch
             {
                 try

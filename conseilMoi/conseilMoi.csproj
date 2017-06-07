@@ -127,7 +127,9 @@
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\Avertissement.axml" />
+    <AndroidResource Include="Resources\layout\Avertissement.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\Conseil.axml" />
     <AndroidResource Include="Resources\layout\Historique.axml">
       <SubType>Designer</SubType>
