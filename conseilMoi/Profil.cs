@@ -30,6 +30,7 @@ namespace conseilMoi
         ExpandableListViewAdapter mAdapter;
         ExpandableListView expandableListView;
         List<string> group = new List<string>();
+        TextView txtTest;
 
         Dictionary<string, List<string>> dicMyMap = new Dictionary<string, List<string>>();
 
@@ -51,7 +52,7 @@ namespace conseilMoi
             var menuConseil = FindViewById<ImageView>(Resource.Id.imageViewProfilConseil);
             var menuAvertissement = FindViewById<ImageView>(Resource.Id.imageViewProfilAvertissement);
             linearLayout = FindViewById<LinearLayout>(Resource.Id.linearLayoutProfile);
-
+            txtTest = FindViewById<TextView>(Resource.Id.textViewTest);
             Button btnProfilPERS = FindViewById<Button>(Resource.Id.buttonProfilPERS);
             Button btnProfilFAML = FindViewById<Button>(Resource.Id.buttonProfilFAML);
             Button btnProfilINVT = FindViewById<Button>(Resource.Id.buttonProfilINVT);
@@ -171,19 +172,21 @@ namespace conseilMoi
         public void MakeData(String ID_typeProfil)
         {
             //Chargement du linearLayout à remplir
-            
 
+            db.ExistBase(this);
             //je déclare la liste des groupes de profil
             List<Profils> groupProfils = new List<Profils>();
             groupProfils = db.SelectNomProfil();
-
+            int a = 1;
+            int b = 1;
             //pour caque groupe de profil(Sportif, Allergique ...etc), on l'afficher et on  recherche ses sous-groupes
             foreach (Profils p in groupProfils)
             {
                 //JE créer le TextView du Groupe
-                TextView textView1 = new TextView(this) { Id = 1 };
+                TextView textView1 = new TextView(this) { Id = a };
+                a++;
                 //Je rempli le texte (Exemple (Sportif)
-                textView1.Text = p.GetNomProfil();
+                textView1.Text = p.GetNomProfil()+a;
                 //Je définis la couleur à "Black" car c'est blanc par défaut
                 textView1.SetTextColor(Color.Black);
                 textView1.SetTextSize(ComplexUnitType.Px, 18);
@@ -221,8 +224,9 @@ namespace conseilMoi
                         {
                            
                             //Je créer la CheckBox
-                            CheckBox checkBox = new CheckBox(this) { Id = 10 };
-                            checkBox.Text = db.GetNomCritereFromIdCritere(ps.GetidCritere());
+                            CheckBox checkBox = new CheckBox(this) { Id = a*100+b };
+                            b++;
+                            checkBox.Text = db.GetNomCritereFromIdCritere(ps.GetidCritere())+b;
                             checkBox.SetTextColor(Color.Black);
                             var param2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                             LN.AddView(checkBox, param);
@@ -234,7 +238,7 @@ namespace conseilMoi
 
                             checkBox.Click += delegate
                             {
-                                if (checkBox.Checked == true) { db.InsertProfilUtilisateur(ps.GetidCritere(), ID_typeProfil); }
+                                if (checkBox.Checked == true) { txtTest.Text = db.InsertProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil()); }
                                 if (checkBox.Checked == false) { db.DeleteProfilUtilisateur(ID_typeProfil, p.GetIdProfil(), ps.GetidCritere()); }
                             };
 
@@ -247,6 +251,7 @@ namespace conseilMoi
                         LN.RemoveAllViews();
                     } //FIN else
                 }; //FIN textView1.Click
+                b = 1;
             } //Fin For Each
 
         }// Fin MakeData

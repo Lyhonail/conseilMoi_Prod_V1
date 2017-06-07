@@ -601,46 +601,39 @@ namespace conseilMoi.Resources.MaBase
            
         }
 
-        public void InsertProfilUtilisateur(String ID, String ID_typeProfil )
+        public String InsertProfilUtilisateur(String ID, String ID_typeProfil, String ID_profil )
         {
-            this.ConnexionOpen();
-            //Selection de l'historique
-            string sql = "select * " +
-                                    " from profil_standard " +
-                                    " where ID_critere = '" + ID + "'; ";
-            SqliteCommand command = new SqliteCommand(sql, connexion);
-            SqliteDataReader result = command.ExecuteReader();
-            result.Read();
-
+            this.ConnexionOpen();     
             try
             {
-
-                
-                String ID_profil = result.GetString(0);
-                String ID_critere = result.GetString(1);
                 String valeur;
-                try { valeur = result.GetDecimal(2).ToString(); } catch { valeur = "0"; }
-                String SEUIL_VERT = result.GetDecimal(3).ToString();
-                String SEUIL_ORANGE = result.GetDecimal(4).ToString();
+                try { valeur = "5"; } catch { valeur = "0"; }
+                String SEUIL_VERT = "0.05";
+                String SEUIL_ORANGE = "0.01";
                 String SEUIL_ROUGE;
-                try { SEUIL_ROUGE = result.GetDecimal(5).ToString(); } catch { SEUIL_ROUGE = "0"; }
+                try { SEUIL_ROUGE = "0"; } catch { SEUIL_ROUGE = "0"; }
 
                 SqliteCommand commandInsert = connexion.CreateCommand();
                 commandInsert.CommandText = "Insert into profil_utilisateur (ID_typeProfil, ID_profil, ID_critere, valeur, SEUIL_VERT, SEUIL_ORANGE, SEUIL_ROUGE) " +
-                                   "values ('"+ ID_typeProfil + "', '"+ ID_profil + "', '"+ ID_critere + "', "+ valeur + ", "+ SEUIL_VERT + ", "+ SEUIL_ORANGE + ", " + SEUIL_ROUGE + ");";
+                                   "values ('"+ ID_typeProfil + "', '"+ ID_profil + "', '"+ ID + "', "+ valeur + ", "+ SEUIL_VERT + ", "+ SEUIL_ORANGE + ", " + SEUIL_ROUGE + ");";
                 commandInsert.ExecuteNonQuery();
+
+                return "ok";
 
             }
             catch (SqliteException ex)
             {
-                
+                return ex.Message;
             }
             //Fermeture de la connexion
            finally {
 
-                result.Close();
                 this.ConnexionClose();
             }
+            /*
+            result.Close();
+            this.ConnexionClose();
+            return ID+" "+ ID_typeProfil;*/
 
         }
 
