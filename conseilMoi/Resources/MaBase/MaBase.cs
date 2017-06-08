@@ -313,6 +313,10 @@ namespace conseilMoi.Resources.MaBase
             try
             {
                 this.ConnexionOpen();
+                SqliteCommand commandDelete = connexion.CreateCommand();
+                commandDelete.CommandText = "DELETE FROM historique where id_produit='" + id_produit + "';";
+                commandDelete.ExecuteNonQuery();
+
                 SqliteCommand command = connexion.CreateCommand();
                 command.CommandText = "insert into historique (id_typeProfil, id_produit, date) values ( '" + id_typeProfil + "', '" + id_produit + "', datetime() );";
                 command.ExecuteNonQuery();
@@ -356,7 +360,7 @@ namespace conseilMoi.Resources.MaBase
             {
                 this.ConnexionOpen();
                 //Selection de l'historique
-                string sql = "select id_produit, date from historique; ";
+                string sql = "select id_produit, date from historique order by date desc; ";
                 SqliteCommand commanda = new SqliteCommand(sql, connexion);
                 SqliteDataReader result = commanda.ExecuteReader();
                 List<Historiques> Hist = new List<Historiques>();

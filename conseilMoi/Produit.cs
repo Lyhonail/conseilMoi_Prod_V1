@@ -77,18 +77,17 @@ namespace conseilMoi
             var btnProduitINV = FindViewById<Button>(Resource.Id.buttonProduitINV);
             ImageView imgProduit = FindViewById<ImageView>(Resource.Id.imageViewProduit);
             ImageView imgFeu = FindViewById<ImageView>(Resource.Id.imageViewFeu);
-            TextView txtNutrimentList = FindViewById<TextView>(Resource.Id.textViewInfoNutrimentList);
-            var listNutriment = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
+
+            LinearLayout LinearNutriment = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchNutriment);
+
+
+            //var listNutriment = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
 
 
 
             btnProduitPERS.SetBackgroundColor(Color.LightGray);
             btnProduitFAM.SetBackgroundColor(Color.Gray);
             btnProduitINV.SetBackgroundColor(Color.Gray);
-
-
-
-            txtNutrimentList.Text = "";
 
 
             btnProduitPERS.SetTextColor(Color.Gray);
@@ -109,8 +108,8 @@ namespace conseilMoi
                 imgProduit.SetImageResource(Resource.Drawable.produitnontrouve);
                 txtIdProduit.Text = "Produit non trouvé";
                 txtInfoScan.Text = "Code barre : " + IDproduit;
-                txtInfoAllergene.Text = "";
-                txtInfoNutriment.Text = "";
+                txtInfoAllergene.Text = "Le produit n'existe pas";
+                txtInfoNutriment.Text = "dans la base";
                 imgFeu.Visibility = ViewStates.Invisible;
             }
         //FIN SI PAS DE PRODUIT TROUVE
@@ -121,7 +120,7 @@ namespace conseilMoi
                 imgFeu.Visibility = ViewStates.Visible;
 
                 //Fait un enregistrement dans historique
-                txtInfoScan.Text = db.InsertIntoHistorique(IDTypeProfil, IDproduit);
+                db.InsertIntoHistorique(IDTypeProfil, IDproduit);
 
                 imgProduit.SetImageResource(Resource.Drawable.pasimage);
 
@@ -132,7 +131,7 @@ namespace conseilMoi
                 }
 
              if (produits.GetProduct_name() == "") { txtIdProduit.Text = "Produit incomplet"; imgFeu.Visibility = ViewStates.Invisible; }
-             else { txtIdProduit.Text = /* "Id : " + produits.GetId_Produit() + ", Nom : " + */ produits.GetProduct_name(); }
+             else { txtIdProduit.Text = produits.GetProduct_name(); }
                 
                 txtInfoScan.Text = "Code barre : " + IDproduit;
 
@@ -141,22 +140,24 @@ namespace conseilMoi
             List<Allergene> ListAl = new List<Allergene>();
             ListAl = produits.GetCheckAllergene();
 
+
             try
-            {
-                if (ListAl[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergenes compatibles"; }
-                else { txtInfoAllergene.Text = "Allergene incompatible !"; feu = 2; }
+            {//Si aucun allergene dans la liste, alors le produit est comptatible avec le produit
+                if (ListAl[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergenes compatibles";  }
+                //Sinon la simple présence d'au moins 1 allergene dans la liste, rends le produit incompatible
+                else { txtInfoAllergene.Text = "Allergene incompatible !"; feu = 2; ChargerListeAllergene(ListAl); }
             }
 
             catch
-            {
+            {//si la liste est vide alors le Try echoue (je n'ai trouvé que cette solution pour le moment)
                 txtInfoAllergene.Text = "Allergenes compatibles";
-            }
+                }
             /* FIN VERIFIE LES ALLERGENES */
 
             /* VERIFIE LES NUTRIMENTS  */
             List<Nutriment> ListNut = new List<Nutriment>();
             ListNut = produits.GetCheckNutriment();
-
+                ChargerListeNutriment(ListNut);
             foreach (Nutriment n in ListNut)
             {
                 try
@@ -174,7 +175,7 @@ namespace conseilMoi
                         decimal maxVert = valeur_profil * seuil_vert;
                         decimal maxOrange = valeur_profil * seuil_orange;
 
-                        txtNutrimentList.Text += n.GetIdNutriment() + " ";
+                        //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
                         if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité "; }
                         if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
@@ -226,16 +227,15 @@ namespace conseilMoi
 
 
                 /* EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
-                expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
-                SetData(out mAdapter, produits, IDTypeProfil);
-                expandableListView.SetAdapter(mAdapter);
+                //expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
+                //SetData(out mAdapter, produits, IDTypeProfil);
+                //expandableListView.SetAdapter(mAdapter);
                 /* FIN EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
 
 
                 //-----------------/* BOUTON CHOIX PROFIL PERSO */ //-----------------------------------//
                 btnProduitPERS.Click += delegate
             {
-                txtNutrimentList.Text = "";
                 btnProduitPERS.SetBackgroundColor(Color.LightGray);
                 btnProduitFAM.SetBackgroundColor(Color.Gray);
                 btnProduitINV.SetBackgroundColor(Color.Gray);
@@ -243,8 +243,6 @@ namespace conseilMoi
                 btnProduitPERS.SetTextColor(Color.Gray);
                 btnProduitFAM.SetTextColor(Color.LightGray);
                 btnProduitINV.SetTextColor(Color.LightGray);
-               
-
 
                 feu = 0;
                 IDTypeProfil = "PERS";
@@ -253,9 +251,9 @@ namespace conseilMoi
                 dicMyMap.Remove(group[0]);
                 dicMyMap.Remove(group[1]);
 
-                expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
-                SetData(out mAdapter, produits, IDTypeProfil);
-                expandableListView.SetAdapter(mAdapter);
+               // expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
+               // SetData(out mAdapter, produits, IDTypeProfil);
+               // expandableListView.SetAdapter(mAdapter);
                 /* FIN EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
 
                 Produits produitPerso = new Produits();
@@ -264,11 +262,11 @@ namespace conseilMoi
                 db.InsertIntoHistorique(IDTypeProfil, IDproduit);
                 List<Allergene> ListAllergenePerso = new List<Allergene>();
                 ListAllergenePerso = produitPerso.GetCheckAllergene();
-
+                
                 try
                 {
                     if (ListAllergenePerso[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergenes compatibles"; }
-                    else { txtInfoAllergene.Text = "Allergenes incompatibles !"; feu = 2; }
+                    else { txtInfoAllergene.Text = "Allergenes incompatibles !"; feu = 2; ChargerListeAllergene(ListAllergenePerso); }
                 }
                 catch { txtInfoAllergene.Text = "Allergenes compatibles"; }
                 /* FIN VERIFIE LES ALLERGENES */
@@ -276,7 +274,7 @@ namespace conseilMoi
                 /* VERIFIE LES NUTRIMENTS  */
                 List<Nutriment> ListNuttrimentPerso = new List<Nutriment>();
                 ListNuttrimentPerso = produitPerso.GetCheckNutriment();
-
+                ChargerListeNutriment(ListNuttrimentPerso);
                 foreach (Nutriment n in ListNuttrimentPerso)
                 {
                     try
@@ -294,7 +292,7 @@ namespace conseilMoi
                             decimal maxVert = valeur_profil * seuil_vert;
                             decimal maxOrange = valeur_profil * seuil_orange;
 
-                            txtNutrimentList.Text += n.GetIdNutriment() + " ";
+                           // txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
                             if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité "; }
                             if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
@@ -318,7 +316,6 @@ namespace conseilMoi
 
             btnProduitFAM.Click += delegate
             {
-                txtNutrimentList.Text = "";
                 btnProduitPERS.SetBackgroundColor(Color.Gray);
                 btnProduitFAM.SetBackgroundColor(Color.LightGray);
                 btnProduitINV.SetBackgroundColor(Color.Gray);
@@ -331,13 +328,13 @@ namespace conseilMoi
                 IDTypeProfil = "FAML";
 
                 /* EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
-                dicMyMap.Remove(group[0]);
-                dicMyMap.Remove(group[1]);
+               // dicMyMap.Remove(group[0]);
+                //dicMyMap.Remove(group[1]);
                 
 
-                expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
-                SetData(out mAdapter, produits, IDTypeProfil);
-                expandableListView.SetAdapter(mAdapter);
+                //expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
+               // SetData(out mAdapter, produits, IDTypeProfil);
+               // expandableListView.SetAdapter(mAdapter);
                 /* FIN EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
 
                
@@ -350,15 +347,16 @@ namespace conseilMoi
 
                 try
                 {
-                    if (ListAllergeneFamille[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "pas d'allergene"; }
-                    else { txtInfoAllergene.Text = "Allergenes incompatibles !"; feu = 2; }
+                    if (ListAllergeneFamille[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergene compatibles"; }
+                    else { txtInfoAllergene.Text = "Allergenes incompatibles !"; feu = 2; ChargerListeAllergene(ListAllergeneFamille); }
                 }
-                catch { txtInfoAllergene.Text = "pas d'allergene"; }
+                catch { txtInfoAllergene.Text = "Allergene compatibles"; }
                 /* FIN VERIFIE LES ALLERGENES */
 
                 /* VERIFIE LES NUTRIMENTS  */
                 List<Nutriment> ListNuttrimentFamille = new List<Nutriment>();
                 ListNuttrimentFamille = produitFamille.GetCheckNutriment();
+                ChargerListeNutriment(ListNuttrimentFamille);
 
                 txtInfoNutriment.Text = "Nutriments compatibles";
 
@@ -379,7 +377,7 @@ namespace conseilMoi
                             decimal maxVert = valeur_profil * seuil_vert;
                             decimal maxOrange = valeur_profil * seuil_orange;
 
-                            txtNutrimentList.Text += n.GetIdNutriment() + " ";
+                            //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
                             if (valeur_produit <= maxVert && feu == 0) { feu = 0;  }
                             if (valeur_produit <= maxVert) { txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité "; }
@@ -404,7 +402,6 @@ namespace conseilMoi
             /* BOUTON CHOIX PROFIL INVITE  */
             btnProduitINV.Click += delegate
             {
-                txtNutrimentList.Text = "";
                 btnProduitPERS.SetBackgroundColor(Color.Gray);
                 btnProduitFAM.SetBackgroundColor(Color.Gray);
                 btnProduitINV.SetBackgroundColor(Color.LightGray);
@@ -412,18 +409,17 @@ namespace conseilMoi
                 btnProduitPERS.SetTextColor(Color.LightGray);
                 btnProduitFAM.SetTextColor(Color.LightGray);
                 btnProduitINV.SetTextColor(Color.Gray);
-                txtNutrimentList.Text = "";
 
                 feu = 0;
                 IDTypeProfil = "INVT";
 
                 /* EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
-                dicMyMap.Remove(group[0]);
-                dicMyMap.Remove(group[1]);
+               // dicMyMap.Remove(group[0]);
+               // dicMyMap.Remove(group[1]);
 
-                expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
-                SetData(out mAdapter, produits, IDTypeProfil);
-                expandableListView.SetAdapter(mAdapter);
+               // expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
+              //  SetData(out mAdapter, produits, IDTypeProfil);
+              //  expandableListView.SetAdapter(mAdapter);
                 /* FIN EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
 
                 
@@ -436,15 +432,16 @@ namespace conseilMoi
 
                 try
                 {
-                    if (ListAllergeneInvite[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "pas d'allergene"; }
-                    else { txtInfoAllergene.Text = "Allergenes incompatibles !"; feu = 2; }
+                    if (ListAllergeneInvite[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergene compatibles"; }
+                    else { txtInfoAllergene.Text = "Allergenes incompatibles !"; feu = 2; ChargerListeAllergene(ListAllergeneInvite); }
                 }
-                catch { txtInfoAllergene.Text = "pas d'allergene"; }
+                catch { txtInfoAllergene.Text = "Allergene compatibles"; }
                 /* FIN VERIFIE LES ALLERGENES */
 
                 /* VERIFIE LES NUTRIMENTS  */
                 List<Nutriment> ListNuttrimentInvite = new List<Nutriment>();
                 ListNuttrimentInvite = produitInvite.GetCheckNutriment();
+                ChargerListeNutriment(ListNuttrimentInvite);
 
                 foreach (Nutriment n in ListNuttrimentInvite)
                 {
@@ -463,7 +460,7 @@ namespace conseilMoi
                             decimal maxVert = valeur_profil * seuil_vert;
                             decimal maxOrange = valeur_profil * seuil_orange;
 
-                            txtNutrimentList.Text += n.GetIdNutriment() + " ";
+                            //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
                             if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité "; }
                             if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
@@ -578,6 +575,34 @@ namespace conseilMoi
 
         }
 
+        private void ChargerListeAllergene(List<Allergene> ListAl)
+        {
+            LinearLayout LinearAllergene = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchAllergene);
+            db.ExistBase(this);
+            LinearAllergene.RemoveAllViews();
+            foreach (Allergene a in ListAl)
+            { 
+                TextView TextViewAllergene = new TextView(this) { Id = 1 };
+                TextViewAllergene.Text = db.GetLibAllergene(a.GetIdAlergene());
+                var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                LinearAllergene.AddView(TextViewAllergene, param);
+            }//ForEach
+        }//Fin ChargerListeAllergene
+
+        private void ChargerListeNutriment(List<Nutriment> ListNut)
+        {
+            LinearLayout LinearNutriment = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchNutriment);
+            db.ExistBase(this);
+            LinearNutriment.RemoveAllViews();
+            foreach (Nutriment n in ListNut)
+            {
+                TextView TextViewNutriment = new TextView(this) { Id = 2 };
+                TextViewNutriment.Text = db.GetLibNutriment(n.GetIdNutriment());
+                var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                LinearNutriment.AddView(TextViewNutriment, param);
+
+            }//Fin Foreach
+        }//fin ChargerListeNutriment
 
     }
 }
