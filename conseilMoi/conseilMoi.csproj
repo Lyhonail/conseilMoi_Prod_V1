@@ -103,6 +103,7 @@
     <Compile Include="Classes\Allergene.cs" />
     <Compile Include="Classes\ExpandableListViewAdapter_DetailProduit.cs" />
     <Compile Include="Classes\ExpandableListViewAdapter.cs" />
+    <Compile Include="Classes\ExpandableListViewAdapter_TexteRelatif.cs" />
     <Compile Include="Classes\Historiques.cs" />
     <Compile Include="Classes\IViewHolder.cs" />
     <Compile Include="Classes\IViewHolder1.cs" />
@@ -130,7 +131,9 @@
     <AndroidResource Include="Resources\layout\Avertissement.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Conseil.axml" />
+    <AndroidResource Include="Resources\layout\Conseil.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\Historique.axml">
       <SubType>Designer</SubType>
     </AndroidResource>

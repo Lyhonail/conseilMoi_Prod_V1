@@ -34,7 +34,8 @@ namespace conseilMoi
         ExpandableListView expandableListView;
         List<string> group = new List<string>();
         Dictionary<string, List<string>> dicMyMap = new Dictionary<string, List<string>>();
-
+        LinearLayout LinearNutriment;
+        LinearLayout LinearAllergene; 
         MaBase db = new MaBase();
         
 
@@ -77,8 +78,9 @@ namespace conseilMoi
             var btnProduitINV = FindViewById<Button>(Resource.Id.buttonProduitINV);
             ImageView imgProduit = FindViewById<ImageView>(Resource.Id.imageViewProduit);
             ImageView imgFeu = FindViewById<ImageView>(Resource.Id.imageViewFeu);
-
-            LinearLayout LinearNutriment = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchNutriment);
+            LinearAllergene = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchAllergene);
+            LinearNutriment = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchNutriment);
+           
 
 
             //var listNutriment = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
@@ -236,6 +238,8 @@ namespace conseilMoi
                 //-----------------/* BOUTON CHOIX PROFIL PERSO */ //-----------------------------------//
                 btnProduitPERS.Click += delegate
             {
+                LinearAllergene.RemoveAllViews();
+                LinearNutriment.RemoveAllViews();
                 btnProduitPERS.SetBackgroundColor(Color.LightGray);
                 btnProduitFAM.SetBackgroundColor(Color.Gray);
                 btnProduitINV.SetBackgroundColor(Color.Gray);
@@ -248,8 +252,8 @@ namespace conseilMoi
                 IDTypeProfil = "PERS";
 
                 /* EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
-                dicMyMap.Remove(group[0]);
-                dicMyMap.Remove(group[1]);
+               // dicMyMap.Remove(group[0]);
+               // dicMyMap.Remove(group[1]);
 
                // expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
                // SetData(out mAdapter, produits, IDTypeProfil);
@@ -316,6 +320,8 @@ namespace conseilMoi
 
             btnProduitFAM.Click += delegate
             {
+                LinearAllergene.RemoveAllViews();
+                LinearNutriment.RemoveAllViews();
                 btnProduitPERS.SetBackgroundColor(Color.Gray);
                 btnProduitFAM.SetBackgroundColor(Color.LightGray);
                 btnProduitINV.SetBackgroundColor(Color.Gray);
@@ -402,6 +408,8 @@ namespace conseilMoi
             /* BOUTON CHOIX PROFIL INVITE  */
             btnProduitINV.Click += delegate
             {
+                LinearAllergene.RemoveAllViews();
+                LinearNutriment.RemoveAllViews();
                 btnProduitPERS.SetBackgroundColor(Color.Gray);
                 btnProduitFAM.SetBackgroundColor(Color.Gray);
                 btnProduitINV.SetBackgroundColor(Color.LightGray);
