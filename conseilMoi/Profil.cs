@@ -187,6 +187,8 @@ namespace conseilMoi
                 //Je rempli le texte (Exemple (Sportif)
                 textView1.Text = p.GetNomProfil();
                 //Je définis la couleur à "Black" car c'est blanc par défaut
+                textView1.SetTextAppearance(this, Android.Resource.Style.TextAppearanceLarge);
+                
                 textView1.SetTextColor(Color.Black);
                 textView1.SetTextSize(ComplexUnitType.Px, 22);
                 textView1.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
@@ -195,6 +197,7 @@ namespace conseilMoi
               //textView1.SetWidth(0);
               //Je définis les paramètres du textView
               var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent, 1f);
+                param.SetMargins(5,10,0,0);
                 //J'ajoute le TextView tout bien rempli à mon LinearLayout
                 linearLayout.AddView(textView1, param);
 
@@ -222,24 +225,113 @@ namespace conseilMoi
                         //Pour chaque sous-goupe dans la liste, on va l'afficher !
                         foreach (ProfilsStandards ps in groupeCriteres)
                         {
-                           
+                            Decimal val = 0;
+                            //Le créer le LinearLayout qui contient (Horizontalement) la CheckBox et la valeur
+                            LinearLayout linearLigne = new LinearLayout(this) { Id = 6 };
+                            var paramLh = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                            linearLigne.Orientation = Orientation.Horizontal;
+                            linearLayout.SetBackgroundColor(Color.LightGray);
+
                             //Je créer la CheckBox
                             CheckBox checkBox = new CheckBox(this) { Id = a*100+b };
                             b++;
+                            checkBox.SetHighlightColor(Color.Black);
+                           
                             checkBox.Text = db.GetNomCritereFromIdCritere(ps.GetidCritere());
+                            checkBox.Gravity = GravityFlags.CenterVertical;
                             checkBox.SetTextColor(Color.Black);
                             var param2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                            LN.AddView(checkBox, param);
+                            linearLigne.AddView(checkBox, param);
+
+                            //Je créer la case valeur
+                            TextView valeur = new TextView(this) { Id = 7 };
+                            var paramValeur = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                            paramValeur.SetMargins(10,10,0,0);
+                            valeur.Gravity = GravityFlags.CenterVertical;
+                            valeur.Text = val+"/100gr";
+                            //valeur.SetTextSize(ComplexUnitType.Px, 16);
+                            valeur.SetTextColor(Color.Black);
+                            linearLigne.AddView(valeur, paramValeur);
+
+                            //Je créer les boutons + et -
+                            ImageView plus = new ImageView(this) { Id = 8 };
+                            ImageView moins = new ImageView(this) { Id = 9 };
+                            
+                            var paramPlus = new LinearLayout.LayoutParams(15, 15);
+                            var paramMoins = new LinearLayout.LayoutParams(15, 15);
+                            paramPlus.Gravity = GravityFlags.CenterVertical;
+                            paramPlus.SetMargins(10, 5, 0, 0);
+                            paramMoins.Gravity = GravityFlags.CenterVertical;
+                            paramMoins.SetMargins(10, 5, 0, 0);
+
+                            plus.SetImageResource(Resource.Drawable.plus);
+                            moins.SetImageResource(Resource.Drawable.moins);
+
+                            valeur.Visibility = ViewStates.Invisible;
+                            plus.Visibility = ViewStates.Invisible;
+                            moins.Visibility = ViewStates.Invisible;
+
+                            linearLigne.AddView(plus, paramPlus);
+                            linearLigne.AddView(moins, paramMoins);
+
+                            //j'ajoute le LinearLayout Ligne au LinearLayout
+                            LN.AddView(linearLigne, paramLh);
 
                             //Je check la checkBox, ou pas
-                            String res = db.VerifProfilUtilisateur(ps.GetidCritere(), ID_typeProfil);
+                            String res = db.VerifProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil());
                             string[] words = res.Split(' ');
-                            if (words[0] == "check") { checkBox.Checked = true; }
+                            if (words[0] == "check") {
+                                checkBox.Checked = true;
+                                try { val = Decimal.Parse(words[3]); } catch { }
+                                if (db.EstUnAllergene(ps.GetidCritere()) == false)
+                                {
+                                    valeur.Visibility = ViewStates.Visible;
+                                    plus.Visibility = ViewStates.Visible;
+                                    moins.Visibility = ViewStates.Visible;
+                                    val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
+                                    valeur.Text = val + "/100gr";
+                                }
+                            }
 
                             checkBox.Click += delegate
                             {
-                                if (checkBox.Checked == true) { db.InsertProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil()); }
-                                if (checkBox.Checked == false) { db.DeleteProfilUtilisateur(ID_typeProfil, p.GetIdProfil(), ps.GetidCritere()); }
+                                if (checkBox.Checked == true) {
+                                    db.InsertProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil(), ps.GetValeur() );
+                                    if (db.EstUnAllergene(ps.GetidCritere()) == false)
+                                    {
+                                        valeur.Visibility = ViewStates.Visible;
+                                        plus.Visibility = ViewStates.Visible;
+                                        moins.Visibility = ViewStates.Visible;
+                                        val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
+                                        valeur.Text = val + "/100gr";
+                                        val = db.GetValeurProfilStansard(ps.GetidCritere(), ps.GetidProfil());
+                                    }
+
+                                 }
+                                    
+
+                                if (checkBox.Checked == false) {
+                                    db.DeleteProfilUtilisateur(ID_typeProfil, p.GetIdProfil(), ps.GetidCritere());
+                                    valeur.Visibility = ViewStates.Invisible;
+                                    plus.Visibility = ViewStates.Invisible;
+                                    moins.Visibility = ViewStates.Invisible;
+                                }
+                            };
+
+                            plus.Click += delegate
+                            {
+                                val = db.GetValeurProfilStansard(ps.GetidCritere(), ps.GetidProfil());
+                                val++;
+                                valeur.Text = val + "/100gr";
+                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
+                            };
+
+                            moins.Click += delegate
+                            {
+                                val = db.GetValeurProfilStansard(ps.GetidCritere(), ps.GetidProfil());
+                                val--;
+                                valeur.Text = val + "/100gr";
+                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
                             };
 
                         }

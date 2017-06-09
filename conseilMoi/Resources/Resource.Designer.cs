@@ -1458,23 +1458,29 @@ namespace conseilMoi
 			// aapt resource value: 0x7f020051
 			public const int logo = 2130837585;
 			
-			// aapt resource value: 0x7f020057
-			public const int notification_template_icon_bg = 2130837591;
-			
 			// aapt resource value: 0x7f020052
-			public const int pasimage = 2130837586;
+			public const int moins = 2130837586;
+			
+			// aapt resource value: 0x7f020059
+			public const int notification_template_icon_bg = 2130837593;
 			
 			// aapt resource value: 0x7f020053
-			public const int produitnontrouve = 2130837587;
+			public const int pasimage = 2130837587;
 			
 			// aapt resource value: 0x7f020054
-			public const int Profil = 2130837588;
+			public const int plus = 2130837588;
 			
 			// aapt resource value: 0x7f020055
-			public const int Scan = 2130837589;
+			public const int produitnontrouve = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public const int Synthese = 2130837590;
+			public const int Profil = 2130837590;
+			
+			// aapt resource value: 0x7f020057
+			public const int Scan = 2130837591;
+			
+			// aapt resource value: 0x7f020058
+			public const int Synthese = 2130837592;
 			
 			static Drawable()
 			{

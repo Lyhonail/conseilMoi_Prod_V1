@@ -576,22 +576,22 @@ namespace conseilMoi.Resources.MaBase
             }
         }
 
-        public string VerifProfilUtilisateur(String ID, String ID_typeProfil)
+        public string VerifProfilUtilisateur(String ID, String ID_typeProfil, String ID_profil)
         {
             try
             {
                 this.ConnexionOpen();
                 //Selection de l'historique
-                string sqlNomProfil = "select count(ps.ID_critere), pu.ID_typeProfil, pu.ID_profil " +
+                string sqlNomProfil = "select count(ps.ID_critere), pu.ID_typeProfil, pu.ID_profil, pu.valeur " +
                                         " from profil_standard ps, profil_utilisateur pu " +
                                         " where ps.ID_critere = pu.ID_critere " +
-                                        " and ps.id_critere = '" + ID + "' AND pu.ID_typeProfil ='" + ID_typeProfil + "' ";
+                                        " and ps.id_critere = '" + ID + "' AND pu.ID_typeProfil ='" + ID_typeProfil + "' AND pu.ID_profil = '"+ ID_profil + "'";
                 SqliteCommand commandaNomProfilcritere = new SqliteCommand(sqlNomProfil, connexion);
                 SqliteDataReader result = commandaNomProfilcritere.ExecuteReader();
                 result.Read();
                 int n = result.GetInt16(0);
                 String check;
-                if (n > 0) { check = "check "+result.GetString(1)+" "+ result.GetString(2); }
+                if (n > 0) { check = "check "+result.GetString(1)+" "+ result.GetString(2)+" "+ result.GetDecimal(3); }
                 else { check = "nocheck " + result.GetString(1) + " " + result.GetString(2); }
                 result.Close();
                 this.ConnexionClose();
@@ -600,18 +600,92 @@ namespace conseilMoi.Resources.MaBase
             catch
             {
                 this.ConnexionClose();
-                return "nocheck 0 0";
+                return "nocheck ";
             }
            
         }
 
-        public String InsertProfilUtilisateur(String ID, String ID_typeProfil, String ID_profil )
+        //Récupère la Valeur d'un critère lorsqu'on appelle un couple ID_critere ID_profil
+        public Decimal GetValeurProfilStansard(String ID_critere, String ID_profil) {
+            try
+            {
+                this.ConnexionOpen();
+                string sqlValeur = "SELECT valeur from profil_standard where ID_critere='" + ID_critere + "' AND ID_profil='" + ID_profil + "'   ";
+                SqliteCommand commandValeur = new SqliteCommand(sqlValeur, connexion);
+                SqliteDataReader result = commandValeur.ExecuteReader();
+                result.Read();
+                return result.GetDecimal(0);
+            }
+
+            catch     {  return 0;  }
+            finally   {  this.ConnexionClose();   }
+        }
+
+        //Récupère la Valeur d'un critère lorsqu'on appelle un couple ID_critere ID_profil
+        public Decimal GetValeurProfilUtilisateur(String ID_critere, String ID_typeprofil, String ID_profil)
+        {
+            try
+            {
+                this.ConnexionOpen();
+                string sqlValeur = "SELECT valeur from profil_utilisateur where ID_critere='" + ID_critere + "' AND ID_profil='" + ID_profil + "' AND ID_typeprofil='" + ID_typeprofil + "'     ";
+                SqliteCommand commandValeur = new SqliteCommand(sqlValeur, connexion);
+                SqliteDataReader result = commandValeur.ExecuteReader();
+                result.Read();
+                return result.GetDecimal(0);
+            }
+
+            catch { return 0; }
+            finally { this.ConnexionClose(); }
+        }
+
+
+
+
+
+        //Update la valeur lorsqu'on clique sur + ou -
+        public void UpdateValeur(String ID, String ID_typeProfil, String ID_profil, Decimal val)
+        {
+            this.ConnexionOpen();
+            SqliteCommand commandUpdate = connexion.CreateCommand();
+            commandUpdate.CommandText = "UPDATE profil_utilisateur"+
+                                        " SET valeur = "+ val +"   "+
+                                        "WHERE ID_typeProfil= '"+ ID_typeProfil + "' "+
+                                        "AND ID_profil= '" + ID_profil + "' " +
+                                        "AND ID_critere= '" + ID + "' " ;
+            commandUpdate.ExecuteNonQuery();
+            this.ConnexionClose();
+
+        }
+
+        //Verifie si un critère passé en paramètre est un allergene, si oui on renvoi vrai
+        public bool EstUnAllergene(String ID_critere)
+        {
+            try
+            {
+                this.ConnexionOpen();
+                string sqlValeur = "SELECT count(ID_allergene) from allergene where ID_allergene=" + ID_critere + "   ";
+                SqliteCommand commandValeur = new SqliteCommand(sqlValeur, connexion);
+                SqliteDataReader result = commandValeur.ExecuteReader();
+                result.Read();
+
+                if(result.GetDecimal(0) > 0) { return true; }
+                else { return false; }
+                
+            }
+
+            catch { return false; }
+
+            finally { this.ConnexionClose(); }   
+        }
+
+
+
+        //insertion dans profil_utilisateur
+        public String InsertProfilUtilisateur(String ID, String ID_typeProfil, String ID_profil, String valeur )
         {
             this.ConnexionOpen();     
             try
             {
-                String valeur;
-                try { valeur = "5"; } catch { valeur = "0"; }
                 String SEUIL_VERT = "0.05";
                 String SEUIL_ORANGE = "0.01";
                 String SEUIL_ROUGE;
