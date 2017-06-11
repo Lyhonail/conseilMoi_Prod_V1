@@ -17,6 +17,7 @@ using Android.Support.V7.App;
 using Android.Graphics;
 using Android.Util;
 
+
 namespace conseilMoi
 {
     [Activity(Label = "Profil" /*Icon = "@drawable/logo"*/)]
@@ -55,6 +56,8 @@ namespace conseilMoi
             Button btnProfilPERS = FindViewById<Button>(Resource.Id.buttonProfilPERS);
             Button btnProfilFAML = FindViewById<Button>(Resource.Id.buttonProfilFAML);
             Button btnProfilINVT = FindViewById<Button>(Resource.Id.buttonProfilINVT);
+
+            btnProfilINVT.Text = "Mes amis";
 
             menuProfil.Click += delegate
             {
@@ -225,7 +228,7 @@ namespace conseilMoi
                         //Pour chaque sous-goupe dans la liste, on va l'afficher !
                         foreach (ProfilsStandards ps in groupeCriteres)
                         {
-                            Decimal val = 0;
+                            decimal val = 0;
                             //Le créer le LinearLayout qui contient (Horizontalement) la CheckBox et la valeur
                             LinearLayout linearLigne = new LinearLayout(this) { Id = 6 };
                             var paramLh = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
@@ -254,25 +257,40 @@ namespace conseilMoi
                             linearLigne.AddView(valeur, paramValeur);
 
                             //Je créer les boutons + et -
-                            ImageView plus = new ImageView(this) { Id = 8 };
-                            ImageView moins = new ImageView(this) { Id = 9 };
-                            
+                            ImageView plus = new ImageView(this) { Id = 108 };
+                            ImageView plusPlus = new ImageView(this) { Id = 18 };
+                            ImageView moins = new ImageView(this) { Id = 109 };
+                            ImageView moinsMoins = new ImageView(this) { Id =19 };
+
                             var paramPlus = new LinearLayout.LayoutParams(15, 15);
+                            var paramPlusPlus = new LinearLayout.LayoutParams(15, 15);
                             var paramMoins = new LinearLayout.LayoutParams(15, 15);
+                            var paramMoinsMoins = new LinearLayout.LayoutParams(15, 15);
+
                             paramPlus.Gravity = GravityFlags.CenterVertical;
+                            paramPlusPlus.Gravity = GravityFlags.CenterVertical;
                             paramPlus.SetMargins(10, 5, 0, 0);
+                            paramPlusPlus.SetMargins(10, 5, 0, 0);
                             paramMoins.Gravity = GravityFlags.CenterVertical;
+                            paramMoinsMoins.Gravity = GravityFlags.CenterVertical;
                             paramMoins.SetMargins(10, 5, 0, 0);
+                            paramMoinsMoins.SetMargins(10, 5, 0, 0);
 
                             plus.SetImageResource(Resource.Drawable.plus);
+                            plusPlus.SetImageResource(Resource.Drawable.plus);
                             moins.SetImageResource(Resource.Drawable.moins);
+                            moinsMoins.SetImageResource(Resource.Drawable.moins);
 
                             valeur.Visibility = ViewStates.Invisible;
                             plus.Visibility = ViewStates.Invisible;
+                            plusPlus.Visibility = ViewStates.Invisible;
                             moins.Visibility = ViewStates.Invisible;
+                            moinsMoins.Visibility = ViewStates.Invisible;
 
                             linearLigne.AddView(plus, paramPlus);
+                            linearLigne.AddView(plusPlus, paramPlusPlus);
                             linearLigne.AddView(moins, paramMoins);
+                            linearLigne.AddView(moinsMoins, paramMoinsMoins);
 
                             //j'ajoute le LinearLayout Ligne au LinearLayout
                             LN.AddView(linearLigne, paramLh);
@@ -288,6 +306,8 @@ namespace conseilMoi
                                     valeur.Visibility = ViewStates.Visible;
                                     plus.Visibility = ViewStates.Visible;
                                     moins.Visibility = ViewStates.Visible;
+                                    plusPlus.Visibility = ViewStates.Visible;
+                                    moinsMoins.Visibility = ViewStates.Visible;
                                     val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
                                     valeur.Text = val + "/100gr";
                                 }
@@ -302,6 +322,8 @@ namespace conseilMoi
                                         valeur.Visibility = ViewStates.Visible;
                                         plus.Visibility = ViewStates.Visible;
                                         moins.Visibility = ViewStates.Visible;
+                                        plusPlus.Visibility = ViewStates.Visible;
+                                        moinsMoins.Visibility = ViewStates.Visible;
                                         val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
                                         valeur.Text = val + "/100gr";
                                         val = db.GetValeurProfilStansard(ps.GetidCritere(), ps.GetidProfil());
@@ -313,23 +335,47 @@ namespace conseilMoi
                                 if (checkBox.Checked == false) {
                                     db.DeleteProfilUtilisateur(ID_typeProfil, p.GetIdProfil(), ps.GetidCritere());
                                     valeur.Visibility = ViewStates.Invisible;
+                                    valeur.Visibility = ViewStates.Invisible;
                                     plus.Visibility = ViewStates.Invisible;
+                                    plusPlus.Visibility = ViewStates.Invisible;
                                     moins.Visibility = ViewStates.Invisible;
+                                    moinsMoins.Visibility = ViewStates.Invisible;
                                 }
                             };
 
                             plus.Click += delegate
                             {
-                                val = db.GetValeurProfilStansard(ps.GetidCritere(), ps.GetidProfil());
+                                val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
                                 val++;
+                                if (val > 100) { val = 100; }
                                 valeur.Text = val + "/100gr";
                                 db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
                             };
 
                             moins.Click += delegate
                             {
-                                val = db.GetValeurProfilStansard(ps.GetidCritere(), ps.GetidProfil());
+                                val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
+                                 val = val - 0.1M;
+                                if (val < 0) { val = 0; }
+                                valeur.Text = val + "/100gr";
+                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
+                            };
+                            plusPlus.Click += delegate
+                            {
+                                val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
+                                val = val + 0.1M;
+                                if (val > 100) { val = 100; }
+                                valeur.Text = val + "/100gr";
+                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
+                            };
+
+                            moinsMoins.Click += delegate
+                            {
+                                //decimal i = 1.1M;
+                                
+                                val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
                                 val--;
+                                if (val < 0) { val = 0; }
                                 valeur.Text = val + "/100gr";
                                 db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
                             };

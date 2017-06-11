@@ -116,10 +116,10 @@ namespace conseilMoi.Resources.Classes
 
 
         //Ajoute un objet Nutriment contenant ID_typeProfil, ID_profil et ID_critère (= ID_nutriment) cela permetra de dire quel nutriment match avec quel profil en fonction de quel produit
-        public void AddCheckNutriment(String idtp, String idp, String Nut, decimal val_prof, decimal val_prod, decimal vert, decimal orange, decimal rouge)
+        public void AddCheckNutriment(String idtp, String idp, String Nut, decimal val_prof, decimal val_prod, decimal vert, decimal orange)
         {
             Nutriment N = new Nutriment();
-            N.CreeNutriment(idtp, idp, Nut, val_prod, val_prof, vert, orange, rouge);
+            N.CreeNutriment(idtp, idp, Nut, val_prod, val_prof, vert, orange);
             nutriment_list.Add(N);
         }
 
