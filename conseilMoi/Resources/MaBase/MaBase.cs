@@ -315,7 +315,8 @@ namespace conseilMoi.Resources.MaBase
                     String id_nutriment = result_recherche_nutriment.GetString(2);
                     //decimal valeur_profil = 10;
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
-                    decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
+                    String ValInter = result_recherche_nutriment.GetString(4).Replace('.', ',');
+                    decimal valeur_produit = decimal.Parse(ValInter);
                     //decimal valeur_produit = 10;
                      decimal vert = result_recherche_nutriment.GetDecimal(5);
                     //decimal vert = 10;
@@ -667,7 +668,10 @@ namespace conseilMoi.Resources.MaBase
                 SqliteCommand commandValeur = new SqliteCommand(sqlValeur, connexion);
                 SqliteDataReader result = commandValeur.ExecuteReader();
                 result.Read();
-                return result.GetDecimal(0);
+                Decimal valeur = result.GetDecimal(0);
+                //valeur = valeur.Replace(',', '.');
+                return  valeur;
+
             }
 
             catch     {  return 0;  }
@@ -684,7 +688,9 @@ namespace conseilMoi.Resources.MaBase
                 SqliteCommand commandValeur = new SqliteCommand(sqlValeur, connexion);
                 SqliteDataReader result = commandValeur.ExecuteReader();
                 result.Read();
-                return result.GetDecimal(0);
+               Decimal valeur = result.GetDecimal(0);
+               
+                return valeur;
             }
 
             catch { return 0; }
@@ -696,17 +702,26 @@ namespace conseilMoi.Resources.MaBase
 
 
         //Update la valeur lorsqu'on clique sur + ou -
-        public void UpdateValeur(String ID, String ID_typeProfil, String ID_profil, Decimal val)
+        public String UpdateValeur(String ID, String ID_typeProfil, String ID_profil, String val)
         {
-            this.ConnexionOpen();
-            SqliteCommand commandUpdate = connexion.CreateCommand();
-            commandUpdate.CommandText = "UPDATE profil_utilisateur"+
-                                        " SET valeur = "+ val +"   "+
-                                        "WHERE ID_typeProfil= '"+ ID_typeProfil + "' "+
-                                        "AND ID_profil= '" + ID_profil + "' " +
-                                        "AND ID_critere= '" + ID + "' " ;
-            commandUpdate.ExecuteNonQuery();
-            this.ConnexionClose();
+
+            try
+            {
+                this.ConnexionOpen();
+                SqliteCommand commandUpdate = connexion.CreateCommand();
+                commandUpdate.CommandText = "UPDATE profil_utilisateur" +
+                                            " SET valeur = " + val.Replace(',','.') + "   " +
+                                            "WHERE ID_typeProfil= '" + ID_typeProfil + "' " +
+                                            "AND ID_profil= '" + ID_profil + "' " +
+                                            "AND ID_critere= '" + ID + "' ";
+                commandUpdate.ExecuteNonQuery();
+                this.ConnexionClose();
+                return "ok";
+            }
+            catch (SqliteException ex)
+            {
+                return ex.Message;
+            }
 
         }
 
@@ -736,20 +751,28 @@ namespace conseilMoi.Resources.MaBase
         //insertion dans profil_utilisateur
         public String InsertProfilUtilisateur(String ID, String ID_typeProfil, String ID_profil, String valeur )
         {
-              
-            try
-            {
+            String commande;
+           
+
+            
                 if(valeur =="Vide") { valeur = "0"; }
+
+                valeur = valeur.Replace(',', '.');
+
                 String req = GetSeuilFromProfilStandard(ID, ID_profil);
                 String[] words = req.Split(' ');
                 String SEUIL_VERT = words[0];
                 String SEUIL_ORANGE = words[1];
 
-                this.ConnexionOpen();
+            commande = "Insert into profil_utilisateur (ID_typeProfil, ID_profil, ID_critere, valeur, SEUIL_VERT, SEUIL_ORANGE) " +
+                                  "values ('" + ID_typeProfil + "', '" + ID_profil + "', '" + ID + "', " + valeur + ", " + SEUIL_VERT.Replace(',', '.') + ", " + SEUIL_ORANGE.Replace(',', '.') + ");";
 
+            this.ConnexionOpen();
+        try
+            {
+                
                 SqliteCommand commandInsert = connexion.CreateCommand();
-                commandInsert.CommandText = "Insert into profil_utilisateur (ID_typeProfil, ID_profil, ID_critere, valeur, SEUIL_VERT, SEUIL_ORANGE) " +
-                                   "values ('"+ ID_typeProfil + "', '"+ ID_profil + "', '"+ ID + "', "+ valeur + ", "+ SEUIL_VERT + ", "+ SEUIL_ORANGE + ");";
+                commandInsert.CommandText = commande;
                 commandInsert.ExecuteNonQuery();
 
                 return "ok";
@@ -757,7 +780,7 @@ namespace conseilMoi.Resources.MaBase
             }
             catch (SqliteException ex)
             {
-                return ex.Message;
+                return ex.Message + " "+ commande;
             }
             //Fermeture de la connexion
            finally {

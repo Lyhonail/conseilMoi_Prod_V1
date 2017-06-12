@@ -111,8 +111,8 @@ namespace conseilMoi
                 imgProduit.SetImageResource(Resource.Drawable.produitnontrouve);
                 txtIdProduit.Text = "Produit non trouvé";
                 txtInfoScan.Text = "Code barre : " + IDproduit;
-                txtInfoAllergene.Text = "Le produit n'existe pas";
-                txtInfoNutriment.Text = "dans la base";
+                txtInfoAllergene.Text = "Le produit n'existe ";
+                txtInfoNutriment.Text = "pas dans la base";
                 imgFeu.Visibility = ViewStates.Invisible;
             }
         //FIN SI PAS DE PRODUIT TROUVE
@@ -175,7 +175,7 @@ namespace conseilMoi
                         decimal seuil_vert = n.GetVert();
                         decimal seuil_orange = n.GetOrange();
 
-                        decimal taux = valeur_profil / valeur_produit;
+                        
                         decimal maxVert = valeur_profil * (1+seuil_vert);
                         decimal maxOrange = valeur_profil * (1+seuil_orange);
 

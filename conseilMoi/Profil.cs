@@ -190,16 +190,16 @@ namespace conseilMoi
                 //Je rempli le texte (Exemple (Sportif)
                 textView1.Text = p.GetNomProfil();
                 //Je définis la couleur à "Black" car c'est blanc par défaut
-                textView1.SetTextAppearance(this, Android.Resource.Style.TextAppearanceLarge);
+                //textView1.SetTextAppearance(this, Android.Resource.Style.TextAppearanceLarge);
                 
                 textView1.SetTextColor(Color.Black);
-                textView1.SetTextSize(ComplexUnitType.Px, 22);
+                textView1.SetTextSize(ComplexUnitType.Px, 40);
                 textView1.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
                 textView1.SetBackgroundColor(Color.LightCyan);
-                textView1.SetHeight(30);
+                //textView1.SetHeight(30);
               //textView1.SetWidth(0);
               //Je définis les paramètres du textView
-              var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent, 1f);
+              var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                 param.SetMargins(5,10,0,0);
                 //J'ajoute le TextView tout bien rempli à mon LinearLayout
                 linearLayout.AddView(textView1, param);
@@ -210,7 +210,7 @@ namespace conseilMoi
                 groupeCriteres = db.SelectcritereProfilstandard(p.GetIdProfil());
                 //Je créer le LinearLayout qui contiendra cette liste de sous-groupes, avec ses paramètres
                 LinearLayout LN = new LinearLayout(this) { Id = 5 };
-                var paramL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                var paramL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
                 LN.Orientation = Orientation.Vertical;
                 //J'ajoute le LinearLayout
                 linearLayout.AddView(LN);
@@ -228,11 +228,11 @@ namespace conseilMoi
                         //Pour chaque sous-goupe dans la liste, on va l'afficher !
                         foreach (ProfilsStandards ps in groupeCriteres)
                         {
-                            decimal val = 0;
+                            Decimal val = 0;
                             //Le créer le LinearLayout qui contient (Horizontalement) la CheckBox et la valeur
                             LinearLayout linearLigne = new LinearLayout(this) { Id = 6 };
-                            var paramLh = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                            linearLigne.Orientation = Orientation.Horizontal;
+                            var paramLh = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+                            linearLigne.Orientation = Orientation.Vertical;
                             linearLayout.SetBackgroundColor(Color.LightGray);
 
                             //Je créer la CheckBox
@@ -243,43 +243,69 @@ namespace conseilMoi
                             checkBox.Text = db.GetNomCritereFromIdCritere(ps.GetidCritere());
                             checkBox.Gravity = GravityFlags.CenterVertical;
                             checkBox.SetTextColor(Color.Black);
+                            checkBox.SetTextSize(ComplexUnitType.Px, 35);
                             var param2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                             linearLigne.AddView(checkBox, param);
 
+
+                            LinearLayout linearQTE = new LinearLayout(this) { Id = 11 };
+                            var paramLQTE = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, 0);
+                            linearQTE.Orientation = Orientation.Horizontal;
+                            linearQTE.SetGravity ( GravityFlags.CenterHorizontal);
+
+
                             //Je créer la case valeur
                             TextView valeur = new TextView(this) { Id = 7 };
-                            var paramValeur = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                            paramValeur.SetMargins(10,10,0,0);
+                            var paramValeur = new LinearLayout.LayoutParams(120, ViewGroup.LayoutParams.WrapContent);
+                            paramValeur.SetMargins(50,0,0,0);
                             valeur.Gravity = GravityFlags.CenterVertical;
+
                             valeur.Text = val+"/100gr";
-                            //valeur.SetTextSize(ComplexUnitType.Px, 16);
+                            valeur.SetTextSize(ComplexUnitType.Px, 22);
                             valeur.SetTextColor(Color.Black);
-                            linearLigne.AddView(valeur, paramValeur);
+                            linearQTE.AddView(valeur, paramValeur);
+
+                            /*
+                            Button plus = new Button(this) { Id = 108 };
+                            Button plusPlus = new Button(this) { Id = 18 };
+                            Button moins = new Button(this) { Id = 109 };
+                            Button moinsMoins = new Button(this) { Id = 19 };*/
 
                             //Je créer les boutons + et -
-                            ImageView plus = new ImageView(this) { Id = 108 };
-                            ImageView plusPlus = new ImageView(this) { Id = 18 };
-                            ImageView moins = new ImageView(this) { Id = 109 };
-                            ImageView moinsMoins = new ImageView(this) { Id =19 };
+                             ImageView plus = new ImageView(this) { Id = 108 };
+                             ImageView plusPlus = new ImageView(this) { Id = 18 };
+                             ImageView moins = new ImageView(this) { Id = 109 };
+                             ImageView moinsMoins = new ImageView(this) { Id =19 };
 
-                            var paramPlus = new LinearLayout.LayoutParams(15, 15);
-                            var paramPlusPlus = new LinearLayout.LayoutParams(15, 15);
-                            var paramMoins = new LinearLayout.LayoutParams(15, 15);
-                            var paramMoinsMoins = new LinearLayout.LayoutParams(15, 15);
+
+                            /*
+                            plus.Text = "+ 1";
+                            plusPlus.Text = "+ 0.1";
+                            moins.Text = "- 0.1";
+                            moinsMoins.Text = "- 1";
+                            plus.SetTextSize(ComplexUnitType.Px, 12);
+                            plusPlus.SetTextSize(ComplexUnitType.Px, 12);
+                            moins.SetTextSize(ComplexUnitType.Px, 12);
+                            moinsMoins.SetTextSize(ComplexUnitType.Px, 12);*/
+
+                            var paramPlus = new LinearLayout.LayoutParams(55, 35);
+                            var paramPlusPlus = new LinearLayout.LayoutParams(55, 35);
+                            var paramMoins = new LinearLayout.LayoutParams(55, 35);
+                            var paramMoinsMoins = new LinearLayout.LayoutParams(55, 35);
 
                             paramPlus.Gravity = GravityFlags.CenterVertical;
                             paramPlusPlus.Gravity = GravityFlags.CenterVertical;
-                            paramPlus.SetMargins(10, 5, 0, 0);
-                            paramPlusPlus.SetMargins(10, 5, 0, 0);
+                            paramPlus.SetMargins(10, 0, 0, 0);
+                            paramPlusPlus.SetMargins(10, 0, 0, 0);
                             paramMoins.Gravity = GravityFlags.CenterVertical;
                             paramMoinsMoins.Gravity = GravityFlags.CenterVertical;
-                            paramMoins.SetMargins(10, 5, 0, 0);
-                            paramMoinsMoins.SetMargins(10, 5, 0, 0);
+                            paramMoins.SetMargins(10, 0, 0, 0);
+                            paramMoinsMoins.SetMargins(10, 0, 0, 0);
 
-                            plus.SetImageResource(Resource.Drawable.plus);
-                            plusPlus.SetImageResource(Resource.Drawable.plus);
-                            moins.SetImageResource(Resource.Drawable.moins);
-                            moinsMoins.SetImageResource(Resource.Drawable.moins);
+                            plus.SetImageResource(Resource.Drawable.plus1);
+                            plusPlus.SetImageResource(Resource.Drawable.plusplus1);
+                            moins.SetImageResource(Resource.Drawable.moinsmoins1);
+                            moinsMoins.SetImageResource(Resource.Drawable.moins1);
 
                             valeur.Visibility = ViewStates.Invisible;
                             plus.Visibility = ViewStates.Invisible;
@@ -287,10 +313,12 @@ namespace conseilMoi
                             moins.Visibility = ViewStates.Invisible;
                             moinsMoins.Visibility = ViewStates.Invisible;
 
-                            linearLigne.AddView(plus, paramPlus);
-                            linearLigne.AddView(plusPlus, paramPlusPlus);
-                            linearLigne.AddView(moins, paramMoins);
-                            linearLigne.AddView(moinsMoins, paramMoinsMoins);
+                            linearQTE.AddView(plus, paramPlus);
+                            linearQTE.AddView(plusPlus, paramPlusPlus);
+                            linearQTE.AddView(moins, paramMoins);
+                            linearQTE.AddView(moinsMoins, paramMoinsMoins);
+
+                            linearLigne.AddView(linearQTE, paramLQTE);
 
                             //j'ajoute le LinearLayout Ligne au LinearLayout
                             LN.AddView(linearLigne, paramLh);
@@ -300,6 +328,9 @@ namespace conseilMoi
                             string[] words = res.Split(' ');
                             if (words[0] == "check") {
                                 checkBox.Checked = true;
+
+                                
+
                                 try { val = Decimal.Parse(words[3]); } catch { }
                                 if (db.EstUnAllergene(ps.GetidCritere()) == false)
                                 {
@@ -310,13 +341,21 @@ namespace conseilMoi
                                     moinsMoins.Visibility = ViewStates.Visible;
                                     val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
                                     valeur.Text = val + "/100gr";
+
+                                    paramLQTE = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent); //Width, Height
+                                    linearQTE.LayoutParameters = paramLQTE;
                                 }
                             }
+                            
 
                             checkBox.Click += delegate
                             {
                                 if (checkBox.Checked == true) {
-                                    db.InsertProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil(), ps.GetValeur() );
+
+                                    String ValInsert = ps.GetValeur().Replace(',', '.');
+                                    //insertion du critère pour le profil utilisateur
+                                    String retour = db.InsertProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil(), ValInsert.Replace(',','.'));
+                                    //checkBox.Text += " " +retour+" "+ ValInsert;
                                     if (db.EstUnAllergene(ps.GetidCritere()) == false)
                                     {
                                         valeur.Visibility = ViewStates.Visible;
@@ -327,12 +366,19 @@ namespace conseilMoi
                                         val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
                                         valeur.Text = val + "/100gr";
                                         val = db.GetValeurProfilStansard(ps.GetidCritere(), ps.GetidProfil());
+
+                                        paramLQTE = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent); //Width, Height
+                                        linearQTE.LayoutParameters = paramLQTE;
                                     }
 
                                  }
                                     
 
                                 if (checkBox.Checked == false) {
+
+                                    paramLQTE = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, 0); //Width, Height
+                                    linearQTE.LayoutParameters = paramLQTE;
+
                                     db.DeleteProfilUtilisateur(ID_typeProfil, p.GetIdProfil(), ps.GetidCritere());
                                     valeur.Visibility = ViewStates.Invisible;
                                     valeur.Visibility = ViewStates.Invisible;
@@ -345,39 +391,49 @@ namespace conseilMoi
 
                             plus.Click += delegate
                             {
+                                //Je récupére la valeur dans la table profil utilisateur
                                 val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
+                                //Je créer une valiable décimal pour faire l'oppération
+                                
                                 val++;
                                 if (val > 100) { val = 100; }
+
                                 valeur.Text = val + "/100gr";
-                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
+                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val.ToString().Replace(',','.'));
                             };
 
                             moins.Click += delegate
                             {
                                 val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
-                                 val = val - 0.1M;
+
+                                val = val - 0.1M;
                                 if (val < 0) { val = 0; }
+;
                                 valeur.Text = val + "/100gr";
-                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
+                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val.ToString().Replace(',', '.'));
                             };
                             plusPlus.Click += delegate
                             {
                                 val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
+
                                 val = val + 0.1M;
                                 if (val > 100) { val = 100; }
+
                                 valeur.Text = val + "/100gr";
-                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
+                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val.ToString().Replace(',', '.'));
                             };
 
                             moinsMoins.Click += delegate
                             {
                                 //decimal i = 1.1M;
-                                
+
                                 val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
+
                                 val--;
                                 if (val < 0) { val = 0; }
+
                                 valeur.Text = val + "/100gr";
-                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val);
+                                db.UpdateValeur(ps.GetidCritere(), ID_typeProfil, p.GetIdProfil(), val.ToString().Replace(',', '.'));
                             };
 
                         }
