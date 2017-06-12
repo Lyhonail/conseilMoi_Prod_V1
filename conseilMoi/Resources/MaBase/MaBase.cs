@@ -190,8 +190,60 @@ namespace conseilMoi.Resources.MaBase
         }*/
 
         //chargement du produit
-        public Produits SelectIdProduit(String p, string IdTp)
+        public Produits SelectIdProduit(String p, string IDTP)
         {
+            /*-------------------------------------------------------*/
+            /*---Petit code qui prend en compte PERS ET FAML si on clique sur INVT Etc...---*/
+            /*-------------------------------------------------------*/
+            String IdTpA = "";
+            String IdTpN = "";
+
+            if (IDTP == "PERS") { IdTpA = "'PERS'"; }
+            if (IDTP == "FAML")
+            {
+                IdTpA = "'FAML' " +
+                    "OR PU.ID_critere = CA.ID_allergene " +
+                    "AND CA.id_produit = '" + p + "'  " +
+                    " AND PU.ID_typeProfil='PERS' " +
+                    "GROUP BY PU.ID_critere";
+            }
+            if (IDTP == "INVT") {
+                IdTpA = "'INVT'"+
+                     "OR PU.ID_critere = CA.ID_allergene " +
+                    "AND CA.id_produit = '" + p + "'  " +
+                    " AND PU.ID_typeProfil='FAML' " +
+
+                    "OR PU.ID_critere = CA.ID_allergene " +
+                    "AND CA.id_produit = '" + p + "'  " +
+                    " AND PU.ID_typeProfil='PERS' " +
+                    "GROUP BY PU.ID_critere";
+
+            }
+
+            if (IDTP == "PERS") { IdTpN = "'PERS'"; }
+            if (IDTP == "FAML")
+            {
+                IdTpN = "'FAML' " +
+                     "OR PU.ID_critere = CN.ID_nutriment " +
+                    "AND CN.id_produit = '" + p + "'  " +
+                    " AND PU.ID_typeProfil='PERS' " +
+
+                    "GROUP BY PU.ID_critere";
+            }
+            if (IDTP == "INVT") {
+                IdTpN = "'INVT' " +
+                     "OR PU.ID_critere = CN.ID_nutriment " +
+                    "AND CN.id_produit = '" + p + "'  " +
+                    " AND PU.ID_typeProfil='PERS' " +
+
+                    "OR PU.ID_critere = CN.ID_nutriment " +
+                    "AND CN.id_produit = '" + p + "'  " +
+                    " AND PU.ID_typeProfil='FAML' " +
+                    "GROUP BY PU.ID_critere";
+            }
+            /*-------------------------------------------------------*/
+
+            //  if (IdTp == "INVT") { IdTp = "FAML' AND PU.ID_typeProfil='PERS' AND PU.ID_typeProfil='INVT"; }
             try
             {
                 this.ConnexionOpen();
@@ -227,12 +279,15 @@ namespace conseilMoi.Resources.MaBase
                 result_nutriment.Close();
 
                 /* MATCH ALLERGENE */
+
+
+
                 //Recherche d'allergène qui matchent avec les critères du profil
                 string sql_recherche_allergene =
                     " select PU.ID_typeProfil, PU.ID_profil, PU.ID_critere " +
                     " from profil_utilisateur PU, compo_allergene CA " +
                     " where PU.ID_critere = CA.ID_allergene " +
-                    " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil='"+IdTp+"' ; ";
+                    " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil="+IdTpA+" ; ";
                 SqliteCommand command_recherche_allergene = new SqliteCommand(sql_recherche_allergene, connexion);
                 SqliteDataReader result_recherche_allergene = command_recherche_allergene.ExecuteReader();
                 while (result_recherche_allergene.Read())
@@ -248,10 +303,9 @@ namespace conseilMoi.Resources.MaBase
                 /* MATCH NUTRIMENT */
                 //Recherche de NUTRIMENTS qui matchent avec les critères du profil
                 string sql_recherche_nutriment =
-                    " select id_typeProfil, id_profil, id_nutriment, PU.valeur, CN.valeur, seuil_vert, seuil_orange, seuil_rouge " +
+                    " select id_typeProfil, id_profil, id_nutriment, PU.valeur, CN.valeur, seuil_vert, seuil_orange " +
                     "   from profil_utilisateur PU, compo_nutriment CN " +
-                    "  where id_produit = '" + p + "' AND PU.ID_typeProfil='" + IdTp + "' " +
-                    " AND ID_critere = id_nutriment; ";
+                    "  where id_produit = '" + p + "' AND  ID_critere = id_nutriment AND PU.ID_typeProfil=" + IdTpN + " ;";
                 SqliteCommand command_recherche_nutriment = new SqliteCommand(sql_recherche_nutriment, connexion);
                 SqliteDataReader result_recherche_nutriment = command_recherche_nutriment.ExecuteReader();
                 while (result_recherche_nutriment.Read())
@@ -261,7 +315,8 @@ namespace conseilMoi.Resources.MaBase
                     String id_nutriment = result_recherche_nutriment.GetString(2);
                     //decimal valeur_profil = 10;
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
-                    decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
+                    String ValInter = result_recherche_nutriment.GetString(4).Replace('.', ',');
+                    decimal valeur_produit = decimal.Parse(ValInter);
                     //decimal valeur_produit = 10;
                      decimal vert = result_recherche_nutriment.GetDecimal(5);
                     //decimal vert = 10;
@@ -269,7 +324,6 @@ namespace conseilMoi.Resources.MaBase
                     //  decimal vert = result_recherche_nutriment.GetDecimal(5);
                     decimal orange = result_recherche_nutriment.GetDecimal(6);
                     //decimal orange = 10;
-                    decimal rouge = result_recherche_nutriment.GetDecimal(7);
 
                     /*
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
@@ -279,7 +333,7 @@ namespace conseilMoi.Resources.MaBase
                     decimal rouge = result_recherche_nutriment.GetDecimal(7);
                     */
 
-                    produits.AddCheckNutriment(id_typeProfil, id_profil, id_nutriment, valeur_profil, valeur_produit, vert, orange, rouge);
+                    produits.AddCheckNutriment(id_typeProfil, id_profil, id_nutriment, valeur_profil, valeur_produit, vert, orange);
                 }
                 //Fin recherche d'allergene
                 result_recherche_nutriment.Close();
@@ -318,7 +372,7 @@ namespace conseilMoi.Resources.MaBase
                 commandDelete.ExecuteNonQuery();
 
                 SqliteCommand command = connexion.CreateCommand();
-                command.CommandText = "insert into historique (id_typeProfil, id_produit, date) values ( '" + id_typeProfil + "', '" + id_produit + "', datetime() );";
+                command.CommandText = "insert into historique ( id_produit, date) values ( '" + id_produit + "', datetime() );";
                 command.ExecuteNonQuery();
                 connexion.Close();
                 return "Ok insert ";
@@ -352,7 +406,7 @@ namespace conseilMoi.Resources.MaBase
 
 
 
-        //chargement du produit
+        //chargement de l'historique
         public List<Historiques> SelectHistorique()
         {
             Historiques historiques = null;
@@ -583,7 +637,7 @@ namespace conseilMoi.Resources.MaBase
             {
                 this.ConnexionOpen();
                 //Selection de l'historique
-                string sqlNomProfil = "select id_profil, id_critere, valeur, seuil_vert, seuil_orange, seuil_rouge from profil_standard where id_profil = '" + idc + "' order by id_critere asc; ";
+                string sqlNomProfil = "select id_profil, id_critere, valeur, seuil_vert, seuil_orange from profil_standard where id_profil = '" + idc + "' order by id_critere asc; ";
                 SqliteCommand commandaNomProfilcritere = new SqliteCommand(sqlNomProfil, connexion);
                 SqliteDataReader result = commandaNomProfilcritere.ExecuteReader();
                 List<ProfilsStandards> profilcriteres = new List<ProfilsStandards>();
@@ -659,7 +713,10 @@ namespace conseilMoi.Resources.MaBase
                 SqliteCommand commandValeur = new SqliteCommand(sqlValeur, connexion);
                 SqliteDataReader result = commandValeur.ExecuteReader();
                 result.Read();
-                return result.GetDecimal(0);
+                Decimal valeur = result.GetDecimal(0);
+                //valeur = valeur.Replace(',', '.');
+                return  valeur;
+
             }
 
             catch     {  return 0;  }
@@ -676,7 +733,9 @@ namespace conseilMoi.Resources.MaBase
                 SqliteCommand commandValeur = new SqliteCommand(sqlValeur, connexion);
                 SqliteDataReader result = commandValeur.ExecuteReader();
                 result.Read();
-                return result.GetDecimal(0);
+               Decimal valeur = result.GetDecimal(0);
+               
+                return valeur;
             }
 
             catch { return 0; }
@@ -688,17 +747,26 @@ namespace conseilMoi.Resources.MaBase
 
 
         //Update la valeur lorsqu'on clique sur + ou -
-        public void UpdateValeur(String ID, String ID_typeProfil, String ID_profil, Decimal val)
+        public String UpdateValeur(String ID, String ID_typeProfil, String ID_profil, String val)
         {
-            this.ConnexionOpen();
-            SqliteCommand commandUpdate = connexion.CreateCommand();
-            commandUpdate.CommandText = "UPDATE profil_utilisateur"+
-                                        " SET valeur = "+ val +"   "+
-                                        "WHERE ID_typeProfil= '"+ ID_typeProfil + "' "+
-                                        "AND ID_profil= '" + ID_profil + "' " +
-                                        "AND ID_critere= '" + ID + "' " ;
-            commandUpdate.ExecuteNonQuery();
-            this.ConnexionClose();
+
+            try
+            {
+                this.ConnexionOpen();
+                SqliteCommand commandUpdate = connexion.CreateCommand();
+                commandUpdate.CommandText = "UPDATE profil_utilisateur" +
+                                            " SET valeur = " + val.Replace(',','.') + "   " +
+                                            "WHERE ID_typeProfil= '" + ID_typeProfil + "' " +
+                                            "AND ID_profil= '" + ID_profil + "' " +
+                                            "AND ID_critere= '" + ID + "' ";
+                commandUpdate.ExecuteNonQuery();
+                this.ConnexionClose();
+                return "ok";
+            }
+            catch (SqliteException ex)
+            {
+                return ex.Message;
+            }
 
         }
 
@@ -728,17 +796,28 @@ namespace conseilMoi.Resources.MaBase
         //insertion dans profil_utilisateur
         public String InsertProfilUtilisateur(String ID, String ID_typeProfil, String ID_profil, String valeur )
         {
-            this.ConnexionOpen();     
-            try
-            {
-                String SEUIL_VERT = "0.05";
-                String SEUIL_ORANGE = "0.01";
-                String SEUIL_ROUGE;
-                try { SEUIL_ROUGE = "0"; } catch { SEUIL_ROUGE = "0"; }
+            String commande;
+           
 
+            
+                if(valeur =="Vide") { valeur = "0"; }
+
+                valeur = valeur.Replace(',', '.');
+
+                String req = GetSeuilFromProfilStandard(ID, ID_profil);
+                String[] words = req.Split(' ');
+                String SEUIL_VERT = words[0];
+                String SEUIL_ORANGE = words[1];
+
+            commande = "Insert into profil_utilisateur (ID_typeProfil, ID_profil, ID_critere, valeur, SEUIL_VERT, SEUIL_ORANGE) " +
+                                  "values ('" + ID_typeProfil + "', '" + ID_profil + "', '" + ID + "', " + valeur + ", " + SEUIL_VERT.Replace(',', '.') + ", " + SEUIL_ORANGE.Replace(',', '.') + ");";
+
+            this.ConnexionOpen();
+        try
+            {
+                
                 SqliteCommand commandInsert = connexion.CreateCommand();
-                commandInsert.CommandText = "Insert into profil_utilisateur (ID_typeProfil, ID_profil, ID_critere, valeur, SEUIL_VERT, SEUIL_ORANGE, SEUIL_ROUGE) " +
-                                   "values ('"+ ID_typeProfil + "', '"+ ID_profil + "', '"+ ID + "', "+ valeur + ", "+ SEUIL_VERT + ", "+ SEUIL_ORANGE + ", " + SEUIL_ROUGE + ");";
+                commandInsert.CommandText = commande;
                 commandInsert.ExecuteNonQuery();
 
                 return "ok";
@@ -746,7 +825,7 @@ namespace conseilMoi.Resources.MaBase
             }
             catch (SqliteException ex)
             {
-                return ex.Message;
+                return ex.Message + " "+ commande;
             }
             //Fermeture de la connexion
            finally {
@@ -809,6 +888,28 @@ namespace conseilMoi.Resources.MaBase
             }
 
         }
+
+        public String GetSeuilFromProfilStandard(String ID_critere, String ID_profil)
+        {
+            this.ConnexionOpen();
+            String requeteSeuil = "SELECT SEUIL_VERT, SEUIL_ORANGE FROM profil_standard "+
+                                    " where ID_critere = '"+ ID_critere + "' AND ID_profil = '"+ ID_profil + "' ; ";
+
+            SqliteCommand command = new SqliteCommand(requeteSeuil, connexion);
+            SqliteDataReader result = command.ExecuteReader();
+            result.Read();
+
+            string seuil = result.GetDecimal(0) + " " + result.GetDecimal(1);
+
+            result.Close();
+            this.ConnexionClose();
+
+            return seuil;
+
+            }
+
+
+        
 
 
 

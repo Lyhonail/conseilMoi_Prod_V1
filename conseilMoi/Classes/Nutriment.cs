@@ -21,9 +21,9 @@ namespace conseilMoi.Classes
         decimal valeur_profil;
         decimal seuil_vert;
         decimal seuil_orange;
-        decimal seuil_rouge;
+        String impact;
 
-        public void CreeNutriment(String idtp, String idp, String idN, decimal val_prod, decimal val_prof, decimal vert, decimal orange, decimal rouge)
+        public void CreeNutriment(String idtp, String idp, String idN, decimal val_prod, decimal val_prof, decimal vert, decimal orange)
         {
             ID_nutriment = idN;
             ID_typeProfil = idtp;
@@ -32,8 +32,6 @@ namespace conseilMoi.Classes
             valeur_profil = val_prof;
             seuil_vert = vert;
             seuil_orange = orange;
-            seuil_rouge = rouge;
-
         }
 
         public String GetIdNutriment()
@@ -53,12 +51,12 @@ namespace conseilMoi.Classes
 
         public decimal GetValeurProfil()
         {
-            return valeur_produit;
+            return valeur_profil;
         }
 
         public decimal GetValeurProduit()
         {
-            return valeur_profil;
+            return valeur_produit;
         }
 
         public decimal GetVert()
@@ -71,12 +69,16 @@ namespace conseilMoi.Classes
             return seuil_orange;
         }
 
-        public decimal GetRouge()
+        public void SetImpact(String i)
         {
-            return seuil_rouge;
+            impact = i;
+        }
+
+        public String GetImpact()
+        {
+            return impact;
         }
 
         
-
     }
 }
