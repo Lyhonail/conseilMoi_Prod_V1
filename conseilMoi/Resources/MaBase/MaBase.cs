@@ -405,35 +405,80 @@ namespace conseilMoi.Resources.MaBase
         //Créer la requete pour les produits recommandé
 
         //chargement du produit
-        public List<Produits> SelectProduitRecommande()
+
+        public String SelectLibFamille(String id)
         {
-            Produits produitRecommande = null;
+            String lib = "";
+
+            this.ConnexionOpen();
+            //Selection de l'historique
+            string sql  = "select F1.ID_famille from famille_produit_main_categorie F1 where F1.ID_produit = '" + id + "'; ";
+            SqliteCommand command = new SqliteCommand(sql, connexion);
+            SqliteDataReader result = command.ExecuteReader();
+
+            result.Read();
+
+            lib = result.GetString(0);
+            this.ConnexionClose();
+            return lib;
+        }
+
+        public List<ProduitRecos> SelectProduitRecommande(string ID)
+        {
+            ProduitRecos produitRecommande = new ProduitRecos();
             try
             {
+               
+                string sqlRecommande =
+            "select F.id_famille, P.id_produit,P.product_name, C.id_nutriment, C.valeur"
+            + " from compo_nutriment C, famille_produit_main_categorie F, produit P"
+            + " where P.id_produit = C.id_produit"
+            + " and C.id_produit = F.ID_produit"
+            + " and  F.ID_famille = '" + SelectLibFamille(ID) + "'" 
+            + " and P.image_small_url <> ''"
+            + " order by P.id_produit;";
+                /*+ "    and"
+                + "    exists(select * from compo_nutriment"
+                + "           WHERE"
+                + "          id_produit = P.id_produit"
+                + "            and"
+                + "            id_nutriment = 'saturated_fat_100g'"
+                + "            and"
+                + "            valeur < 22)"
+                + "    AND"
+                + "    exists(select * from compo_nutriment"
+                + "           WHERE"
+                + "            id_produit = P.id_produit"
+                + "            and"
+                + "            id_nutriment = 'sugars_100g'"
+                + "            and"
+                + "             valeur < 36)"*/
+
                 this.ConnexionOpen();
-                //Selection de l'historique
-                string sqlRecommande = "select id_produit, product_name from produit where id_produit=10 or id_produit=1000008218 or id_produit=1000008706; ";
                 SqliteCommand commandaReco = new SqliteCommand(sqlRecommande, connexion);
                 SqliteDataReader result = commandaReco.ExecuteReader();
-                List<Produits> ProduitRec = new List<Produits>();
+                List<ProduitRecos> ProduitRec = new List<ProduitRecos>();
 
-                while (result.Read())
-                {
-                    //Historiques historiques = new Historiques();
-
-                    produitRecommande = new Produits();
-                    String chaine = result.GetString(0);
-                    long num = long.Parse(chaine);
-                    produitRecommande.SetProduits(chaine, result.GetString(1), "");
-                    ProduitRec.Add(produitRecommande);
-                }
+                 while (result.Read())
+                 {
+                     produitRecommande = new ProduitRecos();
+                     String idfamille = result.GetString(0);
+                     String idproduit = result.GetString(1);
+                     long num = long.Parse(idproduit);
+                     String productname = result.GetString(2);
+                     String idnutriment = result.GetString(3);
+                     String valeur = result.GetString(4); 
+                     produitRecommande.SetProduitsReco(idfamille, idproduit,productname,idfamille,valeur);
+                     ProduitRec.Add(produitRecommande);
+                 }
                 result.Close();
                 return ProduitRec;
             }
             //Retourne le message d'erreur SQL
-            catch
+            catch (SQLiteException ex)
             {
-                List<Produits> ProduitRec = new List<Produits>();
+                List<ProduitRecos> ProduitRec = new List<ProduitRecos>();
+                String err = ex.Message;
                 return ProduitRec;
 
             }

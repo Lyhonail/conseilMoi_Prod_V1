@@ -93,44 +93,44 @@
                         android:textColor="#000000"
                         android:textSize="10dp" />
                 <!--AFFICHAGE DE LA LISTE DES ALLERGENES PAR RAPPORT AU PROFIL -->
-                  <ScrollView
-                      android:id="@+id/ScrollViewProduitAllergeneNutriment"
-                      android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                      android:layout_marginLeft="20dp">
-                    <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-                    <TextView
-                        android:text="Allergene"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                    <ScrollView
+                        android:id="@+id/ScrollViewProduitAllergeneNutriment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textViewInfoAlergene"
-                        android:textColor="#000000"
-                        android:paddingTop="10dp"/>
-                    <LinearLayout
-                        android:id="@+id/LinearLayoutMatchAllergene"
-                        android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" 
-                        android:layout_marginLeft="20dp"/>
-                    <!--AFFICHAGE DE LA LISTE DES NUTRIMENTS PAR RAPPORT AU PROFIL"-->
-                    <TextView
-                        android:text="Nutriment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textViewInfoNutriment"
-                        android:textColor="#111111" />
-                    <LinearLayout
-                        android:id="@+id/LinearLayoutMatchNutriment"
-                        android:orientation="vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"/>
-                    </LinearLayout>
-                  </ScrollView>
+                        android:layout_marginLeft="20dp">
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:text="Allergene"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textViewInfoAlergene"
+                                android:textColor="#000000"
+                                android:paddingTop="10dp" />
+                            <LinearLayout
+                                android:id="@+id/LinearLayoutMatchAllergene"
+                                android:orientation="vertical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp" />
+                        <!--AFFICHAGE DE LA LISTE DES NUTRIMENTS PAR RAPPORT AU PROFIL"-->
+                            <TextView
+                                android:text="Nutriment"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/textViewInfoNutriment"
+                                android:textColor="#111111" />
+                            <LinearLayout
+                                android:id="@+id/LinearLayoutMatchNutriment"
+                                android:orientation="vertical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp" />
+                        </LinearLayout>
+                    </ScrollView>
                 <!--AFFICHAGE LISTE DES NUTRIMENTS-->
                 </LinearLayout>
                 <ImageView
@@ -141,7 +141,7 @@
                     android:id="@+id/imageViewFeu"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="30dp"/>
+                    android:layout_marginRight="30dp" />
             </LinearLayout>
         </LinearLayout>
         <ImageView
@@ -149,17 +149,19 @@
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_weight=".30"
-            android:id="@+id/imageViewProduit" 
-            android:layout_marginRight="20dp"/>
+            android:id="@+id/imageViewProduit"
+            android:layout_marginRight="20dp" />
     </LinearLayout>
 <!--FIN AFFICHAGE DES INFORMATIONS PRODUIT-->
 <!-- AFFICHAGE DES PRODUIT SUGGERES-->
-    <LinearLayout
-        android:id="@+id/produitInfoProduitSuggere"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".40" />
+  <LinearLayout
+      android:id="@+id/produitInfoProduitSuggere"
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight=".40">
+    <!--AFFICHAGE DES PRODUITS ALTERNATIFS DANS UNE LISTE-->
+  </LinearLayout>
 <!--FIN AFFICHAGE DES PRODUIT SUGGERES-->
 <!--AFFICHAGE DU MENU DE NAVIGATION DU BAS-->
     <LinearLayout

@@ -48,6 +48,20 @@
                 android:layout_height="match_parent"
                 android:id="@+id/buttonMajBase" />
         </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayoutAvert">
+            <ExpandableListView
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/expandableListViewAvert" />
+        </LinearLayout>
     </LinearLayout>
 <!-- FIN AFFICHAGE DU CORP DE LA PAGE -->
 <!-- MENU DU BAS -->

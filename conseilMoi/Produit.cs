@@ -17,14 +17,15 @@ using System.Net;
 using Android.Graphics;
 using static System.Net.Mime.MediaTypeNames;
 using System.Threading.Tasks;
+using Android.Util;
 
 namespace conseilMoi
 {
     [Activity(Label = "Produit")]
     public class Produit : Activity
     {
-        ListView lstData;
-        List<Produits> lstSource = new List<Produits>();
+        //ListView lstData;
+        //List<ProduitRecos> lstSource = new List<ProduitRecos>();
         MaBase db1 = new MaBase();
         int feu = 0;
         
@@ -250,14 +251,17 @@ namespace conseilMoi
 
                 feu = 0;
                 IDTypeProfil = "PERS";
+                //Aficchage des produits recommande
+                //lstData = FindViewById<ListView>(Resource.Id.listViewProduitsuggere);
+                //LoadData();
 
                 /* EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
-               // dicMyMap.Remove(group[0]);
-               // dicMyMap.Remove(group[1]);
+                // dicMyMap.Remove(group[0]);
+                // dicMyMap.Remove(group[1]);
 
-               // expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
-               // SetData(out mAdapter, produits, IDTypeProfil);
-               // expandableListView.SetAdapter(mAdapter);
+                // expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
+                // SetData(out mAdapter, produits, IDTypeProfil);
+                // expandableListView.SetAdapter(mAdapter);
                 /* FIN EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
 
                 Produits produitPerso = new Produits();
@@ -315,7 +319,86 @@ namespace conseilMoi
                 if (feu == 0) { imgFeu.SetImageResource(Resource.Drawable.feuVertSmall); }
                 if (feu == 1) { imgFeu.SetImageResource(Resource.Drawable.feuOrangeSmall); }
                 if (feu == 2) { imgFeu.SetImageResource(Resource.Drawable.feurougeSmall); }
-            };
+
+                /************************************Vincent********************************/
+                //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
+                LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
+
+                //Je récupère l'historique dans la base de données
+                List<ProduitRecos> listeProduitReco = db.SelectProduitRecommande("80051657");
+
+                //Pour chaque produitReco présent, je l'affiche
+                foreach (ProduitRecos pr in listeProduitReco)
+                {
+                    //Je créer le LinearLayout qui contiendra la ligne
+                    LinearLayout LN = new LinearLayout(this) { Id = 10 };
+                    var paramL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+                    LN.Orientation = Orientation.Horizontal;
+                    LN.SetBackgroundColor(Color.LightGray);
+                    paramL.SetMargins(0, 0, 0, 5);
+
+                    //J'ajoute le LinearLayout
+                    linearLayout.AddView(LN, paramL);
+
+                    //Je créer le textView qui contient le nom du produit
+                    TextView textView11 = new TextView(this) { Id = 1 };
+                    textView11.Text = pr.GetidFamille();
+                    var param11 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .8f);
+                    textView11.SetTextColor(Color.Black);
+                    textView11.SetTextSize(ComplexUnitType.Px, 22);
+                    textView11.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+
+                    LN.AddView(textView11, param11);
+
+                    TextView textView21 = new TextView(this) { Id = 2 };
+                    textView21.Text = pr.GetidProduit();
+                    var param21 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param21.SetMargins(5, 0, 0, 0);
+                    textView21.SetTextColor(Color.Black);
+                    textView21.SetTextSize(ComplexUnitType.Px, 15);
+                    textView21.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView21, param21);
+
+                    TextView textView31 = new TextView(this) { Id = 3 };
+                    textView31.Text = pr.GetproductName();
+                    var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param31.SetMargins(5, 0, 0, 0);
+                    textView31.SetTextColor(Color.Black);
+                    textView31.SetTextSize(ComplexUnitType.Px, 15);
+                    textView31.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView31, param31);
+
+                    TextView textView41 = new TextView(this) { Id = 4 };
+                    textView41.Text = pr.GetidNutriment();
+                    var param41 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param41.SetMargins(5, 0, 0, 0);
+                    textView41.SetTextColor(Color.Black);
+                    textView41.SetTextSize(ComplexUnitType.Px, 15);
+                    textView41.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView41, param41);
+
+                    TextView textView51 = new TextView(this) { Id = 5 };
+                    textView51.Text = pr.GetidValeur();
+                    var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param51.SetMargins(5, 0, 0, 0);
+                    textView51.SetTextColor(Color.Black);
+                    textView51.SetTextSize(ComplexUnitType.Px, 15);
+                    textView51.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView51, param51);
+
+                    /************************************Vincent********************************/
+
+                }
+
+
+
+
+
+                };
             /* FIN  BOUTON CHOIX PROFIL PERSO   */
 
             btnProduitFAM.Click += delegate
@@ -332,18 +415,21 @@ namespace conseilMoi
 
                 feu = 0;
                 IDTypeProfil = "FAML";
+                //Aficchage des produits recommande
+                //lstData = FindViewById<ListView>(Resource.Id.listViewProduitsuggere);
+                //LoadData();
 
                 /* EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
-               // dicMyMap.Remove(group[0]);
+                // dicMyMap.Remove(group[0]);
                 //dicMyMap.Remove(group[1]);
-                
+
 
                 //expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
-               // SetData(out mAdapter, produits, IDTypeProfil);
-               // expandableListView.SetAdapter(mAdapter);
+                // SetData(out mAdapter, produits, IDTypeProfil);
+                // expandableListView.SetAdapter(mAdapter);
                 /* FIN EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
 
-               
+
                 Produits produitFamille = new Produits();
 
                 produitFamille = db.SelectIdProduit(IDproduit, IDTypeProfil);
@@ -403,6 +489,80 @@ namespace conseilMoi
                 if (feu == 1) { imgFeu.SetImageResource(Resource.Drawable.feuOrangeSmall); }
                 if (feu == 2) { imgFeu.SetImageResource(Resource.Drawable.feurougeSmall); }
 
+                /************************************Vincent********************************/
+                //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
+                LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
+
+                //Je récupère l'historique dans la base de données
+                List<ProduitRecos> listeProduitReco = db.SelectProduitRecommande("80051657");
+
+                //Pour chaque produitReco présent, je l'affiche
+                foreach (ProduitRecos pr in listeProduitReco)
+                {
+                    //Je créer le LinearLayout qui contiendra la ligne
+                    LinearLayout LN = new LinearLayout(this) { Id = 10 };
+                    var paramL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+                    LN.Orientation = Orientation.Horizontal;
+                    LN.SetBackgroundColor(Color.LightGray);
+                    paramL.SetMargins(0, 0, 0, 5);
+
+                    //J'ajoute le LinearLayout
+                    linearLayout.AddView(LN, paramL);
+
+                    //Je créer le textView qui contient le nom du produit
+                    TextView textView11 = new TextView(this) { Id = 1 };
+                    textView11.Text = pr.GetidFamille();
+                    var param11 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .8f);
+                    textView11.SetTextColor(Color.Black);
+                    textView11.SetTextSize(ComplexUnitType.Px, 22);
+                    textView11.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+
+                    LN.AddView(textView11, param11);
+
+                    TextView textView21 = new TextView(this) { Id = 2 };
+                    textView21.Text = pr.GetidProduit();
+                    var param21 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param21.SetMargins(5, 0, 0, 0);
+                    textView21.SetTextColor(Color.Black);
+                    textView21.SetTextSize(ComplexUnitType.Px, 15);
+                    textView21.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView21, param21);
+
+                    TextView textView31 = new TextView(this) { Id = 3 };
+                    textView31.Text = pr.GetproductName();
+                    var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param31.SetMargins(5, 0, 0, 0);
+                    textView31.SetTextColor(Color.Black);
+                    textView31.SetTextSize(ComplexUnitType.Px, 15);
+                    textView31.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView31, param31);
+
+                    TextView textView41 = new TextView(this) { Id = 4 };
+                    textView41.Text = pr.GetidNutriment();
+                    var param41 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param41.SetMargins(5, 0, 0, 0);
+                    textView41.SetTextColor(Color.Black);
+                    textView41.SetTextSize(ComplexUnitType.Px, 15);
+                    textView41.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView41, param41);
+
+                    TextView textView51 = new TextView(this) { Id = 5 };
+                    textView51.Text = pr.GetidValeur();
+                    var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param51.SetMargins(5, 0, 0, 0);
+                    textView51.SetTextColor(Color.Black);
+                    textView51.SetTextSize(ComplexUnitType.Px, 15);
+                    textView51.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView51, param51);
+
+                    /************************************Vincent********************************/
+
+                }
+
             };
 
             /* BOUTON CHOIX PROFIL INVITE  */
@@ -421,16 +581,20 @@ namespace conseilMoi
                 feu = 0;
                 IDTypeProfil = "INVT";
 
-                /* EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
-               // dicMyMap.Remove(group[0]);
-               // dicMyMap.Remove(group[1]);
+                //Aficchage des produits recommande
+                //lstData = FindViewById<ListView>(Resource.Id.listViewProduitsuggere);
+                //LoadData();
 
-               // expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
-              //  SetData(out mAdapter, produits, IDTypeProfil);
-              //  expandableListView.SetAdapter(mAdapter);
+                /* EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
+                // dicMyMap.Remove(group[0]);
+                // dicMyMap.Remove(group[1]);
+
+                // expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
+                //  SetData(out mAdapter, produits, IDTypeProfil);
+                //  expandableListView.SetAdapter(mAdapter);
                 /* FIN EDITION DE LA LISTE DES ALLERGENE ET NUTRIMENTS QUI MATCHENT AVEC LE PROFIL */
 
-                
+
                 Produits produitInvite = new Produits();
 
                 produitInvite = db.SelectIdProduit(IDproduit, IDTypeProfil);
@@ -485,6 +649,80 @@ namespace conseilMoi
                 if (feu == 0) { imgFeu.SetImageResource(Resource.Drawable.feuVertSmall); }
                 if (feu == 1) { imgFeu.SetImageResource(Resource.Drawable.feuOrangeSmall); }
                 if (feu == 2) { imgFeu.SetImageResource(Resource.Drawable.feurougeSmall); }
+
+                /************************************Vincent********************************/
+                //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
+                LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
+
+                //Je récupère l'historique dans la base de données
+                List<ProduitRecos> listeProduitReco = db.SelectProduitRecommande("80051657");
+
+                //Pour chaque produitReco présent, je l'affiche
+                foreach (ProduitRecos pr in listeProduitReco)
+                {
+                    //Je créer le LinearLayout qui contiendra la ligne
+                    LinearLayout LN = new LinearLayout(this) { Id = 10 };
+                    var paramL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
+                    LN.Orientation = Orientation.Horizontal;
+                    LN.SetBackgroundColor(Color.LightGray);
+                    paramL.SetMargins(0, 0, 0, 5);
+
+                    //J'ajoute le LinearLayout
+                    linearLayout.AddView(LN, paramL);
+
+                    //Je créer le textView qui contient le nom du produit
+                    TextView textView11 = new TextView(this) { Id = 1 };
+                    textView11.Text = pr.GetidFamille();
+                    var param11 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .8f);
+                    textView11.SetTextColor(Color.Black);
+                    textView11.SetTextSize(ComplexUnitType.Px, 22);
+                    textView11.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+
+                    LN.AddView(textView11, param11);
+
+                    TextView textView21 = new TextView(this) { Id = 2 };
+                    textView21.Text = pr.GetidProduit();
+                    var param21 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param21.SetMargins(5, 0, 0, 0);
+                    textView21.SetTextColor(Color.Black);
+                    textView21.SetTextSize(ComplexUnitType.Px, 15);
+                    textView21.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView21, param21);
+
+                    TextView textView31 = new TextView(this) { Id = 3 };
+                    textView31.Text = pr.GetproductName();
+                    var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param31.SetMargins(5, 0, 0, 0);
+                    textView31.SetTextColor(Color.Black);
+                    textView31.SetTextSize(ComplexUnitType.Px, 15);
+                    textView31.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView31, param31);
+
+                    TextView textView41 = new TextView(this) { Id = 4 };
+                    textView41.Text = pr.GetidNutriment();
+                    var param41 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param41.SetMargins(5, 0, 0, 0);
+                    textView41.SetTextColor(Color.Black);
+                    textView41.SetTextSize(ComplexUnitType.Px, 15);
+                    textView41.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView41, param41);
+
+                    TextView textView51 = new TextView(this) { Id = 5 };
+                    textView51.Text = pr.GetidValeur();
+                    var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    param51.SetMargins(5, 0, 0, 0);
+                    textView51.SetTextColor(Color.Black);
+                    textView51.SetTextSize(ComplexUnitType.Px, 15);
+                    textView51.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    LN.AddView(textView51, param51);
+
+                    /************************************Vincent********************************/
+
+                }
             };
 
         }//FIN DU ELSE PRODUIT NON TROUVE
@@ -539,9 +777,9 @@ namespace conseilMoi
         //VINCENT -> A expliquer
         private void LoadData()
         {
-            lstSource = db1.SelectProduitRecommande();
-            var adapter = new ListViewAdapterProduitRecommandation(this, lstSource);
-            lstData.Adapter = adapter;
+            //lstSource = db1.SelectProduitRecommande("80051657");
+            //var adapter = new ListViewAdapterProduitRecommandation(this, lstSource);
+            //lstData.Adapter = adapter;
         }
 
 
