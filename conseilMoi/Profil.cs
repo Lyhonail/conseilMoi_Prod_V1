@@ -95,17 +95,17 @@ namespace conseilMoi
 
 
             /* NOUVELLE VERSION LIONEL - AFFICHAGE DES GROUPES DE PROFIL - NOUVELLE VERSION LIONEL -- NOUVELLE VERSION LIONEL --   */
-            txtViewTitre.SetTextSize(ComplexUnitType.Dip, 28);
+            txtViewTitre.SetTextSize(ComplexUnitType.Dip, 26);
             txtViewTitre.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
 
-            btnProfilPERS.SetTextSize(ComplexUnitType.Dip, 26);
+            btnProfilPERS.SetTextSize(ComplexUnitType.Dip, 24);
             btnProfilPERS.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
-            btnProfilFAML.SetTextSize(ComplexUnitType.Dip, 26);
+            btnProfilFAML.SetTextSize(ComplexUnitType.Dip, 24);
             btnProfilFAML.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
-            btnProfilINVT.SetTextSize(ComplexUnitType.Dip, 26);
+            btnProfilINVT.SetTextSize(ComplexUnitType.Dip, 24);
             btnProfilINVT.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
             btnProfilPERS.SetBackgroundColor(Color.LightGray);
@@ -193,8 +193,8 @@ namespace conseilMoi
                 //textView1.SetTextAppearance(this, Android.Resource.Style.TextAppearanceLarge);
                 
                 textView1.SetTextColor(Color.Black);
-                textView1.SetTextSize(ComplexUnitType.Dip, 40);
-                textView1.SetTextSize(ComplexUnitType.Dip, 40);
+                textView1.SetTextSize(ComplexUnitType.Dip, 30);
+                textView1.SetTextSize(ComplexUnitType.Dip, 30);
                 textView1.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
                 textView1.SetBackgroundColor(Color.LightCyan);
                 //textView1.SetHeight(30);
@@ -244,7 +244,7 @@ namespace conseilMoi
                             checkBox.Text = db.GetNomCritereFromIdCritere(ps.GetidCritere());
                             checkBox.Gravity = GravityFlags.CenterVertical;
                             checkBox.SetTextColor(Color.Black);
-                            checkBox.SetTextSize(ComplexUnitType.Dip, 40);
+                            checkBox.SetTextSize(ComplexUnitType.Dip, 28);
                             var param2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
                             linearLigne.AddView(checkBox, param);
 
@@ -262,7 +262,7 @@ namespace conseilMoi
                             valeur.Gravity = GravityFlags.CenterVertical;
 
                             valeur.Text = val+"/100gr";
-                            valeur.SetTextSize(ComplexUnitType.Dip, 30);
+                            valeur.SetTextSize(ComplexUnitType.Dip, 22);
 
                             
                             
@@ -292,10 +292,10 @@ namespace conseilMoi
                             moins.SetTextSize(ComplexUnitType.Px, 12);
                             moinsMoins.SetTextSize(ComplexUnitType.Px, 12);*/
 
-                            var paramPlus = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, 0.2f);
-                            var paramPlusPlus = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, 0.2f);
-                            var paramMoins = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, 0.2f);
-                            var paramMoinsMoins = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, 0.2f);
+                            var paramPlus = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MatchParent, 0.2f);
+                            var paramPlusPlus = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MatchParent, 0.2f);
+                            var paramMoins = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MatchParent, 0.2f);
+                            var paramMoinsMoins = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MatchParent, 0.2f);
 
                             paramPlus.Gravity = GravityFlags.CenterVertical;
                             paramPlusPlus.Gravity = GravityFlags.CenterVertical;
@@ -346,7 +346,7 @@ namespace conseilMoi
                                     val = db.GetValeurProfilUtilisateur(ps.GetidCritere(), ID_typeProfil, ps.GetidProfil());
                                     valeur.Text = val + "/100gr";
 
-                                    paramLQTE = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WrapContent, 50); //Width, Height
+                                    paramLQTE = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent); //Width, Height
                                     linearQTE.LayoutParameters = paramLQTE;
                                 }
                             }
@@ -371,7 +371,7 @@ namespace conseilMoi
                                         valeur.Text = val + "/100gr";
                                         val = db.GetValeurProfilStansard(ps.GetidCritere(), ps.GetidProfil());
 
-                                        paramLQTE = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, 50); //Width, Height
+                                        paramLQTE = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent); //Width, Height
                                         linearQTE.LayoutParameters = paramLQTE;
                                     }
 
