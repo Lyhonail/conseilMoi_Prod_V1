@@ -28,19 +28,22 @@
             android:layout_width="0dp"
             android:layout_weight=".33"
             android:layout_height="match_parent"
-            android:id="@+id/buttonProfilPERS" />
+            android:id="@+id/buttonProfilPERS"
+            android:textSize="16dp" />
         <Button
             android:text="Famille"
             android:layout_width="0dp"
             android:layout_weight=".33"
             android:layout_height="match_parent"
-            android:id="@+id/buttonProfilFAML" />
+            android:id="@+id/buttonProfilFAML"
+            android:textSize="16dp" />
         <Button
             android:text="Mes Invités"
             android:layout_width="0dp"
             android:layout_weight=".33"
             android:layout_height="match_parent"
-            android:id="@+id/buttonProfilINVT" />
+            android:id="@+id/buttonProfilINVT"
+            android:textSize="16dp" />
     </LinearLayout>
 <!--FIN MENU DU HAUT FIN-->
 <!--AFFICHAGE DE LA LISTE DES GROUPES ET SOU-GROUPES GENERES DYNAMIQUEMENT-->

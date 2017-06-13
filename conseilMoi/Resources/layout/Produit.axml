@@ -31,7 +31,8 @@
             android:layout_weight=".33"
             android:id="@+id/buttonProduitPERS"
             android:background="#bbbbbb"
-            android:textColor="#333333" />
+            android:textColor="#333333"
+            android:textSize="16dp" />
         <Button
             android:text="Famille"
             android:layout_width="0dp"
@@ -39,7 +40,8 @@
             android:layout_weight=".33"
             android:id="@+id/buttonProduitFAM"
             android:background="#555555"
-            android:textColor="#EEEEEE" />
+            android:textColor="#EEEEEE"
+            android:textSize="16dp" />
         <Button
             android:text="Mes Invités"
             android:layout_width="0dp"
@@ -47,7 +49,8 @@
             android:layout_weight=".33"
             android:id="@+id/buttonProduitINV"
             android:background="#555555"
-            android:textColor="#EEEEEE" />
+            android:textColor="#EEEEEE"
+            android:textSize="16dp" />
     </LinearLayout>
 <!--FIN DE L'ENTETE AVEC LES CHOIX DU PROFIL-->
 <!--   -->
@@ -154,14 +157,14 @@
     </LinearLayout>
 <!--FIN AFFICHAGE DES INFORMATIONS PRODUIT-->
 <!-- AFFICHAGE DES PRODUIT SUGGERES-->
-  <LinearLayout
-      android:id="@+id/produitInfoProduitSuggere"
-      android:orientation="horizontal"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight=".40">
+    <LinearLayout
+        android:id="@+id/produitInfoProduitSuggere"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".40">
     <!--AFFICHAGE DES PRODUITS ALTERNATIFS DANS UNE LISTE-->
-  </LinearLayout>
+    </LinearLayout>
 <!--FIN AFFICHAGE DES PRODUIT SUGGERES-->
 <!--AFFICHAGE DU MENU DE NAVIGATION DU BAS-->
     <LinearLayout
