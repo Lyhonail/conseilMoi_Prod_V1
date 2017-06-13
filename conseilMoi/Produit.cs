@@ -83,8 +83,10 @@ namespace conseilMoi
             LinearNutriment = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchNutriment);
 
             btnProduitINV.Text = "Mes amis";
-
-
+            txtInfoAllergene.SetTextSize(ComplexUnitType.Dip, 18);
+            txtInfoNutriment.SetTextSize(ComplexUnitType.Dip, 18);
+            txtIdProduit.SetTextSize(ComplexUnitType.Dip, 20);
+            txtInfoScan.SetTextSize(ComplexUnitType.Dip, 16);
             //var listNutriment = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
 
 
@@ -149,7 +151,7 @@ namespace conseilMoi
             {//Si aucun allergene dans la liste, alors le produit est comptatible avec le produit
                 if (ListAl[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergenes compatibles";  }
                 //Sinon la simple présence d'au moins 1 allergene dans la liste, rends le produit incompatible
-                else { txtInfoAllergene.Text = "Allergene incompatible !"; feu = 2; ChargerListeAllergene(ListAl); }
+                else { txtInfoAllergene.Text = "Allergenes incompatible !"; feu = 2; ChargerListeAllergene(ListAl); }
             }
 
             catch
@@ -434,7 +436,7 @@ namespace conseilMoi
                     textView11.Text = pr.GetidFamille();
                     var param11 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .8f);
                     textView11.SetTextColor(Color.Black);
-                    textView11.SetTextSize(ComplexUnitType.Px, 22);
+                    textView11.SetTextSize(ComplexUnitType.Dip, 22);
                     textView11.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
                     LN.AddView(textView11, param11);
@@ -444,7 +446,7 @@ namespace conseilMoi
                     var param21 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param21.SetMargins(5, 0, 0, 0);
                     textView21.SetTextColor(Color.Black);
-                    textView21.SetTextSize(ComplexUnitType.Px, 15);
+                    textView21.SetTextSize(ComplexUnitType.Dip, 15);
                     textView21.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView21, param21);
@@ -454,7 +456,7 @@ namespace conseilMoi
                     var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param31.SetMargins(5, 0, 0, 0);
                     textView31.SetTextColor(Color.Black);
-                    textView31.SetTextSize(ComplexUnitType.Px, 15);
+                    textView31.SetTextSize(ComplexUnitType.Dip, 15);
                     textView31.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView31, param31);
@@ -464,7 +466,7 @@ namespace conseilMoi
                     var param41 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param41.SetMargins(5, 0, 0, 0);
                     textView41.SetTextColor(Color.Black);
-                    textView41.SetTextSize(ComplexUnitType.Px, 15);
+                    textView41.SetTextSize(ComplexUnitType.Dip, 15);
                     textView41.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView41, param41);
@@ -474,7 +476,7 @@ namespace conseilMoi
                     var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param51.SetMargins(5, 0, 0, 0);
                     textView51.SetTextColor(Color.Black);
-                    textView51.SetTextSize(ComplexUnitType.Px, 15);
+                    textView51.SetTextSize(ComplexUnitType.Dip, 15);
                     textView51.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView51, param51);
@@ -528,10 +530,10 @@ namespace conseilMoi
 
                 try
                 {
-                    if (ListAllergeneFamille[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergene compatibles"; }
+                    if (ListAllergeneFamille[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergenes compatibles"; }
                     else { txtInfoAllergene.Text = "Allergenes incompatibles !"; feu = 2; ChargerListeAllergene(ListAllergeneFamille); }
                 }
-                catch { txtInfoAllergene.Text = "Allergene compatibles"; }
+                catch { txtInfoAllergene.Text = "Allergenes compatibles"; }
                 /* FIN VERIFIE LES ALLERGENES */
 
                 /* VERIFIE LES NUTRIMENTS  */
@@ -610,7 +612,7 @@ namespace conseilMoi
                     textView11.Text = pr.GetidFamille();
                     var param11 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .8f);
                     textView11.SetTextColor(Color.Black);
-                    textView11.SetTextSize(ComplexUnitType.Px, 22);
+                    textView11.SetTextSize(ComplexUnitType.Dip, 22);
                     textView11.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
                     LN.AddView(textView11, param11);
@@ -620,7 +622,7 @@ namespace conseilMoi
                     var param21 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param21.SetMargins(5, 0, 0, 0);
                     textView21.SetTextColor(Color.Black);
-                    textView21.SetTextSize(ComplexUnitType.Px, 15);
+                    textView21.SetTextSize(ComplexUnitType.Dip, 15);
                     textView21.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView21, param21);
@@ -630,7 +632,7 @@ namespace conseilMoi
                     var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param31.SetMargins(5, 0, 0, 0);
                     textView31.SetTextColor(Color.Black);
-                    textView31.SetTextSize(ComplexUnitType.Px, 15);
+                    textView31.SetTextSize(ComplexUnitType.Dip, 15);
                     textView31.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView31, param31);
@@ -640,7 +642,7 @@ namespace conseilMoi
                     var param41 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param41.SetMargins(5, 0, 0, 0);
                     textView41.SetTextColor(Color.Black);
-                    textView41.SetTextSize(ComplexUnitType.Px, 15);
+                    textView41.SetTextSize(ComplexUnitType.Dip, 15);
                     textView41.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView41, param41);
@@ -650,7 +652,7 @@ namespace conseilMoi
                     var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param51.SetMargins(5, 0, 0, 0);
                     textView51.SetTextColor(Color.Black);
-                    textView51.SetTextSize(ComplexUnitType.Px, 15);
+                    textView51.SetTextSize(ComplexUnitType.Dip, 15);
                     textView51.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView51, param51);
@@ -778,7 +780,7 @@ namespace conseilMoi
                     textView11.Text = pr.GetidFamille();
                     var param11 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .8f);
                     textView11.SetTextColor(Color.Black);
-                    textView11.SetTextSize(ComplexUnitType.Px, 22);
+                    textView11.SetTextSize(ComplexUnitType.Dip, 22);
                     textView11.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
                     LN.AddView(textView11, param11);
@@ -788,7 +790,7 @@ namespace conseilMoi
                     var param21 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param21.SetMargins(5, 0, 0, 0);
                     textView21.SetTextColor(Color.Black);
-                    textView21.SetTextSize(ComplexUnitType.Px, 15);
+                    textView21.SetTextSize(ComplexUnitType.Dip, 15);
                     textView21.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView21, param21);
@@ -798,7 +800,7 @@ namespace conseilMoi
                     var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param31.SetMargins(5, 0, 0, 0);
                     textView31.SetTextColor(Color.Black);
-                    textView31.SetTextSize(ComplexUnitType.Px, 15);
+                    textView31.SetTextSize(ComplexUnitType.Dip, 15);
                     textView31.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView31, param31);
@@ -808,7 +810,7 @@ namespace conseilMoi
                     var param41 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param41.SetMargins(5, 0, 0, 0);
                     textView41.SetTextColor(Color.Black);
-                    textView41.SetTextSize(ComplexUnitType.Px, 15);
+                    textView41.SetTextSize(ComplexUnitType.Dip, 15);
                     textView41.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView41, param41);
@@ -818,7 +820,7 @@ namespace conseilMoi
                     var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param51.SetMargins(5, 0, 0, 0);
                     textView51.SetTextColor(Color.Black);
-                    textView51.SetTextSize(ComplexUnitType.Px, 15);
+                    textView51.SetTextSize(ComplexUnitType.Dip, 15);
                     textView51.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView51, param51);
@@ -933,6 +935,8 @@ namespace conseilMoi
             { 
                 TextView TextViewAllergene = new TextView(this) { Id = 1 };
                 TextViewAllergene.Text = db.GetLibAllergene(a.GetIdAlergene());
+                TextViewAllergene.SetTextSize(ComplexUnitType.Dip, 15);
+                TextViewAllergene.SetTextColor(Color.DarkGray);
                 var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                 LinearAllergene.AddView(TextViewAllergene, param);
             }//ForEach
@@ -947,6 +951,8 @@ namespace conseilMoi
             {
                 TextView TextViewNutriment = new TextView(this) { Id = 2 };
                 TextViewNutriment.Text = db.GetLibNutriment(n.GetIdNutriment())+" - " +n.GetImpact();
+                TextViewNutriment.SetTextSize(ComplexUnitType.Dip, 15);
+                TextViewNutriment.SetTextColor(Color.DarkGray);
                 var param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                 LinearNutriment.AddView(TextViewNutriment, param);
 
