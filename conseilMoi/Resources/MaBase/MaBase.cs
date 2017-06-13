@@ -477,36 +477,71 @@ namespace conseilMoi.Resources.MaBase
             return lib;
         }
 
+        public List<ProfilUtilisateurs> SelectValReco()
+        {
+            ProfilUtilisateurs profilUtilisateurs = null;
+            try
+            {
+                this.ConnexionOpen();
+                string sql = "select ID_critere, valeur from profil_utilisateur; ";
+                SqliteCommand commanda = new SqliteCommand(sql, connexion);
+                SqliteDataReader result = commanda.ExecuteReader();
+                List<ProfilUtilisateurs> Prof = new List<ProfilUtilisateurs>();
+                while (result.Read())
+                {
+                    profilUtilisateurs = new ProfilUtilisateurs();
+                    String idcritere = result.GetString(0);
+                    String idvaleur;
+                    try { idvaleur = result.GetDecimal(1).ToString(); } catch { idvaleur = ""; }
+                    profilUtilisateurs.CreeProfil(idcritere, idvaleur);
+                    Prof.Add(profilUtilisateurs);
+                }
+                result.Close();
+                return Prof;
+            }
+            //Retourne le message d'erreur SQL
+            catch
+            {
+                List<ProfilUtilisateurs> Prof = new List<ProfilUtilisateurs>();
+                return Prof;
+
+            }
+            //Fermeture de la connexion
+            finally
+            {
+                this.ConnexionClose();
+            }
+        }
+
         public List<ProduitRecos> SelectProduitRecommande(string ID)
         {
             ProduitRecos produitRecommande = new ProduitRecos();
             try
             {
-               
+
                 string sqlRecommande =
             "select F.id_famille, P.id_produit,P.product_name, C.id_nutriment, C.valeur"
             + " from compo_nutriment C, famille_produit_main_categorie F, produit P"
             + " where P.id_produit = C.id_produit"
             + " and C.id_produit = F.ID_produit"
-            + " and  F.ID_famille = '" + SelectLibFamille(ID) + "'" 
-            + " and P.image_small_url <> ''"
-            + " order by P.id_produit;";
-                /*+ "    and"
-                + "    exists(select * from compo_nutriment"
-                + "           WHERE"
-                + "          id_produit = P.id_produit"
+            + " and  F.ID_famille = '" + SelectLibFamille(ID) + "'"
+            + " and P.image_small_url <> ''";
+
+
+                List <ProfilUtilisateurs> ListValeurUtilisateur = new List<ProfilUtilisateurs>();
+
+                ListValeurUtilisateur = SelectValReco();
+
+                foreach (ProfilUtilisateurs resultat in ListValeurUtilisateur)
+                {
+                sqlRecommande += " id_nutriment = '"+ resultat.GetidCritere()+ "'"
                 + "            and"
-                + "            id_nutriment = 'saturated_fat_100g'"
-                + "            and"
-                + "            valeur < 22)"
-                + "    AND"
-                + "    exists(select * from compo_nutriment"
-                + "           WHERE"
-                + "            id_produit = P.id_produit"
-                + "            and"
-                + "            id_nutriment = 'sugars_100g'"
-                + "            and"
-                + "             valeur < 36)"*/
+                + "            valeur < "+resultat.GetidValeur().Replace(',','.')+")"
+                +             " or  ";
+                }
+               //sqlRecommande -= "or";
+
+               sqlRecommande += " order by P.id_produit;";
 
                 this.ConnexionOpen();
                 SqliteCommand commandaReco = new SqliteCommand(sqlRecommande, connexion);
