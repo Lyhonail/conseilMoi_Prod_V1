@@ -315,8 +315,10 @@ namespace conseilMoi.Resources.MaBase
                     String id_nutriment = result_recherche_nutriment.GetString(2);
                     //decimal valeur_profil = 10;
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
-                    String ValInter = result_recherche_nutriment.GetString(4).Replace('.', ',');
-                    decimal valeur_produit = decimal.Parse(ValInter);
+                    //String ValInter = result_recherche_nutriment.GetString(4).Replace('.', ',');
+                    // decimal valeur_produit = decimal.Parse(ValInter);
+                    decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
+
                     //decimal valeur_produit = 10;
                      decimal vert = result_recherche_nutriment.GetDecimal(5);
                     //decimal vert = 10;
@@ -544,7 +546,7 @@ namespace conseilMoi.Resources.MaBase
                 sqlRecommande = sqlRecommande.Substring(0, sqlRecommande.Length - 2);
 
 
-               sqlRecommande += " order by P.id_produit;";
+               sqlRecommande += " order by P.id_produit LIMIT 30;";
 
                 this.ConnexionOpen();
                 SqliteCommand commandaReco = new SqliteCommand(sqlRecommande, connexion);

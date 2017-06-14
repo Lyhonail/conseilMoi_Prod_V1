@@ -28,6 +28,7 @@ namespace conseilMoi
         //List<ProduitRecos> lstSource = new List<ProduitRecos>();
         MaBase db1 = new MaBase();
         int feu = 0;
+        int feuNutriment = 0;
         
         string IDproduit;
 
@@ -173,29 +174,27 @@ namespace conseilMoi
                     if (n.GetIdNutriment() == "") { txtInfoNutriment.Text = "Nutriments compatibles"; }
                     else
                     {
-                        decimal valeur_produit = n.GetValeurProduit();
-                        decimal valeur_profil = n.GetValeurProfil();
-                        decimal seuil_vert = n.GetVert();
-                        decimal seuil_orange = n.GetOrange();
+                            decimal valeur_produit = n.GetValeurProduit();
+                            decimal valeur_profil = n.GetValeurProfil();
+                            decimal seuil_vert = n.GetVert();
+                            decimal seuil_orange = n.GetOrange();
 
-                        
-                        decimal maxVert = valeur_profil * (1+seuil_vert);
-                        decimal maxOrange = valeur_profil * (1+seuil_orange);
+                            decimal maxVert = valeur_produit * (1 + seuil_vert);
+                            decimal maxOrange = valeur_produit * (1 + seuil_orange);
 
-                        //txtNutrimentList.Text += n.GetIdNutriment() + " ";
+                            //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                        if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité ";  }
-                        if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité ";  }
-                        if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité";  }
+                            if (valeur_profil > maxOrange && feu == 0) { feu = 0; }
+                            if (valeur_profil > valeur_produit && valeur_profil <= maxOrange && feu == 0) { feu = 1; }
+                            if (valeur_profil <= valeur_produit && feu < 2) { feu = 2; }
 
                             //Conditions pour les impacts
-                            if (valeur_produit <= maxVert) { n.SetImpact("Faible"); }
-                            if (valeur_produit > maxVert && valeur_produit <= maxOrange) { n.SetImpact("Moyen"); }
-                            if (valeur_produit > maxOrange) { n.SetImpact("Important"); }
+                            if (valeur_profil > maxOrange) { n.SetImpact("Faible"); if (feuNutriment <= 0) { feuNutriment = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité "; } }
+                            if (valeur_profil > valeur_produit && valeur_profil <= maxOrange) { n.SetImpact("Moyen"); if (feuNutriment <= 1) { feuNutriment = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; } }
+                            if (valeur_profil <= valeur_produit) { n.SetImpact("Important"); if (feuNutriment <= 2) { feuNutriment = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; } }
 
-
-                            }
-                }
+                        }
+                    }
 
                 catch
                 {
@@ -214,7 +213,7 @@ namespace conseilMoi
                
                //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
                LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
-                /*
+                
               //Je récupère l'historique dans la base de données
               List<ProduitRecos> listeProduitReco = db.SelectProduitRecommande(IDproduit);
 
@@ -239,7 +238,7 @@ namespace conseilMoi
                     textView11.SetTextSize(ComplexUnitType.Dip, 22);
                     textView11.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
-                  LN.AddView(textView11, param11);
+                 // LN.AddView(textView11, param11);
 
                     TextView textView21 = new TextView(this) { Id = 2 };
                     textView21.Text = pr.GetidProduit();
@@ -249,11 +248,11 @@ namespace conseilMoi
                     textView21.SetTextSize(ComplexUnitType.Dip, 15);
                     textView21.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
-                  LN.AddView(textView21, param21);
+                //  LN.AddView(textView21, param21);
 
                     TextView textView31 = new TextView(this) { Id = 3 };
                     textView31.Text = pr.GetproductName();
-                    var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .6f);
                     param31.SetMargins(5, 0, 0, 0);
                     textView31.SetTextColor(Color.Black);
                     textView31.SetTextSize(ComplexUnitType.Dip, 15);
@@ -283,7 +282,7 @@ namespace conseilMoi
 
                   /************************************Vincent********************************/
 
-                //  }
+                  }
 
 
 
@@ -382,20 +381,20 @@ namespace conseilMoi
                             decimal seuil_vert = n.GetVert();
                             decimal seuil_orange = n.GetOrange();
 
-                            //decimal taux = valeur_profil / valeur_produit;
-                            decimal maxVert = valeur_profil * (1+seuil_vert);
-                            decimal maxOrange = valeur_profil * (1+seuil_orange);
+                            decimal maxVert = valeur_produit * (1 + seuil_vert);
+                            decimal maxOrange = valeur_produit * (1 + seuil_orange);
 
-                           // txtNutrimentList.Text += n.GetIdNutriment() + " ";
+                            //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité ";  }
-                            if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
-                            if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; }
+                            if (valeur_profil > maxOrange && feu == 0) { feu = 0; }
+                            if (valeur_profil > valeur_produit && valeur_profil <= maxOrange && feu == 0) { feu = 1; }
+                            if (valeur_profil <= valeur_produit && feu < 2) { feu = 2; }
 
                             //Conditions pour les impacts
-                            if (valeur_produit <= maxVert) { n.SetImpact("Faible"); }
-                            if (valeur_produit > maxVert && valeur_produit <= maxOrange) { n.SetImpact("Moyen"); }
-                            if (valeur_produit > maxOrange) { n.SetImpact("Important"); }
+                            if (valeur_profil > maxOrange) { n.SetImpact("Faible"); if (feuNutriment <= 0) { feuNutriment = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité "; } }
+                            if (valeur_profil > valeur_produit && valeur_profil <= maxOrange) { n.SetImpact("Moyen"); if (feuNutriment <= 1) { feuNutriment = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; } }
+                            if (valeur_profil <= valeur_produit) { n.SetImpact("Important"); if (feuNutriment <= 2) { feuNutriment = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; } }
+
 
                         }
                     }
@@ -416,7 +415,7 @@ namespace conseilMoi
                 /************************************Vincent********************************/
                 //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
                 linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
-                /*
+                
                 //Je récupère l'historique dans la base de données
                 listeProduitReco = db.SelectProduitRecommande(IDproduit);
 
@@ -485,7 +484,7 @@ namespace conseilMoi
 
                     /************************************Vincent********************************/
 
-               // }
+                }
 
 
 
@@ -557,20 +556,20 @@ namespace conseilMoi
                             decimal seuil_vert = n.GetVert();
                             decimal seuil_orange = n.GetOrange();
 
-                            //decimal taux = valeur_profil / valeur_produit;
-                            decimal maxVert = valeur_profil * (1+seuil_vert);
-                            decimal maxOrange = valeur_profil * (1+seuil_orange);
+                            decimal maxVert = valeur_produit * (1 + seuil_vert);
+                            decimal maxOrange = valeur_produit * (1 + seuil_orange);
 
                             //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité "; }
-                            if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité ";  }
-                            if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; }
+                            if (valeur_profil > maxOrange && feu == 0) { feu = 0; }
+                            if (valeur_profil > valeur_produit && valeur_profil <= maxOrange && feu == 0) { feu = 1; }
+                            if (valeur_profil <= valeur_produit && feu < 2) { feu = 2; }
 
                             //Conditions pour les impacts
-                            if (valeur_produit <= maxVert) { n.SetImpact("Faible"); }
-                            if (valeur_produit > maxVert && valeur_produit <= maxOrange) { n.SetImpact("Moyen"); }
-                            if (valeur_produit > maxOrange) { n.SetImpact("Important"); }
+                            if (valeur_profil > maxOrange) { n.SetImpact("Faible"); if (feuNutriment <= 0) { feuNutriment = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité "; } }
+                            if (valeur_profil > valeur_produit && valeur_profil <= maxOrange) { n.SetImpact("Moyen"); if (feuNutriment <= 1) { feuNutriment = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; } }
+                            if (valeur_profil <= valeur_produit) { n.SetImpact("Important"); if (feuNutriment <= 2) { feuNutriment = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; } }
+
                         }
                     }
 
@@ -591,7 +590,7 @@ namespace conseilMoi
                 /************************************Vincent********************************/
                 //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
                  linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
-                /*
+                
                 //Je récupère l'historique dans la base de données
                 listeProduitReco = db.SelectProduitRecommande(IDproduit);
 
@@ -660,7 +659,7 @@ namespace conseilMoi
 
                     /************************************Vincent********************************/
 
-              //  }
+                }
 
             };
 
@@ -725,21 +724,20 @@ namespace conseilMoi
                             decimal seuil_vert = n.GetVert();
                             decimal seuil_orange = n.GetOrange();
 
-                            //decimal taux = valeur_profil / valeur_produit;
-                            decimal maxVert = valeur_profil * (1+seuil_vert);
-                            decimal maxOrange = valeur_profil * (1+seuil_orange);
+                            decimal maxVert = valeur_produit * (1 + seuil_vert);
+                            decimal maxOrange = valeur_produit * (1 + seuil_orange);
 
                             //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité ";  }
-                            if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité ";  }
-                            if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité";  }
+                            if (valeur_profil > maxOrange && feu == 0) { feu = 0;  }
+                            if (valeur_profil > valeur_produit && valeur_profil <= maxOrange && feu == 0) { feu = 1;  }
+                            if (valeur_profil <= valeur_produit && feu < 2) { feu = 2; }
 
                             //Conditions pour les impacts
-                            if (valeur_produit <= maxVert) { n.SetImpact("Faible"); }
-                            if (valeur_produit > maxVert && valeur_produit <= maxOrange) { n.SetImpact("Moyen"); }
-                            if (valeur_produit > maxOrange) { n.SetImpact("Important"); }
-                        }
+                            if (valeur_profil > maxOrange) { n.SetImpact("Faible"); if (feuNutriment <= 0) { feuNutriment = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité "; } }
+                            if (valeur_profil > valeur_produit && valeur_profil <= maxOrange) { n.SetImpact("Moyen"); if (feuNutriment <= 1) { feuNutriment = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; } }
+                            if (valeur_profil <= valeur_produit) { n.SetImpact("Important"); if (feuNutriment <= 2) { feuNutriment = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; } }
+                         }
                     }
 
                     catch
@@ -760,7 +758,7 @@ namespace conseilMoi
 
                 //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
                  linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
-                /*
+                
                 //Je récupère l'historique dans la base de données
                 listeProduitReco = db.SelectProduitRecommande(IDproduit);
 
@@ -829,7 +827,7 @@ namespace conseilMoi
 
                     /************************************Vincent********************************/
 
-              //  }
+               }
             };
 
         }//FIN DU ELSE PRODUIT NON TROUVE
