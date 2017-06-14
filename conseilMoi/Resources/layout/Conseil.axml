@@ -6,13 +6,15 @@
     android:background="@android:color/background_light">
 <!--AFFICHACHE TITRE -->
     <TextView
-        android:text="ConseilMoi"
+        android:text="CONSEILS"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".07"
         android:gravity="center"
-        android:textColor="#000000" />
+        android:textColor="#333333"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 <!--FIN AFFICHACHE TITRE -->
 <!-- AFFICHAGE DU CORP DE LA PAGE -->
     <LinearLayout

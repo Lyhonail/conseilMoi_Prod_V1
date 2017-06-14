@@ -95,18 +95,18 @@ namespace conseilMoi
 
 
             /* NOUVELLE VERSION LIONEL - AFFICHAGE DES GROUPES DE PROFIL - NOUVELLE VERSION LIONEL -- NOUVELLE VERSION LIONEL --   */
-            txtViewTitre.SetTextSize(ComplexUnitType.Dip, 26);
-            txtViewTitre.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+            //txtViewTitre.SetTextSize(ComplexUnitType.Dip, 26);
+           // txtViewTitre.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
 
-            btnProfilPERS.SetTextSize(ComplexUnitType.Dip, 24);
-            btnProfilPERS.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+            //btnProfilPERS.SetTextSize(ComplexUnitType.Dip, 24);
+           // btnProfilPERS.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
-            btnProfilFAML.SetTextSize(ComplexUnitType.Dip, 24);
-            btnProfilFAML.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+            //btnProfilFAML.SetTextSize(ComplexUnitType.Dip, 24);
+           // btnProfilFAML.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
-            btnProfilINVT.SetTextSize(ComplexUnitType.Dip, 24);
-            btnProfilINVT.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
+            //btnProfilINVT.SetTextSize(ComplexUnitType.Dip, 24);
+            //btnProfilINVT.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
             btnProfilPERS.SetBackgroundColor(Color.LightGray);
             btnProfilFAML.SetBackgroundColor(Color.DarkGray);

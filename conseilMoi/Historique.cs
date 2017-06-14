@@ -56,7 +56,7 @@ namespace conseilMoi
                 textView1.Text = h.GetNomProduit();
                 var param1 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .8f);
                 textView1.SetTextColor(Color.Black);
-                textView1.SetTextSize(ComplexUnitType.Px, 22);
+                textView1.SetTextSize(ComplexUnitType.Dip, 25);
                 textView1.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
                 LN.AddView(textView1, param1);
@@ -66,7 +66,7 @@ namespace conseilMoi
                 var param2 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                 param2.SetMargins(5, 0, 0, 0);
                 textView2.SetTextColor(Color.Black);
-                textView2.SetTextSize(ComplexUnitType.Px, 15);
+                textView2.SetTextSize(ComplexUnitType.Dip, 17);
                 textView2.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                 LN.AddView(textView2, param2);
