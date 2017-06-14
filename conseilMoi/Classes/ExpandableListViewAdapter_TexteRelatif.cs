@@ -72,6 +72,8 @@ namespace conseilMoi.Classes
             }
 
             TextView textViewItem = convertView.FindViewById<TextView>(Resource.Id.item);
+            textViewItem.SetTextSize(Android.Util.ComplexUnitType.Dip, 20);
+            //textViewItem.Gravity = GravityFlags.HorizontalGravityMask;
             string content = (string)GetChild(groupPosition, childPosition);
             textViewItem.Text = content;
             return convertView;
@@ -96,6 +98,7 @@ namespace conseilMoi.Classes
             }
             string textGroup = (string)GetGroup(groupPosition);
             TextView textViewGroup = convertView.FindViewById<TextView>(Resource.Id.group);
+            textViewGroup.SetTextSize(Android.Util.ComplexUnitType.Dip, 24);
             textViewGroup.Text = textGroup;
             return convertView;
         }

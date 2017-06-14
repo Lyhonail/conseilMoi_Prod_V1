@@ -83,20 +83,20 @@ namespace conseilMoi
             LinearNutriment = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchNutriment);
 
             btnProduitINV.Text = "Mes amis";
-            txtInfoAllergene.SetTextSize(ComplexUnitType.Dip, 18);
-            txtInfoNutriment.SetTextSize(ComplexUnitType.Dip, 18);
+            txtInfoAllergene.SetTextSize(ComplexUnitType.Dip, 15);
+            txtInfoNutriment.SetTextSize(ComplexUnitType.Dip, 15);
             txtIdProduit.SetTextSize(ComplexUnitType.Dip, 20);
-            txtInfoScan.SetTextSize(ComplexUnitType.Dip, 16);
+            txtInfoScan.SetTextSize(ComplexUnitType.Dip, 15);
             //var listNutriment = FindViewById<ExpandableListView>(Resource.Id.expandableListViewMatchAllNut);
 
 
 
             btnProduitPERS.SetBackgroundColor(Color.LightGray);
-            btnProduitFAM.SetBackgroundColor(Color.Gray);
-            btnProduitINV.SetBackgroundColor(Color.Gray);
+            btnProduitFAM.SetBackgroundColor(Color.DarkGray);
+            btnProduitINV.SetBackgroundColor(Color.DarkGray);
 
 
-            btnProduitPERS.SetTextColor(Color.Gray);
+            btnProduitPERS.SetTextColor(Color.DarkGray);
             btnProduitFAM.SetTextColor(Color.LightGray);
             btnProduitINV.SetTextColor(Color.LightGray);
 
@@ -184,7 +184,7 @@ namespace conseilMoi
 
                         //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                        if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité ";  }
+                        if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité ";  }
                         if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité ";  }
                         if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité";  }
 
@@ -210,11 +210,13 @@ namespace conseilMoi
             if (feu == 1) { imgFeu.SetImageResource(Resource.Drawable.feuOrangeSmall); }
             if (feu == 2) { imgFeu.SetImageResource(Resource.Drawable.feurougeSmall); }
 
-                //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
-                LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
-
-                //Je récupère l'historique dans la base de données
-                List<ProduitRecos> listeProduitReco = db.SelectProduitRecommande(IDproduit);
+                /************************************Vincent********************************/
+               
+               //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
+               LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
+                /*
+              //Je récupère l'historique dans la base de données
+              List<ProduitRecos> listeProduitReco = db.SelectProduitRecommande(IDproduit);
 
                 //Pour chaque produitReco présent, je l'affiche
                 foreach (ProduitRecos pr in listeProduitReco)
@@ -226,8 +228,8 @@ namespace conseilMoi
                     LN.SetBackgroundColor(Color.LightGray);
                     paramL.SetMargins(0, 0, 0, 5);
 
-                    //J'ajoute le LinearLayout
-                    linearLayout.AddView(LN, paramL);
+                  //J'ajoute le LinearLayout
+                  linearLayout.AddView(LN, paramL);
 
                     //Je créer le textView qui contient le nom du produit
                     TextView textView11 = new TextView(this) { Id = 1 };
@@ -237,7 +239,7 @@ namespace conseilMoi
                     textView11.SetTextSize(ComplexUnitType.Dip, 22);
                     textView11.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
-                    LN.AddView(textView11, param11);
+                  LN.AddView(textView11, param11);
 
                     TextView textView21 = new TextView(this) { Id = 2 };
                     textView21.Text = pr.GetidProduit();
@@ -247,7 +249,7 @@ namespace conseilMoi
                     textView21.SetTextSize(ComplexUnitType.Dip, 15);
                     textView21.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
-                    LN.AddView(textView21, param21);
+                  LN.AddView(textView21, param21);
 
                     TextView textView31 = new TextView(this) { Id = 3 };
                     textView31.Text = pr.GetproductName();
@@ -257,7 +259,7 @@ namespace conseilMoi
                     textView31.SetTextSize(ComplexUnitType.Dip, 15);
                     textView31.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
-                    LN.AddView(textView31, param31);
+                  LN.AddView(textView31, param31);
 
                     TextView textView41 = new TextView(this) { Id = 4 };
                     textView41.Text = pr.GetidNutriment();
@@ -267,7 +269,7 @@ namespace conseilMoi
                     textView41.SetTextSize(ComplexUnitType.Dip, 15);
                     textView41.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
-                    LN.AddView(textView41, param41);
+                  LN.AddView(textView41, param41);
 
                     TextView textView51 = new TextView(this) { Id = 5 };
                     textView51.Text = pr.GetidValeur();
@@ -277,17 +279,17 @@ namespace conseilMoi
                     textView51.SetTextSize(ComplexUnitType.Dip, 15);
                     textView51.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
-                    LN.AddView(textView51, param51);
+                  LN.AddView(textView51, param51);
 
-                    /************************************Vincent********************************/
+                  /************************************Vincent********************************/
 
-                }
+                //  }
 
 
 
                 //Verification si le produit est COMPLET
                 //le produit contient des allergenes, il a donc été complété par open fact food
-                try 
+                try
                 {
                 List<String> testComplet = produits.GetListAllergeneDuProduit();
                     if (testComplet[0] == "") { }
@@ -327,10 +329,10 @@ namespace conseilMoi
                 LinearAllergene.RemoveAllViews();
                 LinearNutriment.RemoveAllViews();
                 btnProduitPERS.SetBackgroundColor(Color.LightGray);
-                btnProduitFAM.SetBackgroundColor(Color.Gray);
-                btnProduitINV.SetBackgroundColor(Color.Gray);
+                btnProduitFAM.SetBackgroundColor(Color.DarkGray);
+                btnProduitINV.SetBackgroundColor(Color.DarkGray);
 
-                btnProduitPERS.SetTextColor(Color.Gray);
+                btnProduitPERS.SetTextColor(Color.DarkGray);
                 btnProduitFAM.SetTextColor(Color.LightGray);
                 btnProduitINV.SetTextColor(Color.LightGray);
 
@@ -380,13 +382,13 @@ namespace conseilMoi
                             decimal seuil_vert = n.GetVert();
                             decimal seuil_orange = n.GetOrange();
 
-                            decimal taux = valeur_profil / valeur_produit;
+                            //decimal taux = valeur_profil / valeur_produit;
                             decimal maxVert = valeur_profil * (1+seuil_vert);
                             decimal maxOrange = valeur_profil * (1+seuil_orange);
 
                            // txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité ";  }
+                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité ";  }
                             if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité "; }
                             if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; }
 
@@ -414,7 +416,7 @@ namespace conseilMoi
                 /************************************Vincent********************************/
                 //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
                 linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
-
+                /*
                 //Je récupère l'historique dans la base de données
                 listeProduitReco = db.SelectProduitRecommande(IDproduit);
 
@@ -483,7 +485,7 @@ namespace conseilMoi
 
                     /************************************Vincent********************************/
 
-                }
+               // }
 
 
 
@@ -496,12 +498,12 @@ namespace conseilMoi
             {
                 LinearAllergene.RemoveAllViews();
                 LinearNutriment.RemoveAllViews();
-                btnProduitPERS.SetBackgroundColor(Color.Gray);
+                btnProduitPERS.SetBackgroundColor(Color.DarkGray);
                 btnProduitFAM.SetBackgroundColor(Color.LightGray);
-                btnProduitINV.SetBackgroundColor(Color.Gray);
+                btnProduitINV.SetBackgroundColor(Color.DarkGray);
 
                 btnProduitPERS.SetTextColor(Color.LightGray);
-                btnProduitFAM.SetTextColor(Color.Gray);
+                btnProduitFAM.SetTextColor(Color.DarkGray);
                 btnProduitINV.SetTextColor(Color.LightGray);
 
                 feu = 0;
@@ -555,14 +557,13 @@ namespace conseilMoi
                             decimal seuil_vert = n.GetVert();
                             decimal seuil_orange = n.GetOrange();
 
-                            decimal taux = valeur_profil / valeur_produit;
+                            //decimal taux = valeur_profil / valeur_produit;
                             decimal maxVert = valeur_profil * (1+seuil_vert);
                             decimal maxOrange = valeur_profil * (1+seuil_orange);
 
                             //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; n.SetImpact("Faible"); }
-                            if (valeur_produit <= maxVert) { txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité ";  }
+                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité "; }
                             if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité ";  }
                             if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité"; }
 
@@ -590,7 +591,7 @@ namespace conseilMoi
                 /************************************Vincent********************************/
                 //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
                  linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
-
+                /*
                 //Je récupère l'historique dans la base de données
                 listeProduitReco = db.SelectProduitRecommande(IDproduit);
 
@@ -659,7 +660,7 @@ namespace conseilMoi
 
                     /************************************Vincent********************************/
 
-                }
+              //  }
 
             };
 
@@ -668,13 +669,13 @@ namespace conseilMoi
             {
                 LinearAllergene.RemoveAllViews();
                 LinearNutriment.RemoveAllViews();
-                btnProduitPERS.SetBackgroundColor(Color.Gray);
-                btnProduitFAM.SetBackgroundColor(Color.Gray);
+                btnProduitPERS.SetBackgroundColor(Color.DarkGray);
+                btnProduitFAM.SetBackgroundColor(Color.DarkGray);
                 btnProduitINV.SetBackgroundColor(Color.LightGray);
 
                 btnProduitPERS.SetTextColor(Color.LightGray);
                 btnProduitFAM.SetTextColor(Color.LightGray);
-                btnProduitINV.SetTextColor(Color.Gray);
+                btnProduitINV.SetTextColor(Color.DarkGray);
 
                 feu = 0;
                 IDTypeProfil = "INVT";
@@ -702,10 +703,10 @@ namespace conseilMoi
 
                 try
                 {
-                    if (ListAllergeneInvite[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergene compatibles"; }
+                    if (ListAllergeneInvite[0].GetIdAlergene() == "") { txtInfoAllergene.Text = "Allergenes compatibles"; }
                     else { txtInfoAllergene.Text = "Allergenes incompatibles !"; feu = 2; ChargerListeAllergene(ListAllergeneInvite); }
                 }
-                catch { txtInfoAllergene.Text = "Allergene compatibles"; }
+                catch { txtInfoAllergene.Text = "Allergenes compatibles"; }
                 /* FIN VERIFIE LES ALLERGENES */
 
                 /* VERIFIE LES NUTRIMENTS  */
@@ -724,13 +725,13 @@ namespace conseilMoi
                             decimal seuil_vert = n.GetVert();
                             decimal seuil_orange = n.GetOrange();
 
-                            decimal taux = valeur_profil / valeur_produit;
+                            //decimal taux = valeur_profil / valeur_produit;
                             decimal maxVert = valeur_profil * (1+seuil_vert);
                             decimal maxOrange = valeur_profil * (1+seuil_orange);
 
                             //txtNutrimentList.Text += n.GetIdNutriment() + " ";
 
-                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible, mais en faible quantité ";  }
+                            if (valeur_produit <= maxVert && feu == 0) { feu = 0; txtInfoNutriment.Text = "Nutriment incompatible en faible quantité ";  }
                             if (valeur_produit > maxVert && valeur_produit <= maxOrange && feu == 0) { feu = 1; txtInfoNutriment.Text = "Nutriment incompatible en moyenne quantité ";  }
                             if (valeur_produit > maxOrange && feu < 2) { feu = 2; txtInfoNutriment.Text = "Nutriment incompatible en grande quantité";  }
 
@@ -756,9 +757,10 @@ namespace conseilMoi
                 if (feu == 2) { imgFeu.SetImageResource(Resource.Drawable.feurougeSmall); }
 
                 /************************************Vincent********************************/
+
                 //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
                  linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
-
+                /*
                 //Je récupère l'historique dans la base de données
                 listeProduitReco = db.SelectProduitRecommande(IDproduit);
 
@@ -827,7 +829,7 @@ namespace conseilMoi
 
                     /************************************Vincent********************************/
 
-                }
+              //  }
             };
 
         }//FIN DU ELSE PRODUIT NON TROUVE

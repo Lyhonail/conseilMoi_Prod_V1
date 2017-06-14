@@ -1807,8 +1807,8 @@ namespace conseilMoi
 			// aapt resource value: 0x7f0c0067
 			public const int menuHistorique = 2131492967;
 			
-			// aapt resource value: 0x7f0c008e
-			public const int menuProduitInfos = 2131493006;
+			// aapt resource value: 0x7f0c008f
+			public const int menuProduitInfos = 2131493007;
 			
 			// aapt resource value: 0x7f0c00a4
 			public const int menuProfil = 2131493028;
@@ -1966,8 +1966,8 @@ namespace conseilMoi
 			// aapt resource value: 0x7f0c0078
 			public const int textViewIdNutriment = 2131492984;
 			
-			// aapt resource value: 0x7f0c008f
-			public const int textViewIdProduit = 2131493007;
+			// aapt resource value: 0x7f0c008e
+			public const int textViewIdProduit = 2131493006;
 			
 			// aapt resource value: 0x7f0c0053
 			public const int textViewIdProduitAv = 2131492947;

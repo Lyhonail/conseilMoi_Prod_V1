@@ -57,7 +57,11 @@ namespace conseilMoi
 
 
             var txtIdProduit = FindViewById<TextView>(Resource.Id.textViewIdProduitAv);
-
+            /*
+            String test = "test or";
+            test = test.Substring(0, test.Length - 2);
+            txtIdProduit.Text = test;
+            */
 
 
             btnMajBase.Click += delegate
@@ -81,7 +85,7 @@ namespace conseilMoi
 
             Produits produits = new Produits();
             produits = db.SelectIdProduit("3250390503101", "PERS");
-            txtIdProduit.Text = produits.GetId_Produit();
+           // txtIdProduit.Text = produits.GetId_Produit();
 
 
 
