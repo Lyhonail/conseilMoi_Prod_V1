@@ -31,7 +31,15 @@ namespace conseilMoi.Classes
         }
         public String GetidValeur()
         {
-            return id_valeur;
+            if(id_valeur == "")
+            {
+               return "0";
+            }
+            else
+            {
+                return id_valeur;
+            }
+
         }
     }
 

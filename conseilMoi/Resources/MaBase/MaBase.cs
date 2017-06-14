@@ -522,10 +522,7 @@ namespace conseilMoi.Resources.MaBase
                 string sqlRecommande =
             "select F.id_famille, P.id_produit,P.product_name, C.id_nutriment, C.valeur"
             + " from compo_nutriment C, famille_produit_main_categorie F, produit P"
-            + " where P.id_produit = C.id_produit"
-            + " and C.id_produit = F.ID_produit"
-            + " and  F.ID_famille = '" + SelectLibFamille(ID) + "'"
-            + " and P.image_small_url <> ''";
+            + " where ";
 
 
                 List <ProfilUtilisateurs> ListValeurUtilisateur = new List<ProfilUtilisateurs>();
@@ -534,12 +531,18 @@ namespace conseilMoi.Resources.MaBase
 
                 foreach (ProfilUtilisateurs resultat in ListValeurUtilisateur)
                 {
-                sqlRecommande += " id_nutriment = '"+ resultat.GetidCritere()+ "'"
+                sqlRecommande += " P.id_produit = C.id_produit"
+            + " and C.id_produit = F.ID_produit"
+            + " and  F.ID_famille = '" + SelectLibFamille(ID) + "'"
+            + " and P.image_small_url <> '' and id_nutriment = '"+ resultat.GetidCritere()+ "'"
                 + "            and"
-                + "            valeur < "+resultat.GetidValeur().Replace(',','.')+")"
-                +             " or  ";
+                + "            valeur < "+resultat.GetidValeur().Replace(',','.')
+                +             " or";
                 }
-               //sqlRecommande -= "or";
+                //sqlRecommande -= "or";
+                //string test = "or";
+                sqlRecommande = sqlRecommande.Substring(0, sqlRecommande.Length - 2);
+
 
                sqlRecommande += " order by P.id_produit;";
 

@@ -220,7 +220,7 @@ namespace conseilMoi
                 foreach (ProduitRecos pr in listeProduitReco)
                 {
                     //Je créer le LinearLayout qui contiendra la ligne
-                    LinearLayout LN = new LinearLayout(this) { Id = 10 };
+                    LinearLayout LN = new LinearLayout(this) { Id = 1000 };
                     var paramL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
                     LN.Orientation = Orientation.Horizontal;
                     LN.SetBackgroundColor(Color.LightGray);
@@ -232,19 +232,19 @@ namespace conseilMoi
                     //Je créer le textView qui contient le nom du produit
                     TextView textView11 = new TextView(this) { Id = 1 };
                     textView11.Text = pr.GetidFamille();
-                    var param11 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .8f);
+                    var param11 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     textView11.SetTextColor(Color.Black);
-                    textView11.SetTextSize(ComplexUnitType.Px, 22);
+                    textView11.SetTextSize(ComplexUnitType.Dip, 22);
                     textView11.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
 
                     LN.AddView(textView11, param11);
 
                     TextView textView21 = new TextView(this) { Id = 2 };
                     textView21.Text = pr.GetidProduit();
-                    var param21 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    var param21 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .3f);
                     param21.SetMargins(5, 0, 0, 0);
                     textView21.SetTextColor(Color.Black);
-                    textView21.SetTextSize(ComplexUnitType.Px, 15);
+                    textView21.SetTextSize(ComplexUnitType.Dip, 15);
                     textView21.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView21, param21);
@@ -254,7 +254,7 @@ namespace conseilMoi
                     var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param31.SetMargins(5, 0, 0, 0);
                     textView31.SetTextColor(Color.Black);
-                    textView31.SetTextSize(ComplexUnitType.Px, 15);
+                    textView31.SetTextSize(ComplexUnitType.Dip, 15);
                     textView31.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView31, param31);
@@ -264,7 +264,7 @@ namespace conseilMoi
                     var param41 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param41.SetMargins(5, 0, 0, 0);
                     textView41.SetTextColor(Color.Black);
-                    textView41.SetTextSize(ComplexUnitType.Px, 15);
+                    textView41.SetTextSize(ComplexUnitType.Dip, 15);
                     textView41.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView41, param41);
@@ -274,7 +274,7 @@ namespace conseilMoi
                     var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param51.SetMargins(5, 0, 0, 0);
                     textView51.SetTextColor(Color.Black);
-                    textView51.SetTextSize(ComplexUnitType.Px, 15);
+                    textView51.SetTextSize(ComplexUnitType.Dip, 15);
                     textView51.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                     LN.AddView(textView51, param51);

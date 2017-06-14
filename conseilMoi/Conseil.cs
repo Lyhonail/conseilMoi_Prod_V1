@@ -187,6 +187,11 @@ namespace conseilMoi
             List<string> groupI = new List<string>();
             groupI.Add("La loi applicable est la loi française. En cas de litige, le Tribunal de Toulouse, France est le seul compétent.");
 
+            List<string> groupJ = new List<string>();
+            groupJ.Add("Conseil'Moi met à disposition de l'utilisateur des profils type(Sportif, Femme enceinte, ...) contenant des critères alimentaires avec des valeurs standards pour une population moyenne.Ces critères ne peuvent être modifiés directement par l'utilisateur."
+            + "Pour obtenir un profil personnalisé qui prendra en compte votre age, poids, taille, activité physique, etc, vous pouvez contacter nos partenaires diététiciens nutritionnistes référencés sur l'application, qui vous délivreront votre profil personnalisé téléchargeable sur votre application Conseil'Moi.");
+
+            group.Add("Préambule:");
             group.Add("1.Disposition Générale");
             group.Add("2.Description du service");
             group.Add("3.Regle d'utilisation du service");
@@ -196,14 +201,15 @@ namespace conseilMoi
             group.Add("7.Propriété intellectuelle");
             group.Add("8.Loi applicable");
 
-            dicMyMap.Add(group[0], groupA);
-            dicMyMap.Add(group[1], groupB);
-            dicMyMap.Add(group[2], groupD);
-            dicMyMap.Add(group[3], groupE);
-            dicMyMap.Add(group[4], groupF);
-            dicMyMap.Add(group[5], groupG);
-            dicMyMap.Add(group[6], groupH);
-            dicMyMap.Add(group[7], groupI);
+            dicMyMap.Add(group[0], groupJ);
+            dicMyMap.Add(group[1], groupA);
+            dicMyMap.Add(group[2], groupB);
+            dicMyMap.Add(group[3], groupD);
+            dicMyMap.Add(group[4], groupE);
+            dicMyMap.Add(group[5], groupF);
+            dicMyMap.Add(group[6], groupG);
+            dicMyMap.Add(group[7], groupH);
+            dicMyMap.Add(group[8], groupI);
 
             mAdapter = new ExpandableListViewAdapter_TexteRelatif(this, group, dicMyMap);
         }
