@@ -315,8 +315,10 @@ namespace conseilMoi.Resources.MaBase
                     String id_nutriment = result_recherche_nutriment.GetString(2);
                     //decimal valeur_profil = 10;
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
-                    String ValInter = result_recherche_nutriment.GetString(4).Replace('.', ',');
-                    decimal valeur_produit = decimal.Parse(ValInter);
+                    //String ValInter = result_recherche_nutriment.GetString(4).Replace('.', ',');
+                    // decimal valeur_produit = decimal.Parse(ValInter);
+                    decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
+
                     //decimal valeur_produit = 10;
                      decimal vert = result_recherche_nutriment.GetDecimal(5);
                     //decimal vert = 10;
@@ -518,11 +520,14 @@ namespace conseilMoi.Resources.MaBase
             ProduitRecos produitRecommande = new ProduitRecos();
             try
             {
-
+                
                 string sqlRecommande =
             "select F.id_famille, P.id_produit,P.product_name, C.id_nutriment, C.valeur"
             + " from compo_nutriment C, famille_produit_main_categorie F, produit P"
-            + " where ";
+            + " where P.id_produit = C.id_produit"
+            + " and C.id_produit = F.ID_produit"
+            + " and  F.ID_famille = '" + SelectLibFamille(ID) + "'"
+            + " and P.image_small_url <> '' ";
 
 
                 List <ProfilUtilisateurs> ListValeurUtilisateur = new List<ProfilUtilisateurs>();
@@ -531,20 +536,30 @@ namespace conseilMoi.Resources.MaBase
 
                 foreach (ProfilUtilisateurs resultat in ListValeurUtilisateur)
                 {
-                sqlRecommande += " P.id_produit = C.id_produit"
-            + " and C.id_produit = F.ID_produit"
-            + " and  F.ID_famille = '" + SelectLibFamille(ID) + "'"
-            + " and P.image_small_url <> '' and id_nutriment = '"+ resultat.GetidCritere()+ "'"
-                + "            and"
-                + "            valeur < "+resultat.GetidValeur().Replace(',','.')
-                +             " or";
+                    // si c'est un allergene, on cherche dans la table compo allergene
+                    if (this.EstUnAllergene(resultat.GetidCritere())) {
+                        sqlRecommande += "  and  EXISTS  ( " +
+                            " select id_produit from compo_allergene where id_produit " +
+                            " NOT IN ( select id_produit from compo_allergene where id_allergene ='" + resultat.GetidCritere() + "' ) AND id_produit = P.id_produit ) ";
+                    }
+                    //Sinon on cherche dans la table compo nutriment
+                    else
+                    {
+                        sqlRecommande += "  and  EXISTS  ( " +
+                            " select id_produit from compo_nutriment where id_produit " +
+                            " NOT IN ( select id_produit from compo_nutriment where id_nutriment ='" + resultat.GetidCritere() + "' ) AND id_produit = P.id_produit" +
+                            " UNION " +
+                            "SELECT id_produit FROM compo_nutriment WHERE "
+                    + " id_produit = P.id_produit AND id_nutriment = '" + resultat.GetidCritere() + "'"
+                    + " and  valeur <= " + resultat.GetidValeur().Replace(',', '.') + ") ";
+                    }
                 }
                 //sqlRecommande -= "or";
                 //string test = "or";
-                sqlRecommande = sqlRecommande.Substring(0, sqlRecommande.Length - 2);
+                //sqlRecommande = sqlRecommande.Substring(0, sqlRecommande.Length - 2);
 
 
-               sqlRecommande += " order by P.id_produit;";
+               sqlRecommande += "  group by P.id_produit order by P.id_produit LIMIT 40;";
 
                 this.ConnexionOpen();
                 SqliteCommand commandaReco = new SqliteCommand(sqlRecommande, connexion);
