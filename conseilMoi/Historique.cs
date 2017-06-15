@@ -66,7 +66,7 @@ namespace conseilMoi
                 var param2 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                 param2.SetMargins(5, 0, 0, 0);
                 textView2.SetTextColor(Color.Black);
-                textView2.SetTextSize(ComplexUnitType.Dip, 17);
+                textView2.SetTextSize(ComplexUnitType.Dip, 14);
                 textView2.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
                 LN.AddView(textView2, param2);

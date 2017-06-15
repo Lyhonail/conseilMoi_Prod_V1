@@ -217,6 +217,10 @@ namespace conseilMoi
               //Je récupère l'historique dans la base de données
               List<ProduitRecos> listeProduitReco = db.SelectProduitRecommande(IDproduit);
 
+                /*  PREMIERE LIGNE DU TABLEAU : TITRE AVEC PRODUITS CONSEILLES ET RAYON  */
+
+                /* FIN PREMIERE LIGNE DU TABLEAU   */
+
                 //Pour chaque produitReco présent, je l'affiche
                 foreach (ProduitRecos pr in listeProduitReco)
                 {
@@ -225,7 +229,7 @@ namespace conseilMoi
                     var paramL = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent);
                     LN.Orientation = Orientation.Horizontal;
                     LN.SetBackgroundColor(Color.LightGray);
-                    paramL.SetMargins(0, 0, 0, 5);
+                    paramL.SetMargins(15, 0, 15, 5);
 
                   //J'ajoute le LinearLayout
                   linearLayout.AddView(LN, paramL);
@@ -252,33 +256,43 @@ namespace conseilMoi
 
                     TextView textView31 = new TextView(this) { Id = 3 };
                     textView31.Text = pr.GetproductName();
-                    var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .6f);
-                    param31.SetMargins(5, 0, 0, 0);
+                    var param31 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .85f);
+                    param31.SetMargins(15, 0, 0, 0);
                     textView31.SetTextColor(Color.Black);
-                    textView31.SetTextSize(ComplexUnitType.Dip, 15);
+                    textView31.SetTextSize(ComplexUnitType.Dip, 17);
                     textView31.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+
+                    textView31.Click += delegate
+                    {
+                        //Intent garde la variable ID Produit et la transmet à l'activité Produit
+                        Intent produit = new Intent(this, typeof(Produit));
+                        //produit.PutExtra("IDproduit", "2000000010281");
+                        produit.PutExtra("IDproduit", pr.GetidProduit());
+                        StartActivity(produit);
+                    };
 
                   LN.AddView(textView31, param31);
 
                     TextView textView41 = new TextView(this) { Id = 4 };
                     textView41.Text = pr.GetidNutriment();
                     var param41 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
-                    param41.SetMargins(5, 0, 0, 0);
+                    param41.SetMargins(15, 0, 15, 0);
                     textView41.SetTextColor(Color.Black);
-                    textView41.SetTextSize(ComplexUnitType.Dip, 15);
+                    textView41.SetTextSize(ComplexUnitType.Dip, 17);
                     textView41.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
+                    textView41.Gravity = GravityFlags.Right;
 
                   LN.AddView(textView41, param41);
 
                     TextView textView51 = new TextView(this) { Id = 5 };
                     textView51.Text = pr.GetidValeur();
-                    var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
+                    var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .15f);
                     param51.SetMargins(5, 0, 0, 0);
                     textView51.SetTextColor(Color.Black);
                     textView51.SetTextSize(ComplexUnitType.Dip, 15);
                     textView51.SetTypeface(Typeface.Default, TypefaceStyle.Normal);
 
-                  LN.AddView(textView51, param51);
+                 // LN.AddView(textView51, param51);
 
                   /************************************Vincent********************************/
 
