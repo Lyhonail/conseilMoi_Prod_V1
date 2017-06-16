@@ -32,6 +32,18 @@ namespace conseilMoi
             db.ExistBase(this);
             SetContentView(Resource.Layout.Historique);
 
+            /* DEFINITON DES BOUTON IMAGE MENU */
+            var imgProfil = FindViewById<ImageView>(Resource.Id.imageViewHistoriqueProfil);
+            var imgHistorique = FindViewById<ImageView>(Resource.Id.imageViewHistoriqueHistorique);
+            var imgConseil = FindViewById<ImageView>(Resource.Id.imageViewHistoriqueConseil);
+            var imgEvertissement = FindViewById<ImageView>(Resource.Id.imageViewHistoriqueAvertissement);
+
+            imgProfil.SetImageResource(Resource.Drawable.profiln);
+            imgHistorique.SetImageResource(Resource.Drawable.histoc);
+            imgConseil.SetImageResource(Resource.Drawable.conseiln);
+            imgEvertissement.SetImageResource(Resource.Drawable.avertn);
+            /* DEFINITON DES BOUTON IMAGE MENU */
+
             //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
             LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.listView);
 

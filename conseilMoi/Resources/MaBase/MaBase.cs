@@ -198,7 +198,11 @@ namespace conseilMoi.Resources.MaBase
             String IdTpA = "";
             String IdTpN = "";
 
-            if (IDTP == "PERS") { IdTpA = "'PERS'"; }
+            if (IDTP == "PERS") {
+                IdTpA = "'PERS'" ;
+
+
+            }
             if (IDTP == "FAML")
             {
                 IdTpA = "'FAML' " +
@@ -284,18 +288,67 @@ namespace conseilMoi.Resources.MaBase
 
                 //Recherche d'allergène qui matchent avec les critères du profil
                 string sql_recherche_allergene =
-                    " select PU.ID_typeProfil, PU.ID_profil, PU.ID_critere " +
-                    " from profil_utilisateur PU, compo_allergene CA " +
-                    " where PU.ID_critere = CA.ID_allergene " +
-                    " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil="+IdTpA+" ; ";
+                        " select PU.ID_typeProfil, PU.ID_profil, CAT.ID_allergene "+
+                        " from profil_utilisateur PU, compo_allergene CA,   allergene_par_cat CAT "+
+                        " where CAT.ID_allergene = CA.ID_allergene " +
+                        " AND CAT.ID_allergene = PU.ID_critere " +
+                        " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil='PERS' "+
+                        " or " +
+                         " CA.id_produit = '" + p + "' AND PU.ID_typeProfil = 'PERS'" +
+                         " AND CAT.ID_cat_allergene = PU.ID_critere" +
+                         " AND CA.ID_allergene = CAT.ID_allergene ";
+
+                if (IDTP == "FAML")
+                {
+                    sql_recherche_allergene += " UNION "+
+                        " select PU.ID_typeProfil, PU.ID_profil, CAT.ID_allergene " +
+                        " from profil_utilisateur PU, compo_allergene CA,   allergene_par_cat CAT " +
+                        " where CAT.ID_allergene = CA.ID_allergene " +
+                        " AND CAT.ID_allergene = PU.ID_critere " +
+                        " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil='FAML' " +
+                        " or " +
+                         " CA.id_produit = '" + p + "' AND PU.ID_typeProfil = 'FAML'" +
+                         " AND CAT.ID_cat_allergene = PU.ID_critere" +
+                         " AND CA.ID_allergene = CAT.ID_allergene ";
+                }
+
+                if ( IDTP == "INVT")
+                {
+                    sql_recherche_allergene += " UNION " +
+                        " select PU.ID_typeProfil, PU.ID_profil, CAT.ID_allergene " +
+                        " from profil_utilisateur PU, compo_allergene CA,   allergene_par_cat CAT " +
+                        " where CAT.ID_allergene = CA.ID_allergene " +
+                        " AND CAT.ID_allergene = PU.ID_critere " +
+                        " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil='FAML' " +
+                        " or " +
+                         " CA.id_produit = '" + p + "' AND PU.ID_typeProfil = 'FAML'" +
+                         " AND CAT.ID_cat_allergene = PU.ID_critere" +
+                         " AND CA.ID_allergene = CAT.ID_allergene ";
+                    sql_recherche_allergene += " UNION " +
+                        " select PU.ID_typeProfil, PU.ID_profil, CAT.ID_allergene " +
+                        " from profil_utilisateur PU, compo_allergene CA,   allergene_par_cat CAT " +
+                        " where CAT.ID_allergene = CA.ID_allergene " +
+                        " AND CAT.ID_allergene = PU.ID_critere " +
+                        " AND CA.id_produit = '" + p + "' AND PU.ID_typeProfil='INVT' " +
+                        " or " +
+                         " CA.id_produit = '" + p + "' AND PU.ID_typeProfil = 'INVT'" +
+                         " AND CAT.ID_cat_allergene = PU.ID_critere" +
+                         " AND CA.ID_allergene = CAT.ID_allergene ";
+                }
+
+
                 SqliteCommand command_recherche_allergene = new SqliteCommand(sql_recherche_allergene, connexion);
                 SqliteDataReader result_recherche_allergene = command_recherche_allergene.ExecuteReader();
                 while (result_recherche_allergene.Read())
                 {
-                    produits.AddCheckAllergene(result_recherche_allergene.GetString(2).ToString(),
+                    produits.AddCheckAllergene(result_recherche_allergene.GetInt32(2).ToString(),
                                                result_recherche_allergene.GetString(0).ToString(),
                                                result_recherche_allergene.GetString(1).ToString());
                 }
+                //recherches d'allergenes par catégorie
+                string sqlAllergeneParCat = "";
+
+
                 //Fin recherche d'allergene
                 result_recherche_allergene.Close();
                 /* FIN MATCH ALLERGENE */
@@ -317,7 +370,7 @@ namespace conseilMoi.Resources.MaBase
                     decimal valeur_profil = result_recherche_nutriment.GetDecimal(3);
                     //String ValInter = result_recherche_nutriment.GetString(4).Replace('.', ',');
                     // decimal valeur_produit = decimal.Parse(ValInter);
-                    decimal valeur_produit = decimal.Parse(result_recherche_nutriment.GetString(4));
+                    decimal valeur_produit = result_recherche_nutriment.GetDecimal(4);
 
                     //decimal valeur_produit = 10;
                      decimal vert = result_recherche_nutriment.GetDecimal(5);
@@ -347,8 +400,9 @@ namespace conseilMoi.Resources.MaBase
                 return produits;
             }
             //Retourne le message d'erreur SQL
-            catch
+            catch (SqliteException ex)
             {
+                String t = ex.Message;
                 //pas de résultat, on va donc créer un produit vide qui renvoie l'information "aucun produit"
                 Produits produits = new Produits();
                 produits.SetProduits("000", "erreur", "erreur");
@@ -540,7 +594,12 @@ namespace conseilMoi.Resources.MaBase
                     if (this.EstUnAllergene(resultat.GetidCritere())) {
                         sqlRecommande += "  and  EXISTS  ( " +
                             " select id_produit from compo_allergene where id_produit " +
-                            " NOT IN ( select id_produit from compo_allergene where id_allergene ='" + resultat.GetidCritere() + "' ) AND id_produit = P.id_produit ) ";
+                            " NOT IN ( select id_produit from compo_allergene where id_allergene ='" + resultat.GetidCritere() + "' OR ID_allergene IN (select ID_allergene from allergene_par_cat where ID_cat_allergene in (select ID_cat_allergene from allergene_par_cat where ID_allergene = " + resultat.GetidCritere() + " ) ) ) AND id_produit = P.id_produit " +
+                            "        " +
+                           
+                           " ) "  ;
+
+
                     }
                     //Sinon on cherche dans la table compo nutriment
                     else
@@ -574,7 +633,11 @@ namespace conseilMoi.Resources.MaBase
                      long num = long.Parse(idproduit);
                      String productname = result.GetString(2);
                      String idnutriment = result.GetString(3);
-                     String valeur = result.GetString(4); 
+                    //decimal valeur = result.GetDecimal(4);
+                    float val = 0;
+                    try { val = result.GetFloat(4); } catch { val = 0.1f; }
+                    decimal valeur = (decimal)val;
+
                      produitRecommande.SetProduitsReco(idfamille, idproduit,productname,idfamille,valeur);
                      ProduitRec.Add(produitRecommande);
                  }

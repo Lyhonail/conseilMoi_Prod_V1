@@ -57,6 +57,18 @@ namespace conseilMoi
             Button btnProfilFAML = FindViewById<Button>(Resource.Id.buttonProfilFAML);
             Button btnProfilINVT = FindViewById<Button>(Resource.Id.buttonProfilINVT);
 
+            /* DEFINITON DES BOUTON IMAGE MENU */
+            var imgProfil = FindViewById<ImageView>(Resource.Id.imageViewProfilProfil);
+            var imgHistorique = FindViewById<ImageView>(Resource.Id.imageViewProfilHistorique);
+            var imgConseil = FindViewById<ImageView>(Resource.Id.imageViewProfilConseil);
+            var imgEvertissement = FindViewById<ImageView>(Resource.Id.imageViewProfilAvertissement);
+
+            imgProfil.SetImageResource(Resource.Drawable.profilc);
+            imgHistorique.SetImageResource(Resource.Drawable.histon);
+            imgConseil.SetImageResource(Resource.Drawable.conseiln);
+            imgEvertissement.SetImageResource(Resource.Drawable.avertn);
+            /* DEFINITON DES BOUTON IMAGE MENU */
+
             btnProfilINVT.Text = "Mes amis";
 
             menuProfil.Click += delegate

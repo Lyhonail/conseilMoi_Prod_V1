@@ -83,6 +83,19 @@ namespace conseilMoi
             LinearAllergene = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchAllergene);
             LinearNutriment = FindViewById<LinearLayout>(Resource.Id.LinearLayoutMatchNutriment);
 
+            /* DEFINITON DES BOUTON IMAGE MENU */
+            var imgProfil = FindViewById<ImageView>(Resource.Id.imageViewProduitProfil);
+            var imgHistorique = FindViewById<ImageView>(Resource.Id.imageViewProduitHistorique);
+            var imgConseil = FindViewById<ImageView>(Resource.Id.imageViewProduitConseil);
+            var imgEvertissement = FindViewById<ImageView>(Resource.Id.imageViewProduitAvertissement);
+
+            imgProfil.SetImageResource(Resource.Drawable.profiln);
+            imgHistorique.SetImageResource(Resource.Drawable.histon);
+            imgConseil.SetImageResource(Resource.Drawable.conseiln);
+            imgEvertissement.SetImageResource(Resource.Drawable.avertn);
+            /* DEFINITON DES BOUTON IMAGE MENU */
+
+
             btnProduitINV.Text = "Mes amis";
             txtInfoAllergene.SetTextSize(ComplexUnitType.Dip, 15);
             txtInfoNutriment.SetTextSize(ComplexUnitType.Dip, 15);
@@ -285,7 +298,7 @@ namespace conseilMoi
                   LN.AddView(textView41, param41);
 
                     TextView textView51 = new TextView(this) { Id = 5 };
-                    textView51.Text = pr.GetidValeur();
+                    textView51.Text = pr.GetidValeur()+"";
                     var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .15f);
                     param51.SetMargins(5, 0, 0, 0);
                     textView51.SetTextColor(Color.Black);
@@ -425,10 +438,10 @@ namespace conseilMoi
                 if (feu == 0) { imgFeu.SetImageResource(Resource.Drawable.feuVertSmall); }
                 if (feu == 1) { imgFeu.SetImageResource(Resource.Drawable.feuOrangeSmall); }
                 if (feu == 2) { imgFeu.SetImageResource(Resource.Drawable.feurougeSmall); }
-
+               
                 /************************************Vincent********************************/
                 //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
-                linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
+               linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
                 
                 //Je récupère l'historique dans la base de données
                 listeProduitReco = db.SelectProduitRecommande(IDproduit);
@@ -487,7 +500,7 @@ namespace conseilMoi
                     LN.AddView(textView41, param41);
 
                     TextView textView51 = new TextView(this) { Id = 5 };
-                    textView51.Text = pr.GetidValeur();
+                    textView51.Text = pr.GetidValeur()+"";
                     var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param51.SetMargins(5, 0, 0, 0);
                     textView51.SetTextColor(Color.Black);
@@ -662,7 +675,7 @@ namespace conseilMoi
                     LN.AddView(textView41, param41);
 
                     TextView textView51 = new TextView(this) { Id = 5 };
-                    textView51.Text = pr.GetidValeur();
+                    textView51.Text = pr.GetidValeur()+"";
                     var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param51.SetMargins(5, 0, 0, 0);
                     textView51.SetTextColor(Color.Black);
@@ -771,7 +784,7 @@ namespace conseilMoi
                 /************************************Vincent********************************/
 
                 //je recupère le LinearLayout qui contient le corp de la page et la liste de l'historique
-                 linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
+                linearLayout = FindViewById<LinearLayout>(Resource.Id.produitInfoProduitSuggere);
                 
                 //Je récupère l'historique dans la base de données
                 listeProduitReco = db.SelectProduitRecommande(IDproduit);
@@ -830,7 +843,7 @@ namespace conseilMoi
                     LN.AddView(textView41, param41);
 
                     TextView textView51 = new TextView(this) { Id = 5 };
-                    textView51.Text = pr.GetidValeur();
+                    textView51.Text = pr.GetidValeur()+"";
                     var param51 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WrapContent, .2f);
                     param51.SetMargins(5, 0, 0, 0);
                     textView51.SetTextColor(Color.Black);
@@ -841,7 +854,7 @@ namespace conseilMoi
 
                     /************************************Vincent********************************/
 
-               }
+              }
             };
 
         }//FIN DU ELSE PRODUIT NON TROUVE

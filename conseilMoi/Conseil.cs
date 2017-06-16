@@ -28,6 +28,18 @@ namespace conseilMoi
 
             SetContentView(Resource.Layout.Conseil);
 
+            /* DEFINITON DES BOUTON IMAGE MENU */
+            var imgProfil = FindViewById<ImageView>(Resource.Id.imageViewConseilProfil);
+            var imgHistorique = FindViewById<ImageView>(Resource.Id.imageViewConseilHistorique);
+            var imgConseil = FindViewById<ImageView>(Resource.Id.imageViewConseilConseil);
+            var imgEvertissement = FindViewById<ImageView>(Resource.Id.imageViewConseilAvertissement);
+
+            imgProfil.SetImageResource(Resource.Drawable.profiln);
+            imgHistorique.SetImageResource(Resource.Drawable.histon);
+            imgConseil.SetImageResource(Resource.Drawable.conseilc);
+            imgEvertissement.SetImageResource(Resource.Drawable.avertn);
+            /* DEFINITON DES BOUTON IMAGE MENU */
+
             expandableListView = FindViewById<ExpandableListView>(Resource.Id.expandableListViewConditionUtilisation);
             SetData(out mAdapter);
             expandableListView.SetAdapter(mAdapter);

@@ -18,9 +18,9 @@ namespace conseilMoi.Classes
         String id_produit;
         String product_name;
         String id_nutriment;
-        String id_valeur;
+        decimal id_valeur;
 
-        public void SetProduitsReco(String idf, String idp, String pn, String idn, String idv)
+        public void SetProduitsReco(String idf, String idp, String pn, String idn, decimal idv)
         {
             id_famille = idf;
             id_produit = idp;
@@ -44,7 +44,7 @@ namespace conseilMoi.Classes
         {
             return id_nutriment;
         }
-        public String GetidValeur()
+        public decimal GetidValeur()
         {
             return id_valeur;
         }

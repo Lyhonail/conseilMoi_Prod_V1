@@ -53,7 +53,20 @@ namespace conseilMoi
             var menuScanner = FindViewById<ImageView>(Resource.Id.imageViewAvertissementScann);
             var menuConseil = FindViewById<ImageView>(Resource.Id.imageViewAvertissementConseil);
             var menuAvertissement = FindViewById<ImageView>(Resource.Id.imageViewAvertissementAvertissement);
-            var btnMajBase = FindViewById<Button>(Resource.Id.buttonMajBase);
+            //var btnMajBase = FindViewById<Button>(Resource.Id.buttonMajBase);
+
+
+            /* DEFINITON DES BOUTON IMAGE MENU */
+            var imgProfil = FindViewById<ImageView>(Resource.Id.imageViewAvertissementProfil);
+            var imgHistorique = FindViewById<ImageView>(Resource.Id.imageViewAvertissementHistorique);
+            var imgConseil = FindViewById<ImageView>(Resource.Id.imageViewAvertissementConseil);
+            var imgEvertissement = FindViewById<ImageView>(Resource.Id.imageViewAvertissementAvertissement);
+
+            imgProfil.SetImageResource(Resource.Drawable.profiln);
+            imgHistorique.SetImageResource(Resource.Drawable.histon);
+            imgConseil.SetImageResource(Resource.Drawable.conseiln);
+            imgEvertissement.SetImageResource(Resource.Drawable.avertc);
+            /* DEFINITON DES BOUTON IMAGE MENU */
 
 
             var txtIdProduit = FindViewById<TextView>(Resource.Id.textViewIdProduitAv);
@@ -63,7 +76,7 @@ namespace conseilMoi
             txtIdProduit.Text = test;
             */
 
-
+            /*
             btnMajBase.Click += delegate
             {
                 String path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal); //chemin d'enregistrement de la base
@@ -81,10 +94,10 @@ namespace conseilMoi
                 FileStream writeStream = new FileStream(dbFile, FileMode.OpenOrCreate, FileAccess.Write);
                 ReadWriteStream(s, writeStream);
                 */
-            };
-
-            Produits produits = new Produits();
-            produits = db.SelectIdProduit("3250390503101", "PERS");
+          //  };
+        
+           // Produits produits = new Produits();
+           // produits = db.SelectIdProduit("3250390503101", "PERS");
            // txtIdProduit.Text = produits.GetId_Produit();
 
 
@@ -126,14 +139,26 @@ namespace conseilMoi
                 
             }; */
             //Clik sur le bouton scanner
-            menuScanner.Click += delegate
+            menuScanner.Click +=  async (sender, e) =>
             {
-
+                /*
                 //Intent garde la variable ID Produit et la transmet à l'activité Produit
                 Intent produit = new Intent(this, typeof(Produit));
                 //produit.PutExtra("IDproduit", "2000000010281");
-                produit.PutExtra("IDproduit", "2000000010281");
+                produit.PutExtra("IDproduit", "5053827138802");
                 StartActivity(produit);
+                */
+
+                var scanner = new ZXing.Mobile.MobileBarcodeScanner();
+                var result = await scanner.Scan();
+                if (result != null)
+                {
+                    //Intent garde la variable ID Produit et la transmet à l'activité Produit
+                    Intent produit = new Intent(this, typeof(Produit));
+                    produit.PutExtra("IDproduit", result.Text);
+                    StartActivity(produit);
+                }
+                else { }
             };
 
         }
